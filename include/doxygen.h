@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 \verbinclude "../LICENCE"
 
-\mainpage libgp - Gaussian Process library for Machine Learning
+\mainpage libgp - A Gaussian Process library for Machine Learning
 
 \section about About
 
@@ -32,14 +32,14 @@ Carl Edward Rasmussen and Christopher K. I. Williams which is available for
 - <a href="http://eigen.tuxfamily.org" target="_blank"><b>Eigen3</b></a>: template library for linear algebra
 
 \section start Getting started
--# Download the latest version of libgp from <a href="https://sourceforge.net/projects/libgp/files/"><b>here</b></a> 
-and unpack the archive
--# create a build directory in the project folder, run cmake and make
+-# <a href="https://sourceforge.net/projects/libgp/files/"><b>Download</b></a>  the latest version of libgp 
+and unpack the archive.
+-# Create a build directory in the project folder, run cmake and make.
 \verbatim mkdir build 
 cd build
 cmake ..
 make\endverbatim
--# check out this @ref gp_example.cc "example" how to use the library
+-# Check out this @ref gp_example.cc "example" on how to use the library.
 
 \section release Release Notes
 2011/06/26 version 0.1.0 

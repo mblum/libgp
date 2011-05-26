@@ -27,6 +27,8 @@ namespace libgp {
 
 /** Gaussian Process Regression.
  *  @author Manuel Blum
+ *  @todo implement sparse Gaussian processes
+ *  @todo implement hyperparameter learning
  */
 class GaussianProcess
 {

@@ -23,8 +23,12 @@ SET(LIB_INTERFACES include/cov.h include/cov_factory.h include/cov_noise.h inclu
 # ----- Add library target -----
 ADD_LIBRARY(gp STATIC ${LIB_SRC} ${LIB_INTERFACES})
 
+ADD_EXECUTABLE(gp_example examples/gp_example.cc)
+TARGET_LINK_LIBRARIES(gp_example gp)
+
 # ----- Testing -----
 #ENABLE_TESTING()
+#ADD_TEST(gp_example )
 
 # ----- Add custom doxygen target -----
 IF(DOXYGEN_FOUND)
