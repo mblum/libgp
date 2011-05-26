@@ -1,0 +1,94 @@
+//
+// libgp - Gaussian Process library for Machine Learning
+// Copyright (C) 2010 Universität Freiburg
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+#ifndef COV_FACTORY_H_DL5BMKEA
+#define COV_FACTORY_H_DL5BMKEA
+
+#include <iostream>
+
+#include <map>
+#include <fstream>
+#include <sstream>
+
+#include "cov.h"
+#include "cov_noise.h"
+#include "cov_se_ard.h"
+#include "cov_se_iso.h"
+#include "cov_sum.h"
+
+namespace libgp {
+
+template <typename ClassName> CovarianceFunction * create_func()
+{
+	return new ClassName();
+}
+
+/** Factory class for generating instances of CovarianceFunction. 
+ *  @author Manuel Blum
+ */
+class CovFactory
+{
+public:
+	CovFactory () 
+	{
+		registry["CovNoise"] = & create_func<CovNoise>;
+		registry["CovSEard"] = & create_func<CovSEard>;
+		registry["CovSEiso"] = & create_func<CovSEiso>;
+		registry["CovSum"] = & create_func<CovSum>;
+	}
+	virtual ~CovFactory () {};
+  /** Create an instance of CovarianceFunction. 
+   *  @param input_dim input vector dimensionality
+   *  @param key string representation of covariance function
+   *  @return instance of CovarianceFunction
+   */
+	CovarianceFunction* create(size_t input_dim, const std::string key)
+	{
+		CovarianceFunction * covf;
+		std::stringstream is(key);
+		std::stringstream os(std::stringstream::out);
+		std::stringstream os1(std::stringstream::out);
+		std::stringstream os2(std::stringstream::out);
+		char c;
+		int i = 0, j = 0;
+		os << "Cov";
+		while (is >> c) {
+			if (c == '(') i++;
+			else if (c == ')') i--;
+			else if (c == ',') j++;
+			else {
+				if (i == 0) os << c;
+				else if (j == 0) os1 << c;
+				else os2 << c;
+			}
+		}
+		std::map<std::string , CovFactory::create_func_def>::iterator it = registry.find(os.str());
+		if (it == registry.end()) {
+			std::cerr << "fatal error while parsing covariance function: " << os.str() << " not found" << std::endl;
+			exit(0);
+		} 
+		covf = registry.find(os.str())->second();
+		if (os1.str().length() == 0 && os2.str().length() == 0) {
+			covf->init(input_dim);
+		} else {
+			covf->init(input_dim, create(input_dim, os1.str()), create(input_dim, os2.str()));
+		}
+		return covf;
+	}
+private:
+	typedef CovarianceFunction*(*create_func_def)();
+	std::map<std::string , CovFactory::create_func_def> registry;
+};
+}
+#endif /* end of include guard: COV_FACTORY_H_DL5BMKEA */
