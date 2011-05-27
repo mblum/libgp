@@ -21,18 +21,18 @@ GNU General Public License for more details.
 
 \section about About
 libgp is a C++ library for Gaussian Process regression. The implementation complies with the book
-<a href="http://www.gaussianprocess.org/gpml/" target="_blank"><b>Gaussian Processes for Machine Learning</b></a> by 
+<a href="http://www.gaussianprocess.org/gpml/" target="_blank">Gaussian Processes for Machine Learning</a> by 
 Carl Edward Rasmussen and Christopher K. I. Williams which is available for 
-<a href="http://www.gaussianprocess.org/gpml/chapters"><b>download</b></a> in electronic format.
+<a href="http://www.gaussianprocess.org/gpml/chapters">download</a> in electronic format.
 
 \section requirements Requirements
 - libgp was tested under Linux and MacOSX
-- <a href="http://www.cmake.org/" target="_blank"><b>cmake</b></a>: cross-platform, open-source build system
-- <a href="http://eigen.tuxfamily.org" target="_blank"><b>Eigen3</b></a>: template library for linear algebra
-- <a href="http://code.google.com/p/googletest" target="_blank"><b>googletest</b></a> (optional)
+- <a href="http://www.cmake.org/" target="_blank">cmake</a>: cross-platform, open-source build system
+- <a href="http://eigen.tuxfamily.org" target="_blank">Eigen3</a>: template library for linear algebra
+- <a href="http://code.google.com/p/googletest" target="_blank">googletest</a> (optional)
 
 \section start Getting started
--# <a href="https://sourceforge.net/projects/libgp/files/"><b>Download</b></a>  the latest version of libgp 
+-# <a href="https://sourceforge.net/projects/libgp/files/">Download</a>  the latest version of libgp 
 and unpack the archive.
 -# Create a build directory in the project folder, run cmake and make.
 \verbatim mkdir build 
@@ -42,6 +42,11 @@ make\endverbatim
 -# Check out this @ref gp_example.cc "example" on how to use the library.
 
 \section release Release Notes
+2011/06/27 version 0.1.1
+- google-tests added
+- added Matern3 covariance function
+- various bugfixes
+
 2011/06/26 version 0.1.0 
 - basic functionality for standard gp regression
 - most important covariance functions implemented
