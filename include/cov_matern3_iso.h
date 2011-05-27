@@ -12,31 +12,35 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-#ifndef COV_NOISE_H_UFVDC04P
-#define COV_NOISE_H_UFVDC04P
+#ifndef __COV_MATERN3_ISO_H__
+#define __COV_MATERN3_ISO_H__
 
 #include "cov.h"
 
 namespace libgp
 {
-
-/** Independent covariance function (white noise).
+/** Matern covariance function with nu = d/2 and isotropic distance measure. For
+ *  d=1 the function is also known as the exponential covariance function or the 
+ *  Ornstein-Uhlenbeck covariance in 1d.
+ *  @ingroup cov_group
  *  @author Manuel Blum
- *  @ingroup cov_group */
-class CovNoise : public CovarianceFunction
+ *  @todo implement this
+ */
+class CovMatern3iso : public CovarianceFunction
 {
 public:
-	CovNoise ();
-	virtual ~CovNoise ();
+	CovMatern3iso ();
+	virtual ~CovMatern3iso ();
 	bool init(int n);
 	double get(Eigen::VectorXd &x1, Eigen::VectorXd &x2);
 	void grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad);
 	bool set_loghyper(Eigen::VectorXd &p);
 	virtual std::string to_string();
 private:
-	double s2;
+	double ell;
+	double sf2;
 };
 
 }
 
-#endif /* end of include guard: COV_NOISE_H_UFVDC04P */
+#endif /* __COV_MATERN3_ISO_H__ */

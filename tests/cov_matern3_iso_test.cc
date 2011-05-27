@@ -17,7 +17,7 @@
 #include <Eigen/Dense>
 #include <gtest/gtest.h>
 
-TEST(CovSEisoTest, get) {
+TEST(CovMatern3isoTest, get) {
 
 	libgp::CovFactory factory;
 	libgp::CovarianceFunction * covf;
@@ -31,15 +31,15 @@ TEST(CovSEisoTest, get) {
   a << 0.9143,-0.0292,0.6006,-0.7162,-0.1565;
   b << 0.8315,0.5844,0.9190,0.3115,-0.9286;
 
-	covf = factory.create(input_dim, "CovSEiso");
+	covf = factory.create(input_dim, "CovMatern3iso");
 
   ASSERT_EQ(input_dim, covf->get_input_dim());
   ASSERT_EQ(param_dim, covf->get_param_dim());
   ASSERT_TRUE(covf->set_loghyper(p));
   ASSERT_NEAR(6.4454, covf->get(a, b), 0.0001);
-  ASSERT_NEAR(covf->get(a, b), covf->get(b, a), 0.0001);
+  ASSERT_NEAR(6.4454, covf->get(b, a), 0.0001);
   ASSERT_NEAR(7.6906, covf->get(a, a), 0.0001);
-  ASSERT_NEAR(covf->get(a, a), covf->get(b, b), 0.0001);
+  ASSERT_NEAR(7.6906, covf->get(b, b), 0.0001);
 
   covf->grad(a, b, g);
   ASSERT_NEAR(2.2769, g(0), 0.0001);
@@ -47,5 +47,5 @@ TEST(CovSEisoTest, get) {
   covf->grad(a, a, g);
   ASSERT_NEAR(0.0, g(0), 0.0001);
   ASSERT_NEAR(15.3812, g(1), 0.0001);
-  
+
 }

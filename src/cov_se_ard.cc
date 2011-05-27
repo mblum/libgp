@@ -20,48 +20,37 @@ namespace libgp
 
 CovSEard::CovSEard() {}
 
-CovSEard::~CovSEard()
-{
-	delete [] ell;
-}
+CovSEard::~CovSEard() {}
 
-void CovSEard::init(int n)
+bool CovSEard::init(int n)
 {
 	input_dim = n;
 	param_dim = n+1;
-	ell = new double[param_dim-1];
+	ell.resize(input_dim);
 	loghyper.resize(param_dim);
+  return true;
 }
 
 double CovSEard::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
-{
-	double z = 0.0;
-	for(size_t i = 0; i < input_dim; ++i) {
-		z += pow((x1(i)-x2(i))/ell[i], 2);
-	}
+{  
+	double z = (x1-x2).cwiseQuotient(ell).squaredNorm();
 	return sf2*exp(-0.5*z);
 }
 
 void CovSEard::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
-	double z = 0.0, k;
-	for(size_t i = 0; i < input_dim; ++i) {
-		z += pow((x1(i)-x2(i))/ell[i], 2);
-		grad(i) = z;
-	}
-  grad(input_dim) = 2.0;
-	k = sf2*exp(-0.5*z);
-  grad = grad/k;
+  Eigen::VectorXd z = (x1-x2).cwiseQuotient(ell).array().square();  
+  double k = sf2*exp(-0.5*z.sum());
+  grad.head(input_dim) = z * k;
+  grad(input_dim) = 2.0 * k;
 }
 
 bool CovSEard::set_loghyper(Eigen::VectorXd &p)
 {
-	bool a = CovarianceFunction::set_loghyper(p);
-	for(size_t i = 0; i < param_dim-1; ++i) {
-		ell[i] = exp(loghyper(i));
-	}
-	sf2 = exp(2*loghyper(param_dim-1));
-	return a;
+  if (!CovarianceFunction::set_loghyper(p)) return false;
+	for(size_t i = 0; i < input_dim; ++i) ell(i) = exp(loghyper(i));
+	sf2 = exp(2*loghyper(input_dim));
+	return true;
 }
 
 std::string CovSEard::to_string()

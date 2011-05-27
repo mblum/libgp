@@ -39,14 +39,20 @@ public:
 
   /** Initialization method for atomic covariance functions. 
    *  @param input_dim dimensionality of the input vectors */
-	virtual void init(int input_dim) {};
+  virtual bool init(int input_dim) 
+  { 
+    return false;
+  };
 
   /** Initialization method for compound covariance functions. 
    *  @param input_dim dimensionality of the input vectors 
    *  @param first first covariance function of compound
    *  @param second second covariance function of compound
    */
-	virtual void init(int input_dim, CovarianceFunction * first, CovarianceFunction * second) {};
+	virtual bool init(int input_dim, CovarianceFunction * first, CovarianceFunction * second)
+	{
+    return false;
+	};
 
 	/** Computes the covariance of two input vectors.
 	 *  @param x1 first input vector

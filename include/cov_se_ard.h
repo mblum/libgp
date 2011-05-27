@@ -35,13 +35,13 @@ class CovSEard : public CovarianceFunction
 public:
 	CovSEard ();
 	virtual ~CovSEard ();
-	void init(int n);
+	bool init(int n);
 	double get(Eigen::VectorXd &x1, Eigen::VectorXd &x2);
 	void grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad);
 	bool set_loghyper(Eigen::VectorXd &p);
 	virtual std::string to_string();
 private:
-	double* ell;
+	Eigen::VectorXd ell;
 	double sf2;
 };
 

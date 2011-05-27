@@ -25,6 +25,7 @@
 #include "cov_noise.h"
 #include "cov_se_ard.h"
 #include "cov_se_iso.h"
+#include "cov_matern3_iso.h"
 #include "cov_sum.h"
 
 namespace libgp {
@@ -45,6 +46,7 @@ public:
 		registry["CovNoise"] = & create_func<CovNoise>;
 		registry["CovSEard"] = & create_func<CovSEard>;
 		registry["CovSEiso"] = & create_func<CovSEiso>;
+		registry["CovMatern3iso"] = & create_func<CovSEiso>;
 		registry["CovSum"] = & create_func<CovSum>;
 	}
 	virtual ~CovFactory () {};
@@ -62,7 +64,6 @@ public:
 		std::stringstream os2(std::stringstream::out);
 		char c;
 		int i = 0, j = 0;
-		os << "Cov";
 		while (is >> c) {
 			if (c == '(') i++;
 			else if (c == ')') i--;

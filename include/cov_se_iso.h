@@ -35,7 +35,7 @@ class CovSEiso : public CovarianceFunction
 public:
 	CovSEiso ();
 	virtual ~CovSEiso ();
-	void init(int n);
+	bool init(int n);
 	double get(Eigen::VectorXd &x1, Eigen::VectorXd &x2);
 	void grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad);
 	bool set_loghyper(Eigen::VectorXd &p);

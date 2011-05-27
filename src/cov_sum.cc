@@ -28,7 +28,7 @@ CovSum::~CovSum()
 	delete second;
 }
 
-void CovSum::init(int n, CovarianceFunction * first, CovarianceFunction * second)
+bool CovSum::init(int n, CovarianceFunction * first, CovarianceFunction * second)
 {
 	this->input_dim = n;
 	this->first = first;
@@ -37,6 +37,7 @@ void CovSum::init(int n, CovarianceFunction * first, CovarianceFunction * second
 	param_dim_second = second->get_param_dim();
 	param_dim = param_dim_first + param_dim_second;
 	loghyper.resize(param_dim);
+  return true;
 }
 
 double CovSum::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
@@ -46,22 +47,22 @@ double CovSum::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
 
 void CovSum::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
-  Eigen::VectorXd grad_first = grad.segment(0, param_dim_first);
-  Eigen::VectorXd grad_second = grad.segment(param_dim_first, param_dim_second);
+  Eigen::VectorXd grad_first(param_dim_first);
+  Eigen::VectorXd grad_second(param_dim_second);
 	first->grad(x1, x2, grad_first);
 	second->grad(x1, x2, grad_second);
+  grad.head(param_dim_first) = grad_first;
+  grad.tail(param_dim_second) = grad_second;
 }
 
 bool CovSum::set_loghyper(Eigen::VectorXd &p)
 {
-	if (CovarianceFunction::set_loghyper(p)) {
-    Eigen::VectorXd param_first = p.segment(0, param_dim_first);
-    Eigen::VectorXd param_second = p.segment(param_dim_first, param_dim_second);
-		first->set_loghyper(param_first);
-		second->set_loghyper(param_second);
-		return true;
-	}
-	return false;
+  if (!CovarianceFunction::set_loghyper(p)) return false;
+  Eigen::VectorXd param_first = p.head(param_dim_first);
+  Eigen::VectorXd param_second = p.tail(param_dim_second);
+	first->set_loghyper(param_first);
+	second->set_loghyper(param_second);
+	return true;
 }
 
 std::string CovSum::to_string()

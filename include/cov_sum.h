@@ -28,7 +28,7 @@ class CovSum : public CovarianceFunction
 public:
 	CovSum ();
 	virtual ~CovSum ();
-	void init(int n, CovarianceFunction * first, CovarianceFunction * second);
+	bool init(int n, CovarianceFunction * first, CovarianceFunction * second);
 	double get(Eigen::VectorXd &x1, Eigen::VectorXd &x2);
 	void grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad);
 	bool set_loghyper(Eigen::VectorXd &p);

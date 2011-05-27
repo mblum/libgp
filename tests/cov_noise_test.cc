@@ -12,30 +12,40 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-#include "cov_noise.h"
+#include "cov_factory.h"
 
 #include <Eigen/Dense>
 #include <gtest/gtest.h>
 
 TEST(CovNoiseTest, get) {
 
-  libgp::CovNoise cov;
+	libgp::CovFactory factory;
+	libgp::CovarianceFunction * covf;
   const int input_dim = 5;
   const int param_dim = 1;
   Eigen::VectorXd p(param_dim);
   Eigen::VectorXd a(input_dim);
   Eigen::VectorXd b(input_dim);
+  Eigen::VectorXd g(param_dim);
   p << 0.1;
   a << 0.9143,-0.0292,0.6006,-0.7162,-0.1565;
   b << 0.8315,0.5844,0.9190,0.3115,-0.9286;
-  
-  cov.init(input_dim);  
 
-  ASSERT_EQ(input_dim, cov.get_input_dim());
-  ASSERT_EQ(param_dim, cov.get_param_dim());
-  ASSERT_TRUE(cov.set_loghyper(p));
-  ASSERT_DOUBLE_EQ(0.0, cov.get(a, b));
-  ASSERT_DOUBLE_EQ(0.0, cov.get(b, a));
-  ASSERT_NEAR(1.2214, cov.get(a, a), 0.0001);
-  ASSERT_NEAR(1.2214, cov.get(b, b), 0.0001);
+	covf = factory.create(input_dim, "CovNoise");
+
+  ASSERT_EQ(input_dim, covf->get_input_dim());
+  ASSERT_EQ(param_dim, covf->get_param_dim());
+  ASSERT_TRUE(covf->set_loghyper(p));
+  ASSERT_DOUBLE_EQ(0.0, covf->get(a, b));
+  ASSERT_DOUBLE_EQ(0.0, covf->get(b, a));
+  ASSERT_NEAR(1.2214, covf->get(a, a), 0.0001);
+  ASSERT_NEAR(1.2214, covf->get(b, b), 0.0001);
+  
+  covf->grad(a, b, g);
+  ASSERT_NEAR(0.0, g(0), 0.0001);
+  covf->grad(a, a, g);
+  ASSERT_NEAR(2.4428, g(0), 0.0001);
+  
 }
+
+

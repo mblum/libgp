@@ -12,17 +12,17 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-#include "cov_se_iso.h"
+#include "cov_matern3_iso.h"
 #include <cmath>
 
 namespace libgp
 {
 
-CovSEiso::CovSEiso() {}
+CovMatern3iso::CovMatern3iso() {}
 
-CovSEiso::~CovSEiso() {}
+CovMatern3iso::~CovMatern3iso() {}
 
-bool CovSEiso::init(int n)
+bool CovMatern3iso::init(int n)
 {
 	input_dim = n;
 	param_dim = 2;
@@ -30,30 +30,37 @@ bool CovSEiso::init(int n)
   return true;
 }
 
-double CovSEiso::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
+double CovMatern3iso::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
 {
-	double z = ((x1-x2)/ell).squaredNorm();
+	double z = 0.0;
+	for(size_t i = 0; i < input_dim; ++i) {
+		z += pow((x1(i)-x2(i))/ell, 2);
+	}
 	return sf2*exp(-0.5*z);
 }
 
-void CovSEiso::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
+void CovMatern3iso::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
-	double z = ((x1-x2)/ell).squaredNorm();
-	double k = sf2*exp(-0.5*z);
-	grad << k*z, 2*k;
+	double z = 0.0, k;
+	for(size_t i = 0; i < input_dim; ++i) {
+		z += pow((x1(i)-x2(i))/ell, 2);
+	}
+	k = sf2*exp(-0.5*z);
+	grad(0) = k*z;
+	grad(0) = 2*k;
 }
 
-bool CovSEiso::set_loghyper(Eigen::VectorXd &p)
+bool CovMatern3iso::set_loghyper(Eigen::VectorXd &p)
 {
-  if (!CovarianceFunction::set_loghyper(p)) return false;
+	bool a = CovarianceFunction::set_loghyper(p);
 	ell = exp(loghyper(0));
 	sf2 = exp(2*loghyper(1));
-	return true;
+	return a;
 }
 
-std::string CovSEiso::to_string()
+std::string CovMatern3iso::to_string()
 {
-	return "CovSEiso";
+	return "CovMatern3iso";
 }
 
 }
