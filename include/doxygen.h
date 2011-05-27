@@ -29,6 +29,7 @@ Carl Edward Rasmussen and Christopher K. I. Williams which is available for
 - libgp was tested under Linux and MacOSX
 - <a href="http://www.cmake.org/" target="_blank"><b>cmake</b></a>: cross-platform, open-source build system
 - <a href="http://eigen.tuxfamily.org" target="_blank"><b>Eigen3</b></a>: template library for linear algebra
+- <a href="http://code.google.com/p/googletest" target="_blank"><b>googletest</b></a> (optional)
 
 \section start Getting started
 -# <a href="https://sourceforge.net/projects/libgp/files/"><b>Download</b></a>  the latest version of libgp 

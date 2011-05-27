@@ -37,11 +37,10 @@ bool CovarianceFunction::set_loghyper(Eigen::VectorXd &p)
 	if (p.size() != loghyper.size()) {
 		std::cerr << "error: parameter vector must be of length " << param_dim << std::endl;
 		return false;
-	} else if (1 /* TODO*/) {
+	} else {
 		loghyper = p;
 		return true;
 	}
-	return false;
 }
 
 }

@@ -66,7 +66,7 @@ bool CovSum::set_loghyper(Eigen::VectorXd &p)
 
 std::string CovSum::to_string()
 {
-	return "Sum("+first->to_string()+", "+second->to_string()+")";
+	return "CovSum("+first->to_string()+", "+second->to_string()+")";
 }
 
 }

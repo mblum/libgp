@@ -50,7 +50,7 @@ bool CovNoise::set_loghyper(Eigen::VectorXd &p)
 
 std::string CovNoise::to_string()
 {
-	return "Noise";
+	return "CovNoise";
 }
 
 }

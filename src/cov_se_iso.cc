@@ -59,7 +59,7 @@ bool CovSEiso::set_loghyper(Eigen::VectorXd &p)
 
 std::string CovSEiso::to_string()
 {
-	return "SEiso";
+	return "CovSEiso";
 }
 
 }

@@ -7,6 +7,7 @@ PROJECT(libgp CXX)
 SET( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 
 FIND_PACKAGE(Doxygen)
+FIND_PACKAGE(GTest)
 FIND_PACKAGE(Eigen3 REQUIRED)
 
 # ----- Add include directories -----
@@ -20,6 +21,10 @@ SET(LIB_SRC src/cov.cc src/cov_noise.cc src/cov_se_ard.cc src/cov_se_iso.cc src/
 SET(LIB_INTERFACES include/cov.h include/cov_factory.h include/cov_noise.h include/cov_se_ard.h
     include/cov_se_iso.h include/cov_sum.h include/gp.h include/pattern.h include/doxygen.h)
 
+# ----- Specify test files -----
+SET(LIB_TESTS tests/cov_noise_test.cc tests/cov_se_ard_test.cc tests/cov_se_iso_test.cc
+    tests/cov_sum_test.cc)
+
 # ----- Add library target -----
 ADD_LIBRARY(gp STATIC ${LIB_SRC} ${LIB_INTERFACES})
 
@@ -27,8 +32,13 @@ ADD_EXECUTABLE(gp_example examples/gp_example.cc)
 TARGET_LINK_LIBRARIES(gp_example gp)
 
 # ----- Testing -----
-#ENABLE_TESTING()
-#ADD_TEST(gp_example )
+IF (GTEST_FOUND)
+  ENABLE_TESTING()
+  INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIR})
+  ADD_EXECUTABLE(gp_test ${LIB_TESTS})
+  TARGET_LINK_LIBRARIES(gp_test gp ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES})
+  ADD_TEST(gp_test ${CMAKE_CURRENT_BINARY_DIR}/gp_test)
+ENDIF ()
 
 # ----- Add custom doxygen target -----
 IF(DOXYGEN_FOUND)

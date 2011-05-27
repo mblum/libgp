@@ -86,6 +86,16 @@ public:
 		}
 		return covf;
 	}
+	/** Returns a string vector of available covariance functions. */
+  std::vector<std::string> list()
+  {
+    std::vector<std::string> products;
+    std::map<std::string , CovFactory::create_func_def>::iterator it;
+    for (it = registry.begin(); it != registry.end(); ++it) {
+      products.push_back((*it).first);
+    }
+    return products;
+  }  
 private:
 	typedef CovarianceFunction*(*create_func_def)();
 	std::map<std::string , CovFactory::create_func_def> registry;

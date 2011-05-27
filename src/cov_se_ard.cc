@@ -66,7 +66,7 @@ bool CovSEard::set_loghyper(Eigen::VectorXd &p)
 
 std::string CovSEard::to_string()
 {
-	return "SEard";
+	return "CovSEard";
 }
 }
 
