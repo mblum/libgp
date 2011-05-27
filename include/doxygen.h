@@ -20,7 +20,6 @@ GNU General Public License for more details.
 \mainpage libgp - A Gaussian Process library for Machine Learning
 
 \section about About
-
 libgp is a C++ library for Gaussian Process regression. The implementation complies with the book
 <a href="http://www.gaussianprocess.org/gpml/" target="_blank"><b>Gaussian Processes for Machine Learning</b></a> by 
 Carl Edward Rasmussen and Christopher K. I. Williams which is available for 
