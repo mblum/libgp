@@ -15,6 +15,8 @@
 #include "cov_matern3_iso.h"
 #include <cmath>
 
+#define SQRT3 1.7320508075688771931766041234368458390236
+
 namespace libgp
 {
 
@@ -32,30 +34,23 @@ bool CovMatern3iso::init(int n)
 
 double CovMatern3iso::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
 {
-	double z = 0.0;
-	for(size_t i = 0; i < input_dim; ++i) {
-		z += pow((x1(i)-x2(i))/ell, 2);
-	}
-	return sf2*exp(-0.5*z);
+	double z = ((x1-x2)*SQRT3/ell).norm();
+	return sf2*exp(-z)*(1+z);
 }
 
 void CovMatern3iso::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
-	double z = 0.0, k;
-	for(size_t i = 0; i < input_dim; ++i) {
-		z += pow((x1(i)-x2(i))/ell, 2);
-	}
-	k = sf2*exp(-0.5*z);
-	grad(0) = k*z;
-	grad(0) = 2*k;
+	double z = ((x1-x2)*SQRT3/ell).norm();
+	double k = sf2*exp(-z);
+	grad << k*z*z, 2*k*(1+z);
 }
 
 bool CovMatern3iso::set_loghyper(Eigen::VectorXd &p)
 {
-	bool a = CovarianceFunction::set_loghyper(p);
+  if (!CovarianceFunction::set_loghyper(p)) return false;
 	ell = exp(loghyper(0));
 	sf2 = exp(2*loghyper(1));
-	return a;
+	return true;
 }
 
 std::string CovMatern3iso::to_string()

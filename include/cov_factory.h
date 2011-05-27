@@ -46,7 +46,7 @@ public:
 		registry["CovNoise"] = & create_func<CovNoise>;
 		registry["CovSEard"] = & create_func<CovSEard>;
 		registry["CovSEiso"] = & create_func<CovSEiso>;
-		registry["CovMatern3iso"] = & create_func<CovSEiso>;
+		registry["CovMatern3iso"] = & create_func<CovMatern3iso>;
 		registry["CovSum"] = & create_func<CovSum>;
 	}
 	virtual ~CovFactory () {};

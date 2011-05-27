@@ -36,14 +36,14 @@ TEST(CovMatern3isoTest, get) {
   ASSERT_EQ(input_dim, covf->get_input_dim());
   ASSERT_EQ(param_dim, covf->get_param_dim());
   ASSERT_TRUE(covf->set_loghyper(p));
-  ASSERT_NEAR(6.4454, covf->get(a, b), 0.0001);
-  ASSERT_NEAR(6.4454, covf->get(b, a), 0.0001);
+  ASSERT_NEAR(5.5751, covf->get(a, b), 0.0001);
+  ASSERT_NEAR(covf->get(a, b), covf->get(b, a), 0.0001);
   ASSERT_NEAR(7.6906, covf->get(a, a), 0.0001);
-  ASSERT_NEAR(7.6906, covf->get(b, b), 0.0001);
+  ASSERT_NEAR(covf->get(a, a), covf->get(b, b), 0.0001);
 
   covf->grad(a, b, g);
-  ASSERT_NEAR(2.2769, g(0), 0.0001);
-  ASSERT_NEAR(12.8908, g(1), 0.0001);
+  ASSERT_NEAR(2.9113, g(0), 0.0001);
+  ASSERT_NEAR(11.1502, g(1), 0.0001);
   covf->grad(a, a, g);
   ASSERT_NEAR(0.0, g(0), 0.0001);
   ASSERT_NEAR(15.3812, g(1), 0.0001);

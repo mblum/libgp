@@ -19,12 +19,9 @@
 
 namespace libgp
 {
-/** Matern covariance function with nu = d/2 and isotropic distance measure. For
- *  d=1 the function is also known as the exponential covariance function or the 
- *  Ornstein-Uhlenbeck covariance in 1d.
+/** Matern covariance function with nu = 3/2 and isotropic distance measure.
  *  @ingroup cov_group
  *  @author Manuel Blum
- *  @todo implement this
  */
 class CovMatern3iso : public CovarianceFunction
 {
