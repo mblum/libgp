@@ -18,7 +18,7 @@ SET(LIB_SRC src/cov.cc src/cov_noise.cc src/cov_se_ard.cc src/cov_se_iso.cc src/
 
 # ----- Specify header files -----
 SET(LIB_INTERFACES include/cov.h include/cov_factory.h include/cov_noise.h include/cov_se_ard.h
-    include/cov_se_iso.h include/cov_sum.h include/gp.h include/pattern.h)
+    include/cov_se_iso.h include/cov_sum.h include/gp.h include/pattern.h include/doxygen.h)
 
 # ----- Add library target -----
 ADD_LIBRARY(gp STATIC ${LIB_SRC} ${LIB_INTERFACES})
