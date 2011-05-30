@@ -26,6 +26,7 @@
 #include "cov_se_ard.h"
 #include "cov_se_iso.h"
 #include "cov_matern3_iso.h"
+#include "cov_matern5_iso.h"
 #include "cov_sum.h"
 
 namespace libgp {
@@ -47,6 +48,7 @@ public:
 		registry["CovSEard"] = & create_func<CovSEard>;
 		registry["CovSEiso"] = & create_func<CovSEiso>;
 		registry["CovMatern3iso"] = & create_func<CovMatern3iso>;
+		registry["CovMatern5iso"] = & create_func<CovMatern5iso>;
 		registry["CovSum"] = & create_func<CovSum>;
 	}
 	virtual ~CovFactory () {};

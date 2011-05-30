@@ -12,17 +12,17 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-#include "cov_matern3_iso.h"
+#include "cov_matern5_iso.h"
 #include <cmath>
 
 namespace libgp
 {
 
-CovMatern3iso::CovMatern3iso() {}
+CovMatern5iso::CovMatern5iso() {}
 
-CovMatern3iso::~CovMatern3iso() {}
+CovMatern5iso::~CovMatern5iso() {}
 
-bool CovMatern3iso::init(int n)
+bool CovMatern5iso::init(int n)
 {
 	input_dim = n;
 	param_dim = 2;
@@ -30,20 +30,21 @@ bool CovMatern3iso::init(int n)
   return true;
 }
 
-double CovMatern3iso::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
+double CovMatern5iso::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
 {
-	double z = ((x1-x2)*SQRT3/ell).norm();
-	return sf2*exp(-z)*(1+z);
+	double z = ((x1-x2)*SQRT5/ell).norm();
+	return sf2*exp(-z)*(1+z+z*z/3);
 }
 
-void CovMatern3iso::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
+void CovMatern5iso::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
-	double z = ((x1-x2)*SQRT3/ell).norm();
+	double z = ((x1-x2)*SQRT5/ell).norm();
 	double k = sf2*exp(-z);
-	grad << k*z*z, 2*k*(1+z);
+  double z_square = z*z;
+	grad << k*(z_square + z_square*z)/3, 2*k*(1+z+z_square/3);
 }
 
-bool CovMatern3iso::set_loghyper(Eigen::VectorXd &p)
+bool CovMatern5iso::set_loghyper(Eigen::VectorXd &p)
 {
   if (!CovarianceFunction::set_loghyper(p)) return false;
 	ell = exp(loghyper(0));
@@ -51,9 +52,9 @@ bool CovMatern3iso::set_loghyper(Eigen::VectorXd &p)
 	return true;
 }
 
-std::string CovMatern3iso::to_string()
+std::string CovMatern5iso::to_string()
 {
-	return "CovMatern3iso";
+	return "CovMatern5iso";
 }
 
 }

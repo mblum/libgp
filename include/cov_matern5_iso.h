@@ -12,24 +12,24 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-#ifndef __COV_MATERN3_ISO_H__
-#define __COV_MATERN3_ISO_H__
+#ifndef __COV_MATERN5_ISO_H__
+#define __COV_MATERN5_ISO_H__
 
-#define SQRT3 1.73205080756887719317660412343684583902359008789062
+#define SQRT5 2.23606797749978980505147774238139390945434570312500
 
 #include "cov.h"
 
 namespace libgp
 {
-/** Matern covariance function with nu = 3/2 and isotropic distance measure.
+/** Matern covariance function with nu = 5/2 and isotropic distance measure.
  *  @ingroup cov_group
  *  @author Manuel Blum
  */
-class CovMatern3iso : public CovarianceFunction
+class CovMatern5iso : public CovarianceFunction
 {
 public:
-	CovMatern3iso ();
-	virtual ~CovMatern3iso ();
+	CovMatern5iso ();
+	virtual ~CovMatern5iso ();
 	bool init(int n);
 	double get(Eigen::VectorXd &x1, Eigen::VectorXd &x2);
 	void grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad);
@@ -42,4 +42,4 @@ private:
 
 }
 
-#endif /* __COV_MATERN3_ISO_H__ */
+#endif /* __COV_MATERN5_ISO_H__ */

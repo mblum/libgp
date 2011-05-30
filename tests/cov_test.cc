@@ -108,6 +108,20 @@ TEST(CovTest, Matern3iso) {
   delete covf;
 }
 
+TEST(CovTest, Matern5iso) {
+  const int param_dim = 2;
+  Eigen::VectorXd p(param_dim);
+  p << -0.2, 0.1;
+  Eigen::Vector2d K(1.221402758160, 0.232277486841);
+  Eigen::VectorXd g1(param_dim);
+  g1 << 0.0, 2.442805516320;
+  Eigen::VectorXd g2(param_dim);
+  g2 << 0.597885349117, 0.464554973682; 
+  covf = factory.create(input_dim, "CovMatern5iso");
+  test_covf(param_dim, p, K, g1, g2);
+  delete covf;
+}
+
 TEST(CovTest, Sum) {
   const int param_dim = input_dim + 2;
   Eigen::VectorXd p(param_dim);
