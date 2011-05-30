@@ -15,17 +15,17 @@ INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # ----- Specify source files -----
-SET(LIB_SRC src/cov.cc src/cov_noise.cc src/cov_se_ard.cc src/cov_se_iso.cc src/cov_sum.cc src/gp.cc
-    src/cov_matern3_iso.cc)
+SET(LIB_SRC src/gp.cc src/cov.cc src/cov_noise.cc src/cov_se_ard.cc src/cov_se_iso.cc 
+    src/cov_sum.cc src/cov_matern3_iso.cc src/rprop.cc)
 
 # ----- Specify header files -----
-SET(LIB_INTERFACES include/cov.h include/cov_factory.h include/cov_noise.h include/cov_se_ard.h
-    include/cov_se_iso.h include/cov_sum.h include/gp.h include/pattern.h include/doxygen.h
-    include/cov_matern3_iso.h)
+SET(LIB_INTERFACES include/gp.h include/pattern.h include/cov.h include/cov_factory.h 
+    include/cov_noise.h include/cov_se_ard.h include/cov_se_iso.h include/cov_sum.h 
+    include/cov_matern3_iso.h include/doxygen.h include/rprop.h)
 
 # ----- Specify test files -----
 SET(LIB_TESTS tests/cov_noise_test.cc tests/cov_se_ard_test.cc tests/cov_se_iso_test.cc
-    tests/cov_sum_test.cc tests/cov_matern3_iso_test.cc)
+    tests/cov_sum_test.cc tests/cov_matern3_iso_test.cc tests/gp_regression_test.cc)
 
 # ----- Add library target -----
 ADD_LIBRARY(gp STATIC ${LIB_SRC} ${LIB_INTERFACES})

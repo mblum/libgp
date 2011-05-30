@@ -16,12 +16,12 @@ int main (int argc, char const *argv[])
 	
 	//  ------------------------ Training ------------------------
   // initialize gp 
-  GaussianProcess * gp = new GaussianProcess(2, "Sum ( SEiso, Noise)");    
+  GaussianProcess * gp = new GaussianProcess(2, "CovSum ( CovSEiso, CovNoise)");    
   // specify hyperparameters    
   double params[3] = {0, 0, -3};
   gp->set_params(params);
   // add training patterns
-  for(size_t i = 0; i < 1000; ++i) {
+  for(size_t i = 0; i < 2000; ++i) {
     // randomly chosen input patterns
     double x[2] = {2*drand48(), 2*drand48()};
     // compute target value + noise
