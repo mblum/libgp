@@ -71,7 +71,7 @@ TEST(CovTest, SEiso) {
   p << -0.1, 0.1;
   Eigen::Vector2d K(1.221402758160, 0.331178966544);
   Eigen::VectorXd g1(param_dim);
-  g1 << 0.000000000000, 2.442805516320;
+  g1 << 0.0, 2.442805516320;
   Eigen::VectorXd g2(param_dim);
   g2 << 0.864440931000, 0.662357933089;
 	covf = factory.create(input_dim, "CovSEiso");
@@ -118,6 +118,20 @@ TEST(CovTest, Matern5iso) {
   Eigen::VectorXd g2(param_dim);
   g2 << 0.597885349117, 0.464554973682; 
   covf = factory.create(input_dim, "CovMatern5iso");
+  test_covf(param_dim, p, K, g1, g2);
+  delete covf;
+}
+
+TEST(CovTest, RQiso) {
+  const int param_dim = 3;
+  Eigen::VectorXd p(param_dim);
+  p << -0.02, 0.05, 0.2;
+  Eigen::Vector2d K(1.105170918076, 0.501217242850);
+  Eigen::VectorXd g1(param_dim);
+  g1 << 0.0, 2.210341836151, 0.0;
+  Eigen::VectorXd g2(param_dim);
+  g2 << 0.583521014075, 1.002434485700, -0.104559812648;
+  covf = factory.create(input_dim, "CovRQiso");
   test_covf(param_dim, p, K, g1, g2);
   delete covf;
 }
