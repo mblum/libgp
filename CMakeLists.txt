@@ -24,8 +24,7 @@ SET(LIB_INTERFACES include/gp.h include/pattern.h include/cov.h include/cov_fact
     include/cov_matern3_iso.h include/doxygen.h include/rprop.h)
 
 # ----- Specify test files -----
-SET(LIB_TESTS tests/cov_noise_test.cc tests/cov_se_ard_test.cc tests/cov_se_iso_test.cc
-    tests/cov_sum_test.cc tests/cov_matern3_iso_test.cc tests/gp_regression_test.cc)
+SET(LIB_TESTS tests/cov_test.cc tests/gp_regression_test.cc)
 
 # ----- Add library target -----
 ADD_LIBRARY(gp STATIC ${LIB_SRC} ${LIB_INTERFACES})
