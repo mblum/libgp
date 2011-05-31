@@ -15,8 +15,6 @@
 #ifndef __COV_MATERN3_ISO_H__
 #define __COV_MATERN3_ISO_H__
 
-#define SQRT3 1.73205080756887719317660412343684583902359008789062
-
 #include "cov.h"
 
 namespace libgp
@@ -38,6 +36,7 @@ public:
 private:
 	double ell;
 	double sf2;
+  double sqrt3;
 };
 
 }

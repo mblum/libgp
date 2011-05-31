@@ -27,18 +27,19 @@ bool CovMatern3iso::init(int n)
 	input_dim = n;
 	param_dim = 2;
 	loghyper.resize(param_dim);
+  sqrt3 = sqrt(3);
   return true;
 }
 
 double CovMatern3iso::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
 {
-	double z = ((x1-x2)*SQRT3/ell).norm();
+	double z = ((x1-x2)*sqrt3/ell).norm();
 	return sf2*exp(-z)*(1+z);
 }
 
 void CovMatern3iso::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
-	double z = ((x1-x2)*SQRT3/ell).norm();
+	double z = ((x1-x2)*sqrt3/ell).norm();
 	double k = sf2*exp(-z);
 	grad << k*z*z, 2*k*(1+z);
 }

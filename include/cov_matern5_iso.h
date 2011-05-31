@@ -15,8 +15,6 @@
 #ifndef __COV_MATERN5_ISO_H__
 #define __COV_MATERN5_ISO_H__
 
-#define SQRT5 2.23606797749978980505147774238139390945434570312500
-
 #include "cov.h"
 
 namespace libgp
@@ -38,6 +36,7 @@ public:
 private:
 	double ell;
 	double sf2;
+  double sqrt5;
 };
 
 }

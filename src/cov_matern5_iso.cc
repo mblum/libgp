@@ -27,18 +27,19 @@ bool CovMatern5iso::init(int n)
 	input_dim = n;
 	param_dim = 2;
 	loghyper.resize(param_dim);
+  sqrt5 = sqrt(5);
   return true;
 }
 
 double CovMatern5iso::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
 {
-	double z = ((x1-x2)*SQRT5/ell).norm();
+	double z = ((x1-x2)*sqrt5/ell).norm();
 	return sf2*exp(-z)*(1+z+z*z/3);
 }
 
 void CovMatern5iso::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
-	double z = ((x1-x2)*SQRT5/ell).norm();
+	double z = ((x1-x2)*sqrt5/ell).norm();
 	double k = sf2*exp(-z);
   double z_square = z*z;
 	grad << k*(z_square + z_square*z)/3, 2*k*(1+z+z_square/3);

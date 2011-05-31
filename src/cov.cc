@@ -13,6 +13,7 @@
 // GNU General Public License for more details.
 
 #include "cov.h"
+#include "gp_utils.h"
 
 namespace libgp
 {
@@ -41,6 +42,29 @@ bool CovarianceFunction::set_loghyper(Eigen::VectorXd &p)
 		loghyper = p;
 		return true;
 	}
+}
+
+void CovarianceFunction::draw_random_sample(Eigen::MatrixXd &X, Eigen::VectorXd &y)
+{
+  assert (X.cols() == input_dim);  
+  int n = X.rows();
+	Eigen::MatrixXd K(n, n);
+	Eigen::LLT<Eigen::MatrixXd> solver;
+	y.resize(n);
+	// compute kernel matrix (lower triangle)
+	for(size_t i = 0; i < n; ++i) {
+		for(size_t j = i; j < n; ++j) {
+      Eigen::VectorXd a = X.row(j);
+      Eigen::VectorXd b = X.row(i);
+      assert (a.size() == input_dim);
+      assert (b.size() == input_dim);
+      K(j, i) = get(a, b);
+		}
+		y(i) = randn();
+	}
+	// perform cholesky factorization
+  solver = K.llt();
+  y = solver.matrixL() * y;
 }
 
 }

@@ -80,11 +80,6 @@ public:
   /** Clear sampleset and free memory. */
 	void clear_sampleset();
 	
-	/** Target values of current sampleset are filled wir random data. 
-	 *  Current target values will be overwritten  with values drawn randomly 
-	 *  from the current covariance function. */
-  void randomize_sampleset();
-
 protected:
 
 	/** Predict target value and variance of given input.
@@ -112,6 +107,7 @@ protected:
   
   /** True, if sampleset or hyperparameters have changed and the model has to be updated. */
 	bool update;
+	
 };
 }
 

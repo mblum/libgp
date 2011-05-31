@@ -195,10 +195,4 @@ size_t GaussianProcess::get_param_dim()
 	return covf->get_param_dim();
 }
 
-void GaussianProcess::randomize_sampleset()
-{
-  /** \todo implement this */
-  std::vector<Pattern*>::iterator it;
-}
-
 }

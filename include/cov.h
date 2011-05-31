@@ -93,6 +93,9 @@ public:
    *  @return string containing the name of this covariance function 
    */
 	virtual std::string to_string() = 0;
+
+	/** Draw random target values from this covariance function for input X. */
+  void draw_random_sample(Eigen::MatrixXd &X, Eigen::VectorXd &y);
 	
 protected:
 	/** Input dimensionality. */
