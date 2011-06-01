@@ -19,7 +19,7 @@
 
 namespace libgp
 {
-/** Matern covariance function with nu = 3/2 and isotropic distance measure.
+/** Matern covariance function with \f$\nu = \frac{3}{2}\f$ and isotropic distance measure.
  *  @ingroup cov_group
  *  @author Manuel Blum
  */
@@ -29,9 +29,9 @@ public:
 	CovMatern3iso ();
 	virtual ~CovMatern3iso ();
 	bool init(int n);
-	double get(Eigen::VectorXd &x1, Eigen::VectorXd &x2);
-	void grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad);
-	bool set_loghyper(Eigen::VectorXd &p);
+	double get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2);
+	void grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad);
+	void set_loghyper(const Eigen::VectorXd &p);
 	virtual std::string to_string();
 private:
 	double ell;

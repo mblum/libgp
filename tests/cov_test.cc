@@ -36,19 +36,19 @@ void test_covf(int param_dim,
   b << 0.8315,0.5844,0.9190,0.3115,-0.9286;
   ASSERT_EQ(input_dim, covf->get_input_dim());
   ASSERT_EQ(param_dim, covf->get_param_dim());
-  ASSERT_TRUE(covf->set_loghyper(p));
+  covf->set_loghyper(p);
   ASSERT_NEAR(K(1), covf->get(a, b), tol);
   ASSERT_NEAR(K(1), covf->get(b, a), tol);
   ASSERT_NEAR(K(0), covf->get(a, a), tol);
   ASSERT_NEAR(K(0), covf->get(b, b), tol);
   covf->grad(a, a, g);
-  for(size_t i = 0; i < param_dim; ++i) ASSERT_NEAR(g(i), g1(i), tol);
+  for(int i = 0; i < param_dim; ++i) ASSERT_NEAR(g(i), g1(i), tol);
   covf->grad(a, b, g);
-  for(size_t i = 0; i < param_dim; ++i) ASSERT_NEAR(g(i), g2(i), tol);
+  for(int i = 0; i < param_dim; ++i) ASSERT_NEAR(g(i), g2(i), tol);
   covf->grad(b, b, g);
-  for(size_t i = 0; i < param_dim; ++i) ASSERT_NEAR(g(i), g1(i), tol);
+  for(int i = 0; i < param_dim; ++i) ASSERT_NEAR(g(i), g1(i), tol);
   covf->grad(b, a, g);
-  for(size_t i = 0; i < param_dim; ++i) ASSERT_NEAR(g(i), g2(i), tol);
+  for(int i = 0; i < param_dim; ++i) ASSERT_NEAR(g(i), g2(i), tol);
 }
 
 TEST(CovTest, Noise) {

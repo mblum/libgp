@@ -33,38 +33,29 @@ Eigen::VectorXd CovarianceFunction::get_loghyper()
 	return loghyper;
 }
 
-bool CovarianceFunction::set_loghyper(Eigen::VectorXd &p)
+void CovarianceFunction::set_loghyper(const Eigen::VectorXd &p)
 {
-	if (p.size() != loghyper.size()) {
-		std::cerr << "error: parameter vector must be of length " << param_dim << std::endl;
-		return false;
-	} else {
-		loghyper = p;
-		return true;
-	}
+  assert(p.size() == loghyper.size());
+  loghyper = p;
 }
 
-void CovarianceFunction::draw_random_sample(Eigen::MatrixXd &X, Eigen::VectorXd &y)
+Eigen::VectorXd CovarianceFunction::draw_random_sample(Eigen::MatrixXd &X)
 {
-  assert (X.cols() == input_dim);  
+  assert (X.cols() == int(input_dim));  
   int n = X.rows();
 	Eigen::MatrixXd K(n, n);
 	Eigen::LLT<Eigen::MatrixXd> solver;
-	y.resize(n);
+	Eigen::VectorXd y(n);
 	// compute kernel matrix (lower triangle)
-	for(size_t i = 0; i < n; ++i) {
-		for(size_t j = i; j < n; ++j) {
-      Eigen::VectorXd a = X.row(j);
-      Eigen::VectorXd b = X.row(i);
-      assert (a.size() == input_dim);
-      assert (b.size() == input_dim);
-      K(j, i) = get(a, b);
+	for(int i = 0; i < n; ++i) {
+		for(int j = i; j < n; ++j) {
+      K(j, i) = get(X.row(j), X.row(i));
 		}
 		y(i) = randn();
 	}
 	// perform cholesky factorization
-  solver = K.llt();
-  y = solver.matrixL() * y;
+  solver = K.llt();  
+  return solver.matrixL() * y;
 }
 
 }

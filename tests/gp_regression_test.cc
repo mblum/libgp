@@ -29,26 +29,25 @@ void test_gp_regression(int n, std::string covf_str, int input_dim, double param
   X.setRandom();
   Eigen::VectorXd p(covf->get_param_dim());
   for(size_t i = 0; i < covf->get_param_dim(); ++i) p(i) = params[i];
-  Eigen::VectorXd y(n);
   covf->set_loghyper(p);
-  covf->draw_random_sample(X, y);
+  Eigen::VectorXd y = covf->draw_random_sample(X);
   libgp::GaussianProcess * gp = new libgp::GaussianProcess(input_dim, covf_str);    
   gp->set_params(params);
   for(size_t i = 0; i < n*0.8; ++i) {
     double x[input_dim];
-    for(size_t j = 0; j < input_dim; ++j) x[j] = X(i,j);
+    for(int j = 0; j < input_dim; ++j) x[j] = X(i,j);
     gp->add_pattern(x, y(i));
   }
 	double tss = 0;
-  for(size_t i = n*0.8+1; i < n; ++i) {
+  for(int i = n*0.8+1; i < n; ++i) {
     double x[input_dim];
-    for(size_t j = 0; j < input_dim; ++j) x[j] = X(i,j);
+    for(int j = 0; j < input_dim; ++j) x[j] = X(i,j);
     double f = gp->predict(x);
     double error = f - y(i);
     tss += error*error;
   }
 	delete gp;
-  ASSERT_LE(tss/n, 10e-4);
+  ASSERT_LE(tss/n, 10e-3);
 }
 
 TEST(GPRegressionTest, SEiso) {
@@ -62,9 +61,8 @@ TEST(GPRegressionTest, SEiso) {
 
 TEST(GPRegressionTest, Matern3iso) {
   std::string covf_str("CovSum ( CovMatern3iso, CovNoise)");
-  double params[3] = {0, 0, -2.3};
+  double params[3] = {0, 0, -3};
   test_gp_regression(200, covf_str, 2, params);
   test_gp_regression(500, covf_str, 2, params);
-  test_gp_regression(800, covf_str, 3, params);
-  test_gp_regression(1000, covf_str, 3, params);
+  test_gp_regression(1200, covf_str, 3, params);
 }

@@ -31,25 +31,24 @@ bool CovMatern3iso::init(int n)
   return true;
 }
 
-double CovMatern3iso::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
+double CovMatern3iso::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
 {
 	double z = ((x1-x2)*sqrt3/ell).norm();
 	return sf2*exp(-z)*(1+z);
 }
 
-void CovMatern3iso::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
+void CovMatern3iso::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
 	double z = ((x1-x2)*sqrt3/ell).norm();
 	double k = sf2*exp(-z);
 	grad << k*z*z, 2*k*(1+z);
 }
 
-bool CovMatern3iso::set_loghyper(Eigen::VectorXd &p)
+void CovMatern3iso::set_loghyper(const Eigen::VectorXd &p)
 {
-  if (!CovarianceFunction::set_loghyper(p)) return false;
+  CovarianceFunction::set_loghyper(p);
 	ell = exp(loghyper(0));
 	sf2 = exp(2*loghyper(1));
-	return true;
 }
 
 std::string CovMatern3iso::to_string()

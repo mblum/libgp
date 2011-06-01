@@ -20,13 +20,24 @@ TEST(Utils, randn) {
   int n = 10e5;
   Eigen::VectorXd x(n);
   for(size_t k = 0; k < 10; ++k) {
-    for(size_t i = 0; i < n; ++i) x(i) = libgp::randn();
+    for(int i = 0; i < n; ++i) x(i) = libgp::randn();
     double mean = x.mean();  
-    for(size_t i = 0; i < n; ++i) x(i) = x(i) - mean;
+    for(int i = 0; i < n; ++i) x(i) = x(i) - mean;
     x = x.cwiseProduct(x);
     double var = x.mean();
     ASSERT_NEAR(0.0, mean, 10e-3);
     ASSERT_NEAR(1.0, var, 10e-3);
   }
 }
+/*
+TEST(Utils, randperm) {
+  int m = 10e5, n = 30;
+  Eigen::MatrixXd C(m, n);
+  for (int i=0; i<m; i++) {
+    int a[] = libgp::randperm(n);
+    
+    delete[] a;
+  } 
+}
 
+*/

@@ -59,20 +59,19 @@ public:
 	 *  @param x2 second input vector
    *  @return covariance of x1 and x2
 	 */
-	virtual double get(Eigen::VectorXd &x1, Eigen::VectorXd &x2) = 0;
+	virtual double get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2) = 0;
 
 	/** Covariance gradient of two input vectors with respect to the hyperparameters.
 	 *  @param x1 first input vector
 	 *  @param x2 second input vector
 	 *  @param grad covariance gradient 
 	 */
-	virtual void grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad) = 0;
+	virtual void grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad) = 0;
 
 	/** Update parameter vector.
 	 *  @param p new parameter vector
-	 *  @return true for success
 	 */
-	virtual bool set_loghyper(Eigen::VectorXd &p);
+	virtual void set_loghyper(const Eigen::VectorXd &p);
 
 	/** Get number of parameters for this covariance function.
 	 *  @return parameter vector dimensionality
@@ -95,7 +94,7 @@ public:
 	virtual std::string to_string() = 0;
 
 	/** Draw random target values from this covariance function for input X. */
-  void draw_random_sample(Eigen::MatrixXd &X, Eigen::VectorXd &y);
+  Eigen::VectorXd draw_random_sample(Eigen::MatrixXd &X);
 	
 protected:
 	/** Input dimensionality. */
@@ -116,5 +115,6 @@ protected:
 #endif /* end of include guard: COV_H_YTE8CCNB */
 
 
-/** Currently the following covariance functions are implemented in libgp.
+/** Covariance functions available for Gaussian process models. 
+ *  There are atomic and composite covariance functions. 
  *  @defgroup cov_group Covariance Functions */

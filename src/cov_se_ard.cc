@@ -31,13 +31,13 @@ bool CovSEard::init(int n)
   return true;
 }
 
-double CovSEard::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
+double CovSEard::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
 {  
 	double z = (x1-x2).cwiseQuotient(ell).squaredNorm();
 	return sf2*exp(-0.5*z);
 }
 
-void CovSEard::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
+void CovSEard::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
   Eigen::VectorXd z = (x1-x2).cwiseQuotient(ell).array().square();  
   double k = sf2*exp(-0.5*z.sum());
@@ -45,12 +45,11 @@ void CovSEard::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &g
   grad(input_dim) = 2.0 * k;
 }
 
-bool CovSEard::set_loghyper(Eigen::VectorXd &p)
+void CovSEard::set_loghyper(const Eigen::VectorXd &p)
 {
-  if (!CovarianceFunction::set_loghyper(p)) return false;
+  CovarianceFunction::set_loghyper(p);
 	for(size_t i = 0; i < input_dim; ++i) ell(i) = exp(loghyper(i));
 	sf2 = exp(2*loghyper(input_dim));
-	return true;
 }
 
 std::string CovSEard::to_string()

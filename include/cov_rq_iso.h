@@ -19,7 +19,6 @@
 
 namespace libgp
 {
-
 /** Isotropic rational quadratic covariance function.
  *  @ingroup cov_group
  *  @author Manuel Blum
@@ -30,9 +29,9 @@ public:
 	CovRQiso ();
 	virtual ~CovRQiso ();
 	bool init(int n);
-	double get(Eigen::VectorXd &x1, Eigen::VectorXd &x2);
-	void grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad);
-	bool set_loghyper(Eigen::VectorXd &p);
+	double get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2);
+	void grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad);
+	void set_loghyper(const Eigen::VectorXd &p);
 	virtual std::string to_string();
 private:
 	double ell;

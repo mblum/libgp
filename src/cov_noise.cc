@@ -30,23 +30,22 @@ bool CovNoise::init(int n)
   return true;
 }
 
-double CovNoise::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
+double CovNoise::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
 {
 	if (&x1 == &x2) return s2;
 	else return 0.0;
 }
 
-void CovNoise::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
+void CovNoise::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
 	if (&x1 == &x2) grad(0) = 2*s2;
 	else grad(0) = 0.0;
 }
 
-bool CovNoise::set_loghyper(Eigen::VectorXd &p)
+void CovNoise::set_loghyper(const Eigen::VectorXd &p)
 {
-  if (!CovarianceFunction::set_loghyper(p)) return false;
+  CovarianceFunction::set_loghyper(p);
 	s2 = exp(2*loghyper(0));
-	return true;
 }
 
 std::string CovNoise::to_string()

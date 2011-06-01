@@ -31,13 +31,13 @@ bool CovMatern5iso::init(int n)
   return true;
 }
 
-double CovMatern5iso::get(Eigen::VectorXd &x1, Eigen::VectorXd &x2)
+double CovMatern5iso::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
 {
 	double z = ((x1-x2)*sqrt5/ell).norm();
 	return sf2*exp(-z)*(1+z+z*z/3);
 }
 
-void CovMatern5iso::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::VectorXd &grad)
+void CovMatern5iso::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
 {
 	double z = ((x1-x2)*sqrt5/ell).norm();
 	double k = sf2*exp(-z);
@@ -45,12 +45,11 @@ void CovMatern5iso::grad(Eigen::VectorXd &x1, Eigen::VectorXd &x2, Eigen::Vector
 	grad << k*(z_square + z_square*z)/3, 2*k*(1+z+z_square/3);
 }
 
-bool CovMatern5iso::set_loghyper(Eigen::VectorXd &p)
+void CovMatern5iso::set_loghyper(const Eigen::VectorXd &p)
 {
-  if (!CovarianceFunction::set_loghyper(p)) return false;
+  CovarianceFunction::set_loghyper(p);
 	ell = exp(loghyper(0));
 	sf2 = exp(2*loghyper(1));
-	return true;
 }
 
 std::string CovMatern5iso::to_string()
