@@ -16,13 +16,13 @@
 
 namespace libgp {
 
-  double randn() 
+  double Utils::randn() 
   {
     double u1 = 1.0 - drand48(), u2 = 1.0 - drand48();
     return sqrt(-2*log(u1))*cos(2*M_PI*u2);
   }
   
-  int * randperm(int n) 
+  int * Utils::randperm(int n) 
   {
     assert(n > 0);
     assert(n<RAND_MAX);
@@ -39,12 +39,12 @@ namespace libgp {
     return array;
   }
   
-  uint32_t randi(uint32_t n) 
+  uint32_t Utils::randi(uint32_t n) 
   {
     return drand48()*n;
   }
   
-  double cdf_norm (double x) 
+  double Utils::cdf_norm (double x) 
   {
     double abs_x = fabs(x), build, norm;
     if (abs_x > 37) return norm = 0;

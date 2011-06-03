@@ -42,12 +42,17 @@ make\endverbatim
 -# Check out this @ref gp_example.cc "example" on how to use the library.
 
 \section release Release Notes
-2011/06/27 version 0.1.1
+2011/06/03 version 0.1.2
+- added Matern5 covariance function
+- added isotropic rational quadratic covariance function
+- added function to draw random data according to covariance function
+ 
+2011/05/27 version 0.1.1
 - google-tests added
 - added Matern3 covariance function
 - various bugfixes
 
-2011/06/26 version 0.1.0 
+2011/05/26 version 0.1.0 
 - basic functionality for standard gp regression
 - most important covariance functions implemented
 - capability to read and write models to disk 

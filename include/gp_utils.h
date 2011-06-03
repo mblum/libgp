@@ -22,27 +22,29 @@
 
 namespace libgp {
   
-  void srand_mt(uint32_t s);
-  
-  uint32_t rand_mt();
-  
-  /** Generate independent standard normally distributed (zero mean, 
-   *  unit variance) random numbers using the Box–Muller transform. */
-  double randn();
-  
-  /** Generate random permutation of array 0, ..., n-1 using 
-   *  Fisher–Yates shuffle algorithm. */
-  int * randperm(int n);
-  
-  /** Pseudorandom integers from a uniform discrete distribution.
-   *  Returns a random integer drawn from the discrete uniform 
-   *  distribution on 0, ..., n-1. */
-  uint32_t randi(uint32_t n);
-
-  /** Numerical approximation to the Standard Normal Cumulative 
-   *  Distribution Function. */
-  double cdf_norm (double x);
-
+  /** Various auxiliary functions. */
+  class Utils {
+  public:
+    /** Generate independent standard normally distributed (zero mean, 
+     *  unit variance) random numbers using the Box–Muller transform. */
+    static double randn();
+    
+    /** Generate random permutation of array 0, ..., n-1 using 
+     *  Fisher–Yates shuffle algorithm. */
+    static int * randperm(int n);
+    
+    /** Pseudorandom integers from a uniform discrete distribution.
+     *  Returns a random integer drawn from the discrete uniform 
+     *  distribution on 0, ..., n-1. */
+    static uint32_t randi(uint32_t n);
+    
+    /** Double precision numerical approximation to the standard normal 
+     *  cumulative distribution function. The cumulative standard normal 
+     *  integral is the function: 
+     *  \f$ cdf\_norm(x)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{x}
+     *  \exp{\frac{-x^2}{2}}dx \f$*/
+    static double cdf_norm (double x);
+  };
 }
 
 #endif /* __GP_UTILS_H__ */

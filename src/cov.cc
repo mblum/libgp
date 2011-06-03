@@ -51,7 +51,7 @@ Eigen::VectorXd CovarianceFunction::draw_random_sample(Eigen::MatrixXd &X)
 		for(int j = i; j < n; ++j) {
       K(j, i) = get(X.row(j), X.row(i));
 		}
-		y(i) = randn();
+		y(i) = Utils::randn();
 	}
 	// perform cholesky factorization
   solver = K.llt();  
