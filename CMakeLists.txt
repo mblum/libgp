@@ -17,7 +17,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include)
 # ----- Specify source files -----
 SET(LIB_SRC src/gp.cc src/cov.cc src/cov_noise.cc src/cov_se_ard.cc src/cov_se_iso.cc 
     src/cov_sum.cc src/cov_matern3_iso.cc src/cov_matern5_iso.cc 
-    src/cov_rq_iso.cc src/rprop.cc)
+    src/cov_rq_iso.cc src/rprop.cc src/gp_utils.cc)
 
 # ----- Specify header files -----
 SET(LIB_INTERFACES include/gp.h include/pattern.h include/cov.h include/cov_factory.h 

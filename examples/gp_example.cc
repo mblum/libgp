@@ -25,7 +25,7 @@ int main (int argc, char const *argv[])
   p << 0.0,0.0,-2.3;
   Eigen::VectorXd y(n);
   covf->set_loghyper(p);
-  covf->draw_random_sample(X, y);
+  y = covf->draw_random_sample(X);
 	
 	//  ------------------------ Training ------------------------
   // initialize gp 
@@ -48,7 +48,7 @@ int main (int argc, char const *argv[])
   // test performance
 	double tss = 0;
 	gettimeofday(&start, 0);
-  for(size_t i = n*0.8+1; i < n; ++i) {
+  for(int i = n*0.8+1; i < n; ++i) {
     double x[2] = {X(i,0), X(i,1)};
     double f = gp->predict(x);
     double error = f - y(i);
