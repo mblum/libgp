@@ -12,8 +12,9 @@ int main (int argc, char const *argv[])
 {
 	srand48(15);
 	timeval start, end;
-  int n=3000;
+  int n=5000;
 	std::cout << "Testing libgp ..." << std::endl;
+	gettimeofday(&start, 0);
 	
 	//  ------------------- Generate sampleset -------------------
   CovFactory factory;
@@ -47,7 +48,6 @@ int main (int argc, char const *argv[])
   gp = new GaussianProcess("test.gp");
   // test performance
 	double tss = 0;
-	gettimeofday(&start, 0);
   for(int i = n*0.8+1; i < n; ++i) {
     double x[2] = {X(i,0), X(i,1)};
     double f = gp->predict(x);
