@@ -4,8 +4,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.3)
 PROJECT(libgp CXX)
 
-SET(CMAKE_CXX_FLAGS "-O3")
-
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 
 FIND_PACKAGE(Eigen3 REQUIRED)
@@ -18,13 +16,13 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include)
 # ----- Specify source files -----
 SET(LIB_SRC src/gp.cc src/cov.cc src/cov_noise.cc src/cov_se_ard.cc src/cov_se_iso.cc 
     src/cov_sum.cc src/cov_matern3_iso.cc src/cov_matern5_iso.cc 
-    src/cov_rq_iso.cc src/rprop.cc src/gp_utils.cc)
+    src/cov_rq_iso.cc src/gp_utils.cc)
 
 # ----- Specify header files -----
 SET(LIB_INTERFACES include/gp.h include/pattern.h include/cov.h include/cov_factory.h 
     include/cov_noise.h include/cov_se_ard.h include/cov_se_iso.h include/cov_sum.h 
     include/cov_matern3_iso.h include/cov_matern5_iso.h include/cov_rq_iso.h
-    include/doxygen.h include/rprop.h include/gp_utils.h)
+    include/doxygen.h include/gp_utils.h)
 
 # ----- Specify test files -----
 SET(LIB_TESTS tests/cov_test.cc tests/gp_regression_test.cc tests/gp_utils_test.cc)
@@ -44,6 +42,9 @@ IF (GTEST_FOUND)
   ADD_TEST(gp_test ${CMAKE_CURRENT_BINARY_DIR}/gp_test)
 ENDIF ()
 
+# ----- Build type -----
+SET(CMAKE_BUILD_TYPE Release)
+
 # ----- Install -----
 INSTALL(FILES ${LIB_INTERFACES} DESTINATION include)
 INSTALL(TARGETS gp
@@ -51,3 +52,4 @@ INSTALL(TARGETS gp
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
 )
+

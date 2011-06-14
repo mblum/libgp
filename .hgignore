@@ -2,3 +2,6 @@ build
 doc
 archive
 publish.sh
+sync.sh
+syncexclude
+.svn
