@@ -19,7 +19,7 @@ GNU General Public License for more details.
 
 #include "Eigen/Dense"
 #include "cov.h"
-#include "pattern.h"
+#include "sampleset.h"
 #include "doxygen.h"
 
 #include <vector>
@@ -95,7 +95,7 @@ protected:
 	CovarianceFunction* covf;
 
   /** The sampleset. */
-	std::vector<Pattern*> sampleset;
+	SampleSet * sampleset;
 
   /** Alpha is cached for performance. */ 
 	Eigen::VectorXd alpha;

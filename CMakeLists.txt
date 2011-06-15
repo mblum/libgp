@@ -19,7 +19,7 @@ SET(LIB_SRC src/gp.cc src/cov.cc src/cov_noise.cc src/cov_se_ard.cc src/cov_se_i
     src/cov_rq_iso.cc src/gp_utils.cc)
 
 # ----- Specify header files -----
-SET(LIB_INTERFACES include/gp.h include/pattern.h include/cov.h include/cov_factory.h 
+SET(LIB_INTERFACES include/gp.h include/sampleset.h include/cov.h include/cov_factory.h 
     include/cov_noise.h include/cov_se_ard.h include/cov_se_iso.h include/cov_sum.h 
     include/cov_matern3_iso.h include/cov_matern5_iso.h include/cov_rq_iso.h
     include/doxygen.h include/gp_utils.h)

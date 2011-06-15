@@ -32,6 +32,7 @@ GaussianProcess::GaussianProcess (size_t input_dim, std::string covf_def)
 	// create covariance function
 	CovFactory factory;
 	covf = factory.create(input_dim, covf_def);
+  sampleset = new SampleSet(input_dim);
 }
 
 GaussianProcess::GaussianProcess (const char * filename)
@@ -55,6 +56,7 @@ GaussianProcess::GaussianProcess (const char * filename)
 				add_pattern(x, y);
 			} else if (stage == 0) {
 				ss >> input_dim;
+        sampleset = new SampleSet(input_dim);
 				x = new double[input_dim];
 			} else if (stage == 1) {
 				CovFactory factory;
@@ -81,34 +83,34 @@ GaussianProcess::GaussianProcess (const char * filename)
 GaussianProcess::~GaussianProcess ()
 {
 	// free memory
-	clear_sampleset();
+	delete sampleset;
 	delete covf;
 }
 
 double GaussianProcess::predict(const double x[], double &var, bool compute_variance)
 {
-	if (sampleset.size()==0) return 0.0;
+	if (sampleset->size()==0) return 0.0;
 	// update cached alpha if outdated
 	if (update) {
   	update = 0;
-  	Eigen::MatrixXd K(sampleset.size(), sampleset.size());
-  	alpha.resize(sampleset.size());
+  	Eigen::MatrixXd K(sampleset->size(), sampleset->size());
+    alpha.resize(sampleset->size());
   	// compute kernel matrix (lower triangle)
-  	for(size_t i = 0; i < sampleset.size(); ++i) {
-  		for(size_t j = i; j < sampleset.size(); ++j) {
-        K(j, i) = covf->get(sampleset[j]->x, sampleset[i]->x);
+  	for(size_t i = 0; i < sampleset->size(); ++i) {
+  		for(size_t j = 0; j <= i; ++j) {
+        K(i, j) = covf->get(sampleset->x(i), sampleset->x(j));
   		}
-  		alpha(i) = sampleset[i]->y;
+      alpha(i) = sampleset->y(i);
   	}
   	// perform cholesky factorization
-    solver = K.llt();
+    solver = K.selfadjointView<Eigen::Lower>().llt();
     solver.solveInPlace(alpha);
 	}
-	Eigen::VectorXd kstar(sampleset.size());
+	Eigen::VectorXd kstar(sampleset->size());
 	// compute covariance between input and training data	
   Eigen::Map<const Eigen::VectorXd> x_vec_map(x, input_dim);
-	for(size_t i = 0; i < sampleset.size(); ++i) {
-    kstar(i) = covf->get((Eigen::VectorXd &) x_vec_map, sampleset[i]->x);
+	for(size_t i = 0; i < sampleset->size(); ++i) {
+    kstar(i) = covf->get((Eigen::VectorXd &) x_vec_map, sampleset->x(i));
 	}
 	// compute predicted value
   double fstar = kstar.dot(alpha);
@@ -133,16 +135,13 @@ double GaussianProcess::predict(const double x[])
 
 void GaussianProcess::add_pattern(const double x[], double y)
 {
-	Pattern * p = new Pattern(input_dim);
-	p->set_input(x);
-	p->set_target(y);
-	sampleset.push_back(p);
+  sampleset->add(x, y);
 	update = 1;
 }
 
 size_t GaussianProcess::get_sampleset_size()
 {
-	return sampleset.size();
+	return sampleset->size();
 }
 
 void GaussianProcess::set_params(double p[])
@@ -155,10 +154,7 @@ void GaussianProcess::set_params(double p[])
 
 void GaussianProcess::clear_sampleset()
 {
-	while (!sampleset.empty()) {
-		delete sampleset.back();
-		sampleset.pop_back();
-	}
+  sampleset->clear();
 }
 
 void GaussianProcess::write(const char * filename)
@@ -182,10 +178,10 @@ void GaussianProcess::write(const char * filename)
 	}
 	outfile << std::endl << std::endl 
 	        << "# data (target value in first column)" << std::endl;
-	for(std::vector<Pattern *>::iterator it = sampleset.begin(); it != sampleset.end(); ++it) {
-		outfile << std::setprecision(10) << (*it)->y << " ";
+  for (size_t i=0; i<sampleset->size(); ++i) {
+		outfile << std::setprecision(10) << sampleset->y(i) << " ";
 		for(size_t j = 0; j < input_dim; ++j) {
-			outfile << std::setprecision(10) << (*it)->x(j) << " ";
+			outfile << std::setprecision(10) << sampleset->x(i)(j) << " ";
 		}
 		outfile << std::endl;
 	}

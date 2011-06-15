@@ -12,7 +12,7 @@ int main (int argc, char const *argv[])
 {
 	srand48(15);
 	timeval start, end;
-  int n=5000;
+  int n=2500;
 	std::cout << "Testing libgp ..." << std::endl;
 	gettimeofday(&start, 0);
 	
@@ -38,6 +38,7 @@ int main (int argc, char const *argv[])
   for(size_t i = 0; i < n*0.8; ++i) {
     double x[2] = {X(i,0), X(i,1)};
     gp->add_pattern(x, y(i));
+    if (i%100 == 99) gp->predict(x);
   }
   // write gp to disk and destroy
   gp->write("test.gp");
