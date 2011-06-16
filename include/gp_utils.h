@@ -46,6 +46,8 @@ namespace libgp {
      *  \f$ cdf\_norm(x)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{x}
      *  \exp{\frac{-x^2}{2}}dx \f$*/
     static double cdf_norm (double x);
+    
+    static double friedman (double x[]);
   };
 }
 

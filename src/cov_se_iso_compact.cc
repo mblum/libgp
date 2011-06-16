@@ -14,48 +14,58 @@
  GNU General Public License for more details.
  ***************************************************************/
 
-#include "cov_matern3_iso.h"
+#include "cov_se_iso_compact.h"
 #include <cmath>
 
 namespace libgp
 {
   
-  CovMatern3iso::CovMatern3iso() {}
+  CovSEisoCompact::CovSEisoCompact() {}
   
-  CovMatern3iso::~CovMatern3iso() {}
+  CovSEisoCompact::~CovSEisoCompact() {}
   
-  bool CovMatern3iso::init(int n)
+  bool CovSEisoCompact::init(int n)
   {
     input_dim = n;
     param_dim = 2;
     loghyper.resize(param_dim);
-    sqrt3 = sqrt(3);
+    loghyper.setZero();
+    nu = input_dim - input_dim%2 + 1;
+    threshold = 0.8;
     return true;
   }
   
-  double CovMatern3iso::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
+  double CovSEisoCompact::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
   {
-    double z = ((x1-x2)*sqrt3/ell).norm();
-    return sf2*exp(-z)*(1+z);
+    double q = std::max(0.0, pow(1 - (x1-x2).norm()/threshold, 3));
+    double z = ((x1-x2)/ell).squaredNorm();
+    return q*sf2*exp(-0.5*z);
   }
   
-  void CovMatern3iso::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
+  void CovSEisoCompact::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
   {
-    double z = ((x1-x2)*sqrt3/ell).norm();
-    double k = sf2*exp(-z);
-    grad << k*z*z, 2*k*(1+z);
+    grad << 0.0, 0.0;
   }
   
-  void CovMatern3iso::set_loghyper(const Eigen::VectorXd &p)
+  void CovSEisoCompact::set_loghyper(const Eigen::VectorXd &p)
   {
     CovarianceFunction::set_loghyper(p);
     ell = exp(loghyper(0));
     sf2 = exp(2*loghyper(1));
   }
   
-  std::string CovMatern3iso::to_string()
+  std::string CovSEisoCompact::to_string()
   {
-    return "CovMatern3iso";
+    return "CovSEisoCompact";
   }
   
+  double CovSEisoCompact::get_threshold()
+  {
+    return threshold;
+  }
+  
+  void CovSEisoCompact::set_threshold(double threshold)
+  {
+    this->threshold = threshold;
+  }
 }

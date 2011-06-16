@@ -1,23 +1,23 @@
 /**************************************************************
-libgp - Gaussian Process library for Machine Learning
-Copyright (C) 2011 Universität Freiburg
-Author: Manuel Blum
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-***************************************************************/
+ libgp - Gaussian Process library for Machine Learning
+ Copyright (C) 2011 Universität Freiburg
+ Author: Manuel Blum
+ 
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ as published by the Free Software Foundation; either version 2
+ of the License, or (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ ***************************************************************/
 
 #include "gp_utils.h"
 
 namespace libgp {
-
+  
   double Utils::randn() 
   {
     double u1 = 1.0 - drand48(), u2 = 1.0 - drand48();
@@ -77,5 +77,9 @@ namespace libgp {
     if (x > 0) norm = 1 - norm; 
     return norm;
   }
-      
+  
+  double Utils::friedman(double x[])
+  {
+    return 10*sin(M_PI*x[0]*x[1]) + 20*pow(x[2]-0.5, 2) + 10*x[3] + 5*x[4];
+  }      
 }

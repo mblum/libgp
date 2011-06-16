@@ -97,6 +97,9 @@ public:
 
 	/** Draw random target values from this covariance function for input X. */
   Eigen::VectorXd draw_random_sample(Eigen::MatrixXd &X);
+  
+  virtual double get_threshold();
+  virtual void set_threshold(double threshold);
 	
 protected:
 	/** Input dimensionality. */

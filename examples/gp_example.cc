@@ -1,4 +1,5 @@
 #include "gp.h"
+#include "gp_sparse.h"
 #include "cov_factory.h"
 
 #include <Eigen/Dense>
@@ -12,9 +13,8 @@ int main (int argc, char const *argv[])
 {
 	srand48(15);
 	timeval start, end;
-  int n=2500;
+  int n=5000;
 	std::cout << "Testing libgp ..." << std::endl;
-	gettimeofday(&start, 0);
 	
 	//  ------------------- Generate sampleset -------------------
   CovFactory factory;
@@ -30,7 +30,7 @@ int main (int argc, char const *argv[])
 	
 	//  ------------------------ Training ------------------------
   // initialize gp 
-  GaussianProcess * gp = new GaussianProcess(2, "CovSum ( CovSEiso, CovNoise)");    
+  GaussianProcess * gp = new GaussianProcess(2, "CovSum ( CovSEisoCompact, CovNoise)");    
   // specify hyperparameters    
   double params[3] = {0, 0, -2.3};
   gp->set_params(params);
@@ -38,7 +38,6 @@ int main (int argc, char const *argv[])
   for(size_t i = 0; i < n*0.8; ++i) {
     double x[2] = {X(i,0), X(i,1)};
     gp->add_pattern(x, y(i));
-    if (i%100 == 99) gp->predict(x);
   }
   // write gp to disk and destroy
   gp->write("test.gp");
@@ -46,17 +45,19 @@ int main (int argc, char const *argv[])
   
 	//  ------------------------ Prediction ------------------------
 	// read from disk
-  gp = new GaussianProcess("test.gp");
+  gp = new SparseGaussianProcess("test.gp");
   // test performance
+	gettimeofday(&start, 0);
+  gp->compute();
+	gettimeofday(&end, 0);
 	double tss = 0;
   for(int i = n*0.8+1; i < n; ++i) {
     double x[2] = {X(i,0), X(i,1)};
-    double f = gp->predict(x);
+    double f = gp->f(x);
     double error = f - y(i);
     tss += error*error;
   }
 	delete gp;
-	gettimeofday(&end, 0);
 	// report error
   std::cout << "tss = " << tss << std::endl;
 	std::cout << "time: " << end.tv_sec - start.tv_sec - ((end.tv_usec - start.tv_usec)<0) 

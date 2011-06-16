@@ -77,6 +77,10 @@ public:
     n = 0;
     targets.clear();
   }
+  bool empty ()
+  {
+    return n==0;
+  }
 private:
   std::vector<Eigen::VectorXd *> inputs;
   std::vector<double> targets;

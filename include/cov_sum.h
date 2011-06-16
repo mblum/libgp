@@ -35,6 +35,8 @@ public:
 	void grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad);
 	void set_loghyper(const Eigen::VectorXd &p);
 	virtual std::string to_string();
+  virtual double get_threshold();
+  virtual void set_threshold(double threshold);
 private:
 	size_t param_dim_first;
 	size_t param_dim_second;

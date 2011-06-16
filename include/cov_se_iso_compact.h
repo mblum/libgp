@@ -14,32 +14,37 @@
  GNU General Public License for more details.
  ***************************************************************/
 
-#ifndef COV_NOISE_H_UFVDC04P
-#define COV_NOISE_H_UFVDC04P
+#ifndef __COV_SE_ISO_COMPACT_H__
+#define __COV_SE_ISO_COMPACT_H__
 
 #include "cov.h"
 
 namespace libgp
 {
   
-  /** Independent covariance function (white noise).
+  /** Squared exponential covariance function with isotropic distance measure
+   *  and compact support. 
    *  @author Manuel Blum
    *  @ingroup cov_group */
-  class CovNoise : public CovarianceFunction
+  class CovSEisoCompact : public CovarianceFunction
   {
   public:
-    CovNoise ();
-    virtual ~CovNoise ();
+    CovSEisoCompact ();
+    virtual ~CovSEisoCompact ();
     bool init(int n);
     double get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2);
     void grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad);
     void set_loghyper(const Eigen::VectorXd &p);
     virtual std::string to_string();
     virtual double get_threshold();
+    virtual void set_threshold(double threshold);
   private:
-    double s2;
+    double ell;
+    double sf2;
+    double threshold;
+    double nu;
   };
   
 }
 
-#endif /* end of include guard: COV_NOISE_H_UFVDC04P */
+#endif /* __COV_SE_ISO_COMPACT_H__ */
