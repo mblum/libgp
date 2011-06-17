@@ -27,8 +27,11 @@ SET(LIB_TESTS tests/cov_test.cc tests/gp_regression_test.cc tests/gp_utils_test.
 ADD_LIBRARY(gp ${LIB_SRC} ${LIB_INTERFACES})
 TARGET_LINK_LIBRARIES(gp ${BLAS_LIBRARIES} ${CHOLMOD_LIBRARIES})
 
-ADD_EXECUTABLE(gp_example examples/gp_example.cc)
-TARGET_LINK_LIBRARIES(gp_example gp)
+# ----- Add example targets -----
+ADD_EXECUTABLE(gpdense examples/gp_example_dense.cc)
+ADD_EXECUTABLE(gpsparse examples/gp_example_sparse.cc)
+TARGET_LINK_LIBRARIES(gpdense gp)
+TARGET_LINK_LIBRARIES(gpsparse gp)
 
 # ----- Testing -----
 IF (GTEST_FOUND)

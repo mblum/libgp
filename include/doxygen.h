@@ -45,6 +45,8 @@
  - libgp was tested under Linux and MacOSX
  - <a href="http://www.cmake.org/" target="_blank">cmake</a>: cross-platform, open-source build system
  - <a href="http://eigen.tuxfamily.org" target="_blank">Eigen3</a>: template library for linear algebra
+ - <a href="http://www.cise.ufl.edu/research/sparse/cholmod/" target="_blank">CHOLMOD</a>: supernodal sparse Cholesky factorization and update/downdate
+ - <a href="http://www.netlib.org/blas/" target="_blank">BLAS</a>: Basic Linear Algebra Subprograms
  - <a href="http://code.google.com/p/googletest" target="_blank">googletest</a> (optional)
  
  \section start Getting started
@@ -52,15 +54,16 @@
  and unpack the archive.
  -# Create a build directory in the project folder, run cmake and make.
  \verbatim mkdir build 
- cd build
- cmake ..
- make\endverbatim
+cd build
+cmake ..
+make\endverbatim
  -# Check out this @ref gp_example.cc "example" on how to use the library.
  
  \section release Release Notes
  2011/? version 0.1.3
+ - implemented sparse Gaussian processes using Cholmod
+ - improved organization of training data
  - improved interfaces
- - 
  
  2011/06/03 version 0.1.2
  - added Matern5 covariance function

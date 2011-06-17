@@ -97,6 +97,7 @@ namespace libgp {
     /** Input vector dimensionality. */
     size_t input_dim;
     
+    /** Update test input and cache kernel vector for performance. */
     void update(const double x[]);
   };
 }

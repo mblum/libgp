@@ -81,5 +81,10 @@ namespace libgp {
   double Utils::friedman(double x[])
   {
     return 10*sin(M_PI*x[0]*x[1]) + 20*pow(x[2]-0.5, 2) + 10*x[3] + 5*x[4];
-  }      
+  }
+  
+  double Utils::hill(double x, double y)
+  {
+    return sin(x-y)+0.2*pow(y, 3) + cos(y*(x - 0.5));
+  }
 }

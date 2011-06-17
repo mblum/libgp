@@ -48,9 +48,12 @@ namespace libgp {
     static double cdf_norm (double x);
     
     /** Computes values of first Friedman dataset from 10-D input.
-     *  
      *  \f$ f(\mathbf{x}) = 10\sin(\pi x_1 x_2) + 20(x_3 -0.5)^2 + 10x_4+5x_5 \f$ */
     static double friedman (double x[]);
+    
+    /** Hill function. 
+     *  \f$ f(\mathbf{x}) = \sin(x-y)+0.2y^3 + \cos(xy - 0.5y) \f$  */
+    static double hill(double x, double y);
   };
 }
 
