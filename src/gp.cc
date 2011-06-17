@@ -33,6 +33,7 @@ namespace libgp {
     CovFactory factory;
     cf = factory.create(input_dim, covf_def);
     sampleset = new SampleSet(input_dim);
+    x_star.resize(input_dim);
   }
   
   GaussianProcess::GaussianProcess (const char * filename)
@@ -58,6 +59,7 @@ namespace libgp {
           ss >> input_dim;
           sampleset = new SampleSet(input_dim);
           x = new double[input_dim];
+          x_star.resize(input_dim);
         } else if (stage == 1) {
           CovFactory factory;
           cf = factory.create(input_dim, s);
@@ -77,7 +79,6 @@ namespace libgp {
       exit(EXIT_FAILURE);
     }
     delete [] x;
-    //update = 1;
   }
   
   GaussianProcess::~GaussianProcess ()
@@ -106,72 +107,32 @@ namespace libgp {
   
   double GaussianProcess::f(const double x[])
   {
-    Eigen::VectorXd kstar(sampleset->size());
-    // compute covariance between input and training data	
-    Eigen::Map<const Eigen::VectorXd> x_vec_map(x, input_dim);
-    for(size_t i = 0; i < sampleset->size(); ++i) {
-      kstar(i) = cf->get((Eigen::VectorXd &) x_vec_map, sampleset->x(i));
-    }
+    update(x);
     // compute predicted value
-    return kstar.dot(alpha);    
+    return k_star.dot(alpha);    
   }
   
   double GaussianProcess::var(const double x[])
   {
-    return 0.0;
+    update(x);
+    Eigen::VectorXd v = solver.matrixL().solve(k_star);
+    return cf->get(x_star, x_star) - v.dot(v);	
   }
   
-  /*
-  double GaussianProcess::predict(const double x[], double &var, bool compute_variance)
+  void GaussianProcess::update(const double x[])
   {
-    if (sampleset->size()==0) return 0.0;
-    // update cached alpha if outdated
-    if (update) {
-      update = 0;
-      Eigen::MatrixXd K(sampleset->size(), sampleset->size());
-      alpha.resize(sampleset->size());
-      // compute kernel matrix (lower triangle)
-      for(size_t i = 0; i < sampleset->size(); ++i) {
-        for(size_t j = 0; j <= i; ++j) {
-          K(i, j) = covf->get(sampleset->x(i), sampleset->x(j));
-        }
-        alpha(i) = sampleset->y(i);
-      }
-      // perform cholesky factorization
-      solver = K.selfadjointView<Eigen::Lower>().llt();
-      solver.solveInPlace(alpha);
-    }
-    Eigen::VectorXd kstar(sampleset->size());
-    // compute covariance between input and training data	
     Eigen::Map<const Eigen::VectorXd> x_vec_map(x, input_dim);
+    if (x_star.isApprox(x_vec_map)) return;
+    x_star = x_vec_map;
+    k_star.resize(sampleset->size());
     for(size_t i = 0; i < sampleset->size(); ++i) {
-      kstar(i) = covf->get((Eigen::VectorXd &) x_vec_map, sampleset->x(i));
+      k_star(i) = cf->get(x_star, sampleset->x(i));
     }
-    // compute predicted value
-    double fstar = kstar.dot(alpha);
-    // compute variance
-    if (compute_variance) {
-      Eigen::VectorXd v = solver.matrixL().solve(kstar);
-      var = covf->get((Eigen::VectorXd &) x_vec_map, (Eigen::VectorXd &) x_vec_map) - v.dot(v);	
-    }
-    return fstar;
   }
-  
-  double GaussianProcess::predict(const double x[], double &var) 
-  {
-    return predict(x, var, 1);
-  }
-  
-  double GaussianProcess::predict(const double x[])
-  {
-    double var;
-    return predict(x, var, 0);
-  }*/
   
   void GaussianProcess::add_pattern(const double x[], double y)
   {
     sampleset->add(x, y);
-    //update = 1;
   }
   
   size_t GaussianProcess::get_sampleset_size()

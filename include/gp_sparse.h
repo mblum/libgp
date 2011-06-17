@@ -41,11 +41,7 @@ namespace libgp {
     virtual ~SparseGaussianProcess ();
     
     virtual void compute();
-    
-    virtual double f(const double x[]);
-    
-    virtual double var(const double x[]);
-    
+
   protected:
     
     Eigen::SparseLLT<Eigen::SparseMatrix<double>, Eigen::Cholmod> solver;

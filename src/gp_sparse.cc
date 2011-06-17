@@ -59,21 +59,4 @@ namespace libgp {
     solver.solveInPlace(alpha);
   }
   
-  double SparseGaussianProcess::f(const double x[])
-  {
-    Eigen::VectorXd kstar(sampleset->size());
-    // compute covariance between input and training data	
-    Eigen::Map<const Eigen::VectorXd> x_vec_map(x, input_dim);
-    for(size_t i = 0; i < sampleset->size(); ++i) {
-      kstar(i) = cf->get((Eigen::VectorXd &) x_vec_map, sampleset->x(i));
-    }
-    // compute predicted value
-    return kstar.dot(alpha);    
-  }
-  
-  double SparseGaussianProcess::var(const double x[])
-  {
-    return 0.0;
-  }
-  
 }

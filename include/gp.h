@@ -33,7 +33,8 @@ namespace libgp {
   {
   public:
     
-    /** Create and instance of GaussianProcess with given input dimensionality and covariance function. */
+    /** Create and instance of GaussianProcess with given input dimensionality 
+     *  and covariance function. */
     GaussianProcess (size_t input_dim, std::string covf_def);
     
     /** Create and instance of GaussianProcess from file. */
@@ -56,15 +57,6 @@ namespace libgp {
      *  @param x input vector
      *  @return predicted variance */
     virtual double var(const double x[]);
-    
-    /** Set hyperparameters of covariance function.
-     *  @param p parameter array
-     */
-    //void set_params(double p[]);
-    
-    /** Get number of parameters for this covariance function.
-     *  @return parameter vector dimensionality */
-    //size_t get_param_dim();    
     
     /** Add input-output-pair to sample set.
      *  Add a copy of the given input-output-pair to sample set.
@@ -93,12 +85,19 @@ namespace libgp {
     /** Alpha is cached for performance. */ 
     Eigen::VectorXd alpha;
     
+    /** Last query vector. */ 
+    Eigen::VectorXd x_star;
+
+    /** Last test kernel vector. */
+    Eigen::VectorXd k_star;
+
     /** Linear solver used to invert the covariance matrix. */
     Eigen::LLT<Eigen::MatrixXd> solver;
     
     /** Input vector dimensionality. */
     size_t input_dim;
     
+    void update(const double x[]);
   };
 }
 
