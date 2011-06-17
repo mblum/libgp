@@ -20,10 +20,12 @@ namespace libgp {
   
   SparseGaussianProcess::SparseGaussianProcess (size_t input_dim, std::string covf_def) : GaussianProcess(input_dim, covf_def)
   {
+    solver.setFlags(Eigen::SupernodalMultifrontal);
   }
   
   SparseGaussianProcess::SparseGaussianProcess (const char * filename) : GaussianProcess(filename)
   {
+    solver.setFlags(Eigen::SupernodalMultifrontal);
   }
   
   SparseGaussianProcess::~SparseGaussianProcess ()
@@ -33,13 +35,11 @@ namespace libgp {
   void SparseGaussianProcess::compute()
   {    
     if (cf->get_threshold() == INFINITY) {
-      std::cerr << "Warning: no threshold defined, computation will be slow." << std::endl
-        << "Use full GP or covariance functions that support thresholding." << std::endl;
+      std::cerr << "warning: no threshold defined, computation will be slow." << std::endl
+        << "Use full GP or define distance threshold!" << std::endl;
     }
     if (sampleset->empty()) return; 
     Eigen::SparseMatrix<double> K(sampleset->size(), sampleset->size());
-    //Eigen::DynamicSparseMatrix<double> aux(sampleset->size(), sampleset->size());
-    
     alpha.resize(sampleset->size());
     // compute kernel matrix (lower triangle)
     for(size_t i = 0; i < sampleset->size(); ++i) {
@@ -52,9 +52,7 @@ namespace libgp {
       alpha(i) = sampleset->y(i);
     }
     K.finalize();
-    std::cout << 1.0 * K.nonZeros() / (sampleset->size()*sampleset->size()) << std::endl;
     // perform cholesky factorization
-    solver.setFlags(Eigen::SupernodalMultifrontal);
     solver.compute(K);
     solver.solveInPlace(alpha);
   }
