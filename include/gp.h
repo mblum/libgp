@@ -27,7 +27,6 @@ namespace libgp {
   
   /** Gaussian Process Regression.
    *  @author Manuel Blum
-   *  @todo implement sparse Gaussian processes
    *  @todo implement hyperparameter learning
    */
   class GaussianProcess
@@ -36,10 +35,36 @@ namespace libgp {
     
     /** Create and instance of GaussianProcess with given input dimensionality and covariance function. */
     GaussianProcess (size_t input_dim, std::string covf_def);
+    
     /** Create and instance of GaussianProcess from file. */
     GaussianProcess (const char * filename);
     
     virtual ~GaussianProcess ();
+    
+    /** Write current gp model to file. */
+    void write(const char * filename);
+    
+    /** Update covariance matrix and perform cholesky decomposition. */
+    virtual void compute();
+    
+    /** Predict target value for given input.
+     *  @param x input vector
+     *  @return predicted value */
+    virtual double f(const double x[]);
+    
+    /** Predict variance of prediction for given input.
+     *  @param x input vector
+     *  @return predicted variance */
+    virtual double var(const double x[]);
+    
+    /** Set hyperparameters of covariance function.
+     *  @param p parameter array
+     */
+    //void set_params(double p[]);
+    
+    /** Get number of parameters for this covariance function.
+     *  @return parameter vector dimensionality */
+    //size_t get_param_dim();    
     
     /** Add input-output-pair to sample set.
      *  Add a copy of the given input-output-pair to sample set.
@@ -47,68 +72,31 @@ namespace libgp {
      *  @param y output value
      */
     void add_pattern(const double x[], double y);
-    
-    virtual void compute();
-    
-    virtual double f(const double x[]);
-    
-    virtual double var(const double x[]);
 
-    /** Predict target value of given input.
-     *  @param x input vector
-     *  @return function value of input vector
-     */
-    //double predict(const double x[]);
-    
-    /** Predict target value and variance of given input.
-     *  @param x input vector
-     *  @param var predicted variance
-     *  @return function value of input vector
-     */
-    //double predict(const double x[], double &var);
-    
     /** Get number of samples in the training set. */
     size_t get_sampleset_size();
     
-    /** Set hyperparameters of covariance function.
-     *  @param p parameter array
-     */
-    void set_params(double p[]);
-    
-    /** Get number of parameters for this covariance function.
-     *  @return parameter vector dimensionality
-     */
-    size_t get_param_dim();
-    
-    /** Write current model to file. */
-    void write(const char * filename);
-    
-    /** Clear sampleset and free memory. */
+    /** Clear sample set and free memory. */
     void clear_sampleset();
+    
+    /** Get reference on currently used covariance function. */
+    CovarianceFunction & covf();
     
   protected:
     
-    /** Predict target value and variance of given input.
-     *  @param x input vector
-     *  @param var predicted variance
-     *  @param compute_variance if flase, computation of variance will be omitted
-     *  @return function value of input vector
-     */
-    // virtual double predict(const double x[], double &var, bool compute_variance);
-    
     /** The covariance function of this Gaussian process. */
-    CovarianceFunction * covf;
+    CovarianceFunction * cf;
     
-    /** The sampleset. */
+    /** The training sample set. */
     SampleSet * sampleset;
     
     /** Alpha is cached for performance. */ 
     Eigen::VectorXd alpha;
     
-    /** Linear solver used to invert covariance matrix. */
+    /** Linear solver used to invert the covariance matrix. */
     Eigen::LLT<Eigen::MatrixXd> solver;
     
-    /** Dimensionality n of input vectors. */
+    /** Input vector dimensionality. */
     size_t input_dim;
     
   };

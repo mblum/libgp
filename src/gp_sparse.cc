@@ -15,7 +15,6 @@
  ***************************************************************/
 
 #include "gp_sparse.h"
-#include <sys/time.h>
 
 namespace libgp {
   
@@ -33,9 +32,7 @@ namespace libgp {
   
   void SparseGaussianProcess::compute()
   {    
-    timeval start, end;
-
-    if (covf->get_threshold() == INFINITY) {
+    if (cf->get_threshold() == INFINITY) {
       std::cerr << "Warning: no threshold defined, computation will be slow." << std::endl
         << "Use full GP or covariance functions that support thresholding." << std::endl;
     }
@@ -48,8 +45,8 @@ namespace libgp {
     for(size_t i = 0; i < sampleset->size(); ++i) {
       K.startVec(i);
       for(size_t j = i; j < sampleset->size(); ++j) {
-        if ((sampleset->x(i)-sampleset->x(j)).norm() <= covf->get_threshold()) {
-          K.insertBack(j,i) = covf->get(sampleset->x(i), sampleset->x(j));
+        if ((sampleset->x(i)-sampleset->x(j)).norm() <= cf->get_threshold()) {
+          K.insertBack(j,i) = cf->get(sampleset->x(i), sampleset->x(j));
         }          
       }
       alpha(i) = sampleset->y(i);
@@ -57,16 +54,9 @@ namespace libgp {
     K.finalize();
     std::cout << 1.0 * K.nonZeros() / (sampleset->size()*sampleset->size()) << std::endl;
     // perform cholesky factorization
-    gettimeofday(&start, 0);
+    solver.setFlags(Eigen::SupernodalMultifrontal);
     solver.compute(K);
-    gettimeofday(&end, 0);
-  	std::cout << "time1: " << end.tv_sec - start.tv_sec - ((end.tv_usec - start.tv_usec)<0) 
-    << '.' << abs(end.tv_usec - start.tv_usec) << "s" << std::endl;
-    gettimeofday(&start, 0);
     solver.solveInPlace(alpha);
-    gettimeofday(&end, 0);
-  	std::cout << "time2: " << end.tv_sec - start.tv_sec - ((end.tv_usec - start.tv_usec)<0) 
-    << '.' << abs(end.tv_usec - start.tv_usec) << "s" << std::endl;
   }
   
   double SparseGaussianProcess::f(const double x[])
@@ -75,7 +65,7 @@ namespace libgp {
     // compute covariance between input and training data	
     Eigen::Map<const Eigen::VectorXd> x_vec_map(x, input_dim);
     for(size_t i = 0; i < sampleset->size(); ++i) {
-      kstar(i) = covf->get((Eigen::VectorXd &) x_vec_map, sampleset->x(i));
+      kstar(i) = cf->get((Eigen::VectorXd &) x_vec_map, sampleset->x(i));
     }
     // compute predicted value
     return kstar.dot(alpha);    

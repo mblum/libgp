@@ -39,6 +39,7 @@ namespace libgp
     param_dim_second = second->get_param_dim();
     param_dim = param_dim_first + param_dim_second;
     loghyper.resize(param_dim);
+    loghyper.setZero();
     return true;
   }
   

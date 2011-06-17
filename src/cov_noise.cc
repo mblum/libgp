@@ -29,6 +29,7 @@ namespace libgp
     input_dim = n;
     param_dim = 1;
     loghyper.resize(param_dim);
+    loghyper.setZero();
     return true;
   }
   
@@ -60,4 +61,6 @@ namespace libgp
     return 0.0;
   }
   
+  void CovNoise::set_threshold(double threshold) {}
+
 }

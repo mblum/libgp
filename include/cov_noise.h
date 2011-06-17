@@ -36,6 +36,7 @@ namespace libgp
     void set_loghyper(const Eigen::VectorXd &p);
     virtual std::string to_string();
     virtual double get_threshold();
+    virtual void set_threshold(double threshold);
   private:
     double s2;
   };

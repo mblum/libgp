@@ -39,7 +39,7 @@ void test_gp_regression(int n, std::string covf_str, int input_dim, double param
   covf->set_loghyper(p);
   Eigen::VectorXd y = covf->draw_random_sample(X);
   libgp::GaussianProcess gp(input_dim, covf_str);    
-  gp.set_params(params);
+  gp.covf().set_loghyper(p);
   for(size_t i = 0; i < n*0.8; ++i) {
     double x[input_dim];
     for(int j = 0; j < input_dim; ++j) x[j] = X(i,j);
@@ -77,10 +77,11 @@ TEST(GPRegressionTest, Matern3iso) {
 
 TEST(GPRegressionTest, Friedman) {
   std::string covf_str("CovSum ( CovSEiso, CovNoise)");
-  double params[] = {1, 0, -2};
+  Eigen::VectorXd params(3);
+  params << -1.0, 0.0, -1.0;
   size_t input_dim = 10, n = 1000, m = 1000;
   libgp::GaussianProcess gp(input_dim, covf_str);    
-  gp.set_params(params);
+  gp.covf().set_loghyper(params);
   for(size_t i = 0; i < n; ++i) {
     double x[input_dim];    
     for(size_t j = 0; j < input_dim; ++j) x[j] = drand48()*2-1;
@@ -101,8 +102,9 @@ TEST(GPRegressionTest, Sparse) {
   
   int n=500, input_dim = 2;
   libgp::GaussianProcess gp(input_dim, "CovSum(CovSEiso, CovNoise)");
-  double param[] = {-1,0,-3};
-  gp.set_params(param);
+  Eigen::VectorXd params(3);
+  params << 0.0, 0.0, -2.3;
+  gp.covf().set_loghyper(params);
   for (int i=0; i<n; ++i) {
     double x[input_dim];
     for (int j=0; j<input_dim; ++j) x[j] = drand48()*2-1;
@@ -119,8 +121,8 @@ TEST(GPRegressionTest, Sparse) {
   std::cout << tss << std::endl;
 }
 
-double sigma = 0.15;
-int n=50000, input_dim = 4;
+double sigma = 0.12;
+int n=20000, input_dim = 4;
 
 TEST(GPRegressionTest, Dense) {
   
@@ -166,7 +168,7 @@ TEST(GPRegressionTest, SparseEx) {
   std::cout << K.nonZeros() << std::endl;
   std::cout << 1.0 * K.nonZeros() / (n*n) << std::endl;
   //  Eigen::SparseLLT<Eigen::SparseMatrix<double> > solver;
-  Eigen::SparseLLT<Eigen::SparseMatrix<double>, Eigen::Cholmod > solver;
+  Eigen::SparseLLT<Eigen::SparseMatrix<double>, Eigen::Cholmod > solver(Eigen::SupernodalMultifrontal);
   solver.compute(K);
   solver.solveInPlace(y);
   if (solver.succeeded()) std::cout << "success" << std::endl;

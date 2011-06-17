@@ -24,14 +24,6 @@
 #include <sstream>
 
 #include "cov.h"
-#include "cov_noise.h"
-#include "cov_se_ard.h"
-#include "cov_se_iso.h"
-#include "cov_se_iso_compact.h"
-#include "cov_matern3_iso.h"
-#include "cov_matern5_iso.h"
-#include "cov_rq_iso.h"
-#include "cov_sum.h"
 
 namespace libgp {
   
@@ -41,70 +33,23 @@ namespace libgp {
   }
   
   /** Factory class for generating instances of CovarianceFunction. 
-   *  @author Manuel Blum
-   */
+   *  @author Manuel Blum */
   class CovFactory
   {
   public:
-    CovFactory () 
-    {
-      registry["CovNoise"] = & create_func<CovNoise>;
-      registry["CovSEard"] = & create_func<CovSEard>;
-      registry["CovSEiso"] = & create_func<CovSEiso>;
-      registry["CovSEisoCompact"] = & create_func<CovSEisoCompact>;
-      registry["CovMatern3iso"] = & create_func<CovMatern3iso>;
-      registry["CovMatern5iso"] = & create_func<CovMatern5iso>;
-      registry["CovRQiso"] = & create_func<CovRQiso>;
-      registry["CovSum"] = & create_func<CovSum>;
-    }
-    virtual ~CovFactory () {};
+    
+    CovFactory ();
+    virtual ~CovFactory ();
+    
     /** Create an instance of CovarianceFunction. 
      *  @param input_dim input vector dimensionality
      *  @param key string representation of covariance function
-     *  @return instance of CovarianceFunction
-     */
-    CovarianceFunction* create(size_t input_dim, const std::string key)
-    {
-      CovarianceFunction * covf;
-      std::stringstream is(key);
-      std::stringstream os(std::stringstream::out);
-      std::stringstream os1(std::stringstream::out);
-      std::stringstream os2(std::stringstream::out);
-      char c;
-      int i = 0, j = 0;
-      while (is >> c) {
-        if (c == '(') i++;
-        else if (c == ')') i--;
-        else if (c == ',') j++;
-        else {
-          if (i == 0) os << c;
-          else if (j == 0) os1 << c;
-          else os2 << c;
-        }
-      }
-      std::map<std::string , CovFactory::create_func_def>::iterator it = registry.find(os.str());
-      if (it == registry.end()) {
-        std::cerr << "fatal error while parsing covariance function: " << os.str() << " not found" << std::endl;
-        exit(0);
-      } 
-      covf = registry.find(os.str())->second();
-      if (os1.str().length() == 0 && os2.str().length() == 0) {
-        covf->init(input_dim);
-      } else {
-        covf->init(input_dim, create(input_dim, os1.str()), create(input_dim, os2.str()));
-      }
-      return covf;
-    }
+     *  @return instance of CovarianceFunction */
+    CovarianceFunction* create(size_t input_dim, const std::string key);
+    
     /** Returns a string vector of available covariance functions. */
-    std::vector<std::string> list()
-    {
-      std::vector<std::string> products;
-      std::map<std::string , CovFactory::create_func_def>::iterator it;
-      for (it = registry.begin(); it != registry.end(); ++it) {
-        products.push_back((*it).first);
-      }
-      return products;
-    }  
+    std::vector<std::string> list();
+    
   private:
     typedef CovarianceFunction*(*create_func_def)();
     std::map<std::string , CovFactory::create_func_def> registry;

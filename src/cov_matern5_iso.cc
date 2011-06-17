@@ -29,6 +29,7 @@ namespace libgp
     input_dim = n;
     param_dim = 2;
     loghyper.resize(param_dim);
+    loghyper.setZero();
     sqrt5 = sqrt(5);
     return true;
   }

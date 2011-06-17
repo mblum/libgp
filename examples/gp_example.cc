@@ -13,7 +13,7 @@ int main (int argc, char const *argv[])
 {
 	srand48(15);
 	timeval start, end;
-  int n=5000;
+  int n=1000;
 	std::cout << "Testing libgp ..." << std::endl;
 	
 	//  ------------------- Generate sampleset -------------------
@@ -30,10 +30,8 @@ int main (int argc, char const *argv[])
 	
 	//  ------------------------ Training ------------------------
   // initialize gp 
-  GaussianProcess * gp = new GaussianProcess(2, "CovSum ( CovSEisoCompact, CovNoise)");    
-  // specify hyperparameters    
-  double params[3] = {0, 0, -2.3};
-  gp->set_params(params);
+  GaussianProcess * gp = new GaussianProcess(2, "CovSum ( CovRBFCS, CovNoise)");    
+  gp->covf().set_loghyper(p);
   // add training patterns
   for(size_t i = 0; i < n*0.8; ++i) {
     double x[2] = {X(i,0), X(i,1)};

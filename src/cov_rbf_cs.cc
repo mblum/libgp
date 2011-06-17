@@ -14,17 +14,17 @@
  GNU General Public License for more details.
  ***************************************************************/
 
-#include "cov_se_iso_compact.h"
+#include "cov_rbf_cs.h"
 #include <cmath>
 
 namespace libgp
 {
   
-  CovSEisoCompact::CovSEisoCompact() {}
+  CovRBFCS::CovRBFCS() {}
   
-  CovSEisoCompact::~CovSEisoCompact() {}
+  CovRBFCS::~CovRBFCS() {}
   
-  bool CovSEisoCompact::init(int n)
+  bool CovRBFCS::init(int n)
   {
     input_dim = n;
     param_dim = 2;
@@ -35,36 +35,36 @@ namespace libgp
     return true;
   }
   
-  double CovSEisoCompact::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
+  double CovRBFCS::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
   {
     double q = std::max(0.0, pow(1 - (x1-x2).norm()/threshold, 3));
     double z = ((x1-x2)/ell).squaredNorm();
     return q*sf2*exp(-0.5*z);
   }
   
-  void CovSEisoCompact::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
+  void CovRBFCS::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
   {
     grad << 0.0, 0.0;
   }
   
-  void CovSEisoCompact::set_loghyper(const Eigen::VectorXd &p)
+  void CovRBFCS::set_loghyper(const Eigen::VectorXd &p)
   {
     CovarianceFunction::set_loghyper(p);
     ell = exp(loghyper(0));
     sf2 = exp(2*loghyper(1));
   }
   
-  std::string CovSEisoCompact::to_string()
+  std::string CovRBFCS::to_string()
   {
-    return "CovSEisoCompact";
+    return "CovRBFCS";
   }
   
-  double CovSEisoCompact::get_threshold()
+  double CovRBFCS::get_threshold()
   {
     return threshold;
   }
   
-  void CovSEisoCompact::set_threshold(double threshold)
+  void CovRBFCS::set_threshold(double threshold)
   {
     this->threshold = threshold;
   }

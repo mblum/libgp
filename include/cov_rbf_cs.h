@@ -14,23 +14,22 @@
  GNU General Public License for more details.
  ***************************************************************/
 
-#ifndef __COV_SE_ISO_COMPACT_H__
-#define __COV_SE_ISO_COMPACT_H__
+#ifndef __COV_RBF_CS_H__
+#define __COV_RBF_CS_H__
 
 #include "cov.h"
 
 namespace libgp
 {
   
-  /** Squared exponential covariance function with isotropic distance measure
-   *  and compact support. 
+  /** RBF covariance function with compact support. 
    *  @author Manuel Blum
    *  @ingroup cov_group */
-  class CovSEisoCompact : public CovarianceFunction
+  class CovRBFCS : public CovarianceFunction
   {
   public:
-    CovSEisoCompact ();
-    virtual ~CovSEisoCompact ();
+    CovRBFCS ();
+    virtual ~CovRBFCS ();
     bool init(int n);
     double get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2);
     void grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad);
@@ -47,4 +46,4 @@ namespace libgp
   
 }
 
-#endif /* __COV_SE_ISO_COMPACT_H__ */
+#endif /* __COV_RBF_CS_H__ */

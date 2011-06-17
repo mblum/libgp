@@ -31,7 +31,7 @@ namespace libgp {
     this->input_dim = input_dim;
     // create covariance function
     CovFactory factory;
-    covf = factory.create(input_dim, covf_def);
+    cf = factory.create(input_dim, covf_def);
     sampleset = new SampleSet(input_dim);
   }
   
@@ -60,13 +60,13 @@ namespace libgp {
           x = new double[input_dim];
         } else if (stage == 1) {
           CovFactory factory;
-          covf = factory.create(input_dim, s);
+          cf = factory.create(input_dim, s);
         } else if (stage == 2) {
-          double params[covf->get_param_dim()];
-          for (size_t j = 0; j<covf->get_param_dim(); ++j) {
+          Eigen::VectorXd params(cf->get_param_dim());
+          for (size_t j = 0; j<cf->get_param_dim(); ++j) {
             ss >> params[j];
           }
-          set_params(params);
+          covf().set_loghyper(params);
         }
         stage++;
       }
@@ -84,7 +84,7 @@ namespace libgp {
   {
     // free memory
     delete sampleset;
-    delete covf;
+    delete cf;
   }  
   
   void GaussianProcess::compute()
@@ -95,7 +95,7 @@ namespace libgp {
     // compute kernel matrix (lower triangle)
     for(size_t i = 0; i < sampleset->size(); ++i) {
       for(size_t j = 0; j <= i; ++j) {
-        K(i, j) = covf->get(sampleset->x(i), sampleset->x(j));
+        K(i, j) = cf->get(sampleset->x(i), sampleset->x(j));
       }
       alpha(i) = sampleset->y(i);
     }
@@ -110,7 +110,7 @@ namespace libgp {
     // compute covariance between input and training data	
     Eigen::Map<const Eigen::VectorXd> x_vec_map(x, input_dim);
     for(size_t i = 0; i < sampleset->size(); ++i) {
-      kstar(i) = covf->get((Eigen::VectorXd &) x_vec_map, sampleset->x(i));
+      kstar(i) = cf->get((Eigen::VectorXd &) x_vec_map, sampleset->x(i));
     }
     // compute predicted value
     return kstar.dot(alpha);    
@@ -179,14 +179,6 @@ namespace libgp {
     return sampleset->size();
   }
   
-  void GaussianProcess::set_params(double p[])
-  {
-    Eigen::VectorXd param(covf->get_param_dim());    
-    for(size_t i = 0; i < covf->get_param_dim(); ++i) param(i) = p[i];
-    covf->set_loghyper(param);
-    //update = 1;
-  }
-  
   void GaussianProcess::clear_sampleset()
   {
     sampleset->clear();
@@ -204,10 +196,10 @@ namespace libgp {
     outfile << "# " << dest << std::endl << std::endl
     << "# input dimensionality" << std::endl << input_dim << std::endl 
     << std::endl << "# covariance function" << std::endl 
-    << covf->to_string() << std::endl << std::endl
+    << cf->to_string() << std::endl << std::endl
     << "# log-hyperparameter" << std::endl;
-    Eigen::VectorXd param = covf->get_loghyper();
-    for (size_t i = 0; i< covf->get_param_dim(); i++) {
+    Eigen::VectorXd param = cf->get_loghyper();
+    for (size_t i = 0; i< cf->get_param_dim(); i++) {
       outfile << std::setprecision(10) 
       << param(i) << " ";
     }
@@ -223,9 +215,8 @@ namespace libgp {
     outfile.close();
   }
   
-  size_t GaussianProcess::get_param_dim()
+  CovarianceFunction & GaussianProcess::covf()
   {
-    return covf->get_param_dim();
+    return *cf;
   }
-  
 }

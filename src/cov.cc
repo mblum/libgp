@@ -65,7 +65,9 @@ namespace libgp
     return INFINITY;
   }
   
-  void CovarianceFunction::set_threshold(double threshold) {}
-  
-  
+  void CovarianceFunction::set_threshold(double threshold) 
+  {
+    std::cerr << "warning: thresholding is not supported for " << to_string() 
+      << " covariance function." << std::endl;
+  }
 }
