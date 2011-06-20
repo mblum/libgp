@@ -20,11 +20,8 @@ INCLUDE_DIRECTORIES(${CHOLMOD_INCLUDES})
 
 INCLUDE("Sources.cmake")
 
-# ----- Specify test files -----
-SET(LIB_TESTS tests/cov_test.cc tests/gp_regression_test.cc tests/gp_utils_test.cc tests/gp_sparse_regression_test.cc)
-
 # ----- Add library target -----
-ADD_LIBRARY(gp ${LIB_SRC} ${LIB_INTERFACES})
+ADD_LIBRARY(gp ${LIBGP_SRC} ${LIBGP_INTERFACES})
 TARGET_LINK_LIBRARIES(gp ${BLAS_LIBRARIES} ${CHOLMOD_LIBRARIES})
 
 # ----- Add example targets -----
@@ -37,7 +34,7 @@ TARGET_LINK_LIBRARIES(gpsparse gp)
 IF (GTEST_FOUND)
   ENABLE_TESTING()
   INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIR})
-  ADD_EXECUTABLE(gp_test ${LIB_TESTS})
+  ADD_EXECUTABLE(gp_test ${LIBGP_TESTS})
   TARGET_LINK_LIBRARIES(gp_test gp ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES})
   ADD_TEST(gp_test ${CMAKE_CURRENT_BINARY_DIR}/gp_test)
 ENDIF ()

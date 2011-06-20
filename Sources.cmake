@@ -1,4 +1,4 @@
-SET(LIB_SRC
+SET(LIBGP_SRC
   src/cov.cc
   src/cov_factory.cc
   src/cov_matern3_iso.cc
@@ -15,7 +15,7 @@ SET(LIB_SRC
   src/sampleset.cc
 )
 
-SET(LIB_INTERFACES 
+SET(LIBGP_INTERFACES 
   include/cov.h
   include/cov_factory.h
   include/cov_matern3_iso.h
@@ -31,4 +31,11 @@ SET(LIB_INTERFACES
   include/gp_sparse.h
   include/gp_utils.h
   include/sampleset.h
+)
+
+SET(LIBGP_TESTS 
+  tests/cov_test.cc
+  tests/gp_regression_test.cc
+  tests/gp_utils_test.cc
+  tests/gp_sparse_regression_test.cc
 )

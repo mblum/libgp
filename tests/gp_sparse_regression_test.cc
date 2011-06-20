@@ -28,8 +28,7 @@ TEST(GPSparseRegressionTest, CompareToDense) {
   libgp::GaussianProcess gp(2, "CovSum(CovSEiso, CovNoise)");
   libgp::SparseGaussianProcess gp_sparse(2, "CovSum(CovRBFCS, CovNoise)");
   
-  Eigen::VectorXd params(3);
-  params << 0.0, 0.0, -2;
+  double params[] = {0.0, 0.0, -2};
   gp.covf().set_loghyper(params);
   gp_sparse.covf().set_loghyper(params);
   gp_sparse.covf().set_threshold(1e12);

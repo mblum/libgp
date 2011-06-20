@@ -41,6 +41,13 @@ namespace libgp
     loghyper = p;
   }
   
+  void CovarianceFunction::set_loghyper(const double p[])
+  {
+    Eigen::Map<const Eigen::VectorXd> p_vec_map(p, param_dim);
+    set_loghyper(p_vec_map);
+  }
+
+  
   Eigen::VectorXd CovarianceFunction::draw_random_sample(Eigen::MatrixXd &X)
   {
     assert (X.cols() == int(input_dim));  

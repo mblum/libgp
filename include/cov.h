@@ -65,10 +65,14 @@ public:
 	 *  @param x2 second input vector
 	 *  @param grad covariance gradient */
 	virtual void grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad) = 0;
-
+  
 	/** Update parameter vector.
 	 *  @param p new parameter vector */
 	virtual void set_loghyper(const Eigen::VectorXd &p);
+  
+	/** Update parameter vector.
+	 *  @param p new parameter vector */
+	virtual void set_loghyper(const double p[]);
 
 	/** Get number of parameters for this covariance function.
 	 *  @return parameter vector dimensionality */
