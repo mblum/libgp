@@ -7,7 +7,7 @@ using namespace libgp;
 
 int main (int argc, char const *argv[])
 {
-  int n=20000, m=1000;
+  int n=10000, m=1000;
   double tss = 0, error, f, y;
   // initialize Gaussian process for 2-D input using the squared exponential 
   // covariance function with additive white noise.
@@ -18,7 +18,7 @@ int main (int argc, char const *argv[])
   // set parameters of covariance function
   gp.covf().set_loghyper(params);
   // set distance threshold for sparsification
-  gp.covf().set_threshold(0.5);
+  gp.covf().set_threshold(1.5);
   // add training patterns
   for(int i = 0; i < n; ++i) {
     double x[] = {drand48()*4-2, drand48()*4-2};

@@ -26,7 +26,7 @@
 
 namespace libgp {
   
-  /** Sparse Gaussian Process Regression.
+  /** Sparse Gaussian process regression.
    *  @author Manuel Blum */
   class SparseGaussianProcess : public GaussianProcess
   {

@@ -180,4 +180,9 @@ namespace libgp {
   {
     return *cf;
   }
+  
+  size_t GaussianProcess::get_input_dim()
+  {
+    return input_dim;
+  }
 }

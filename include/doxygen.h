@@ -57,7 +57,7 @@
 cd build
 cmake ..
 make\endverbatim
- -# Check out this @ref gp_example.cc "example" on how to use the library.
+ -# Check out the examples on how to use the library.
  
  \section release Release Notes
  2011/? version 0.1.3
@@ -80,7 +80,8 @@ make\endverbatim
  - most important covariance functions implemented
  - capability to read and write models to disk 
  
- \example gp_example.cc
+ \example gp_example_dense.cc
+ \example gp_example_sparse.cc
  
  \page faq Frequently Asked Questions
  nothing so far 

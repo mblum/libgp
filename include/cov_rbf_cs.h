@@ -22,7 +22,7 @@
 namespace libgp
 {
   
-  /** RBF covariance function with compact support. 
+  /** Radial basis covariance function with compact support. 
    *  @author Manuel Blum
    *  @ingroup cov_group */
   class CovRBFCS : public CovarianceFunction

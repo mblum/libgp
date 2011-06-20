@@ -31,17 +31,18 @@ namespace libgp
     loghyper.resize(param_dim);
     loghyper.setZero();
     nu = input_dim - input_dim%2 + 1;
-    threshold = 0.8;
+    threshold = INFINITY;
     return true;
   }
   
   double CovRBFCS::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
   {
-    double q = std::max(0.0, pow(1 - (x1-x2).norm()/threshold, 3));
+    double q = std::max(0.0, pow(1 - (x1-x2).norm()/threshold, nu));
     double z = ((x1-x2)/ell).squaredNorm();
     return q*sf2*exp(-0.5*z);
   }
-  
+
+  /** @todo implement this */
   void CovRBFCS::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
   {
     grad << 0.0, 0.0;

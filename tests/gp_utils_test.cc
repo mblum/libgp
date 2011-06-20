@@ -62,7 +62,7 @@ TEST(Utils, randperm) {
 
 TEST(Utils, randi) {
   // number of samples
-  int m = 10e6;
+  int m = 10e5;
   // number of categories
   int n=31;
   // number of iterations

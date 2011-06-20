@@ -21,7 +21,7 @@ INCLUDE_DIRECTORIES(${CHOLMOD_INCLUDES})
 INCLUDE("Sources.cmake")
 
 # ----- Specify test files -----
-SET(LIB_TESTS tests/cov_test.cc tests/gp_regression_test.cc tests/gp_utils_test.cc)
+SET(LIB_TESTS tests/cov_test.cc tests/gp_regression_test.cc tests/gp_utils_test.cc tests/gp_sparse_regression_test.cc)
 
 # ----- Add library target -----
 ADD_LIBRARY(gp ${LIB_SRC} ${LIB_INTERFACES})

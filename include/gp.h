@@ -25,10 +25,8 @@
 
 namespace libgp {
   
-  /** Gaussian Process Regression.
-   *  @author Manuel Blum
-   *  @todo implement hyperparameter learning
-   */
+  /** Gaussian process regression.
+   *  @author Manuel Blum */
   class GaussianProcess
   {
   public:
@@ -73,6 +71,8 @@ namespace libgp {
     
     /** Get reference on currently used covariance function. */
     CovarianceFunction & covf();
+    
+    size_t get_input_dim();
     
   protected:
     

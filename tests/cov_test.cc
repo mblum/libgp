@@ -124,6 +124,20 @@ TEST(CovTest, Matern5iso) {
   delete covf;
 }
 
+TEST(CovTest, RBFCS) {
+  const int param_dim = 2;
+  Eigen::VectorXd p(param_dim);
+  p << -0.1, 0.1;
+  Eigen::Vector2d K(1.221402758160, 0.331178966544);
+  Eigen::VectorXd g1(param_dim);
+  g1 << 0.0, 0.0;
+  Eigen::VectorXd g2(param_dim);
+  g2 << 0.0, 0.0;
+	covf = factory.create(input_dim, "CovRBFCS");
+  test_covf(param_dim, p, K, g1, g2);
+  delete covf;
+}
+
 TEST(CovTest, RQiso) {
   const int param_dim = 3;
   Eigen::VectorXd p(param_dim);

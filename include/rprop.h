@@ -19,6 +19,9 @@ GNU General Public License for more details.
 
 namespace libgp {
 
+/** Gradient-based hyperparameter learning my marginal likelihood maximization.
+ *  @author Manuel Blum
+ *  @todo implement this */
 class RProp
 {
 public:
