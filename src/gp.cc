@@ -107,6 +107,7 @@ namespace libgp {
   
   double GaussianProcess::f(const double x[])
   {
+    if (sampleset->empty()) return 0.0; 
     update(x);
     // compute predicted value
     return k_star.dot(alpha);    
@@ -114,6 +115,7 @@ namespace libgp {
   
   double GaussianProcess::var(const double x[])
   {
+    if (sampleset->empty()) return 0.0; 
     update(x);
     Eigen::VectorXd v = solver.matrixL().solve(k_star);
     return cf->get(x_star, x_star) - v.dot(v);	

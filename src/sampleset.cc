@@ -21,6 +21,7 @@ namespace libgp {
   SampleSet::SampleSet (int input_dim)
   {
     this->input_dim = input_dim;
+    n = 0;
   }
   
   SampleSet::~SampleSet() 
