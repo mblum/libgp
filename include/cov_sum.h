@@ -1,5 +1,5 @@
 /**************************************************************
- libgp - Gaussian Process library for Machine Learning
+ libgp - Gaussian process library for Machine Learning
  Copyright (C) 2011 Universität Freiburg
  Author: Manuel Blum
  
@@ -22,9 +22,8 @@
 namespace libgp
 {
   /** Sums of covariance functions.
-   * @author Manuel Blum 
-   * @ingroup cov_group
-   */
+   *  @author Manuel Blum 
+   *  @ingroup cov_group */
   class CovSum : public CovarianceFunction
   {
   public:

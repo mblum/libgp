@@ -1,5 +1,5 @@
 /**************************************************************
- libgp - Gaussian Process library for Machine Learning
+ libgp - Gaussian process library for Machine Learning
  Copyright (C) 2011 Universität Freiburg
  Author: Manuel Blum
  
@@ -53,8 +53,9 @@ namespace libgp {
     
     /** Hill function. 
      *  \f$ f(\mathbf{x}) = \sin(x-y)+0.2y^3 + \cos(xy - 0.5y) \f$  */
-    static double hill(double x, double y);
-  };
+    static double hill(double x, double y);    
+    
+  };  
 }
 
 #endif /* __GP_UTILS_H__ */

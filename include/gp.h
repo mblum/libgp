@@ -1,5 +1,5 @@
 /**************************************************************
- libgp - Gaussian Process library for Machine Learning
+ libgp - Gaussian process library for Machine Learning
  Copyright (C) 2011 Universität Freiburg
  Author: Manuel Blum
  
@@ -72,6 +72,7 @@ namespace libgp {
     /** Get reference on currently used covariance function. */
     CovarianceFunction & covf();
     
+    /** Get input vector dimensionality. */
     size_t get_input_dim();
     
   protected:

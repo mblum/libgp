@@ -1,5 +1,5 @@
 /**************************************************************
- libgp - Gaussian Process library for Machine Learning
+ libgp - Gaussian process library for Machine Learning
  Copyright (C) 2011 Universität Freiburg
  Author: Manuel Blum
  
@@ -18,7 +18,7 @@
  
  \page licence Licensing
  
- libgp - Gaussian Process library for Machine Learning
+ libgp - Gaussian process library for Machine Learning
  Copyright (C) 2011 Universität Freiburg
  
  This program is free software; you can redistribute it and/or
