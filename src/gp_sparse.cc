@@ -45,14 +45,13 @@ namespace libgp {
     for(size_t i = 0; i < sampleset->size(); ++i) {
       K.startVec(i);
       for(size_t j = i; j < sampleset->size(); ++j) {
-        if ((sampleset->x(i)-sampleset->x(j)).norm() <= cf->get_threshold()) {
-          K.insertBack(j,i) = cf->get(sampleset->x(i), sampleset->x(j));
-        }          
+        double cov = cf->get(sampleset->x(i), sampleset->x(j));
+        if (cov != 0) K.insertBack(j,i) = cov;
       }
       alpha(i) = sampleset->y(i);
     }
     K.finalize();
-    // std::cout << K.nonZeros()/pow(sampleset->size(),2) << std::endl;
+    std::cout << K.nonZeros()/pow(sampleset->size(),2) << std::endl;
     // perform cholesky factorization
     solver.compute(K);
     solver.solveInPlace(alpha);

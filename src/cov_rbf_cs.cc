@@ -35,11 +35,13 @@ namespace libgp
     return true;
   }
   
-  double CovRBFCS::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
+  inline double CovRBFCS::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
   {
-    double q = std::max(0.0, pow(1 - (x1-x2).norm()/threshold, nu));
-    double z = ((x1-x2)/ell).squaredNorm();
-    return q*sf2*exp(-0.5*z);
+    double nrm = (x1-x2).norm();
+    if (nrm > threshold) return 0.0;    
+    double q = std::max(0.0, pow(1 - nrm/threshold, nu));
+    double z = nrm/ell;
+    return q*sf2*exp(-0.5*z*z);
   }
 
   /** @todo implement this */
