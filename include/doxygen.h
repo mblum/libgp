@@ -7,8 +7,6 @@
  \page licence Licensing
  
  libgp - Gaussian process library for Machine Learning
- Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
- All rights reserved.
 
  \verbinclude "../COPYING"
  
@@ -29,7 +27,7 @@
  - <a href="http://code.google.com/p/googletest" target="_blank">googletest</a> (optional)
  
  \section start Getting started
- -# <a href="https://sourceforge.net/projects/libgp/files/">Download</a>  the latest version of libgp 
+ -# <a href="https://bitbucket.org/mblum/libgp">Download</a>  the latest version of libgp 
  and unpack the archive.
  -# Create a build directory in the project folder, run cmake and make.
  \verbatim mkdir build 
