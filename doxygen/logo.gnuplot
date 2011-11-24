@@ -1,4 +1,6 @@
-set terminal jpeg
+set term png size 400, 400 enhanced
+
+set out "logo.png"
 
 unset hidden3d
 

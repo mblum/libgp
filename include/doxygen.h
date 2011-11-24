@@ -27,7 +27,7 @@
  - <a href="http://code.google.com/p/googletest" target="_blank">googletest</a> (optional)
  
  \section start Getting started
- -# <a href="https://bitbucket.org/mblum/libgp">Download</a>  the latest version of libgp 
+ -# <a href="https://bitbucket.org/mblum/libgp/downloads">Download</a>  the latest version of libgp 
  and unpack the archive.
  -# Create a build directory in the project folder, run cmake and make.
  \verbatim mkdir build 
