@@ -1,7 +1,7 @@
-build
+# use glob syntax.
+syntax: glob
+
 doc
+build
 archive
 publish.sh
-sync.sh
-syncexclude
-.svn

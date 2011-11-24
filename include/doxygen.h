@@ -1,37 +1,16 @@
-/**************************************************************
- libgp - Gaussian process library for Machine Learning
- Copyright (C) 2011 Universität Freiburg
- Author: Manuel Blum
- 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- as published by the Free Software Foundation; either version 2
- of the License, or (at your option) any later version.
- 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- ***************************************************************/
+// libgp - Gaussian process library for Machine Learning
+// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// All rights reserved.
 
 /*! 
  
  \page licence Licensing
  
  libgp - Gaussian process library for Machine Learning
- Copyright (C) 2011 Universität Freiburg
- 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- as published by the Free Software Foundation; either version 2
- of the License, or (at your option) any later version.
- 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- 
- \verbinclude "../LICENCE"
+ Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+ All rights reserved.
+
+ \verbinclude "../COPYING"
  
  \mainpage libgp - A Gaussian Process library for Machine Learning
  
@@ -59,8 +38,10 @@ cmake ..
 make\endverbatim
  -# Check out the examples on how to use the library.
  
+ For support send an email to the developer: @htmlonly <script type="text/javascript">eval(unescape('d%6fc%75%6de%6e%74%2e%77%72%69%74e%28%27%3Ca%20%68%72ef%3D%22%26%23109%3Ba%26%23105%3B%6c%26%23116%3B%26%23111%3B%3A%26%23109%3B%26%2398%3B%26%23108%3B%26%23117%3B%26%23109%3B%26%2364%3B%26%23105%3B%26%23110%3B%26%23102%3B%26%23111%3B%26%23114%3B%26%23109%3B%26%2397%3B%26%23116%3B%26%23105%3B%26%23107%3B%26%2346%3B%26%23117%3B%26%23110%3B%26%23105%3B%26%2345%3B%26%23102%3B%26%23114%3B%26%23101%3B%26%23105%3B%26%2398%3B%26%23117%3B%26%23114%3B%26%23103%3B%26%2346%3B%26%23100%3B%26%23101%3B%22%3E%4da%6e%75e%6c%20B%6c%75%6d%3C%2fa%3E%27%29%3B'));</script>@endhtmlonly
+ 
  \section release Release Notes
- 2011/? version 0.1.3
+ 2011/09/28 version 0.1.3
  - implemented sparse Gaussian processes using Cholmod
  - improved organization of training data
  - improved interfaces
