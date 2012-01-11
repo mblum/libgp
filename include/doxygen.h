@@ -22,8 +22,6 @@
  - libgp was tested under Linux and MacOSX
  - <a href="http://www.cmake.org/" target="_blank">cmake</a>: cross-platform, open-source build system
  - <a href="http://eigen.tuxfamily.org" target="_blank">Eigen3</a>: template library for linear algebra
- - <a href="http://www.cise.ufl.edu/research/sparse/cholmod/" target="_blank">CHOLMOD</a>: supernodal sparse Cholesky factorization and update/downdate
- - <a href="http://www.netlib.org/blas/" target="_blank">BLAS</a>: Basic Linear Algebra Subprograms
  - <a href="http://code.google.com/p/googletest" target="_blank">googletest</a> (optional)
  
  \section start Getting started
@@ -36,7 +34,7 @@ cmake ..
 make\endverbatim
  -# Check out the examples on how to use the library.
  
- For support send an email to the developer: @htmlonly <script type="text/javascript">eval(unescape('d%6fc%75%6de%6e%74%2e%77%72%69%74e%28%27%3Ca%20%68%72ef%3D%22%26%23109%3Ba%26%23105%3B%6c%26%23116%3B%26%23111%3B%3A%26%23109%3B%26%2398%3B%26%23108%3B%26%23117%3B%26%23109%3B%26%2364%3B%26%23105%3B%26%23110%3B%26%23102%3B%26%23111%3B%26%23114%3B%26%23109%3B%26%2397%3B%26%23116%3B%26%23105%3B%26%23107%3B%26%2346%3B%26%23117%3B%26%23110%3B%26%23105%3B%26%2345%3B%26%23102%3B%26%23114%3B%26%23101%3B%26%23105%3B%26%2398%3B%26%23117%3B%26%23114%3B%26%23103%3B%26%2346%3B%26%23100%3B%26%23101%3B%22%3E%4da%6e%75e%6c%20B%6c%75%6d%3C%2fa%3E%27%29%3B'));</script>@endhtmlonly
+ For support send an email to the developer: <a href="mailto:support@libgp.org">support@libgp.org</a>
  
  \section release Release Notes
  2011/09/28 version 0.1.3
