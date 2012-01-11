@@ -18,7 +18,7 @@ int main (int argc, char const *argv[])
   SparseGaussianProcess gp(2, "CovSum ( CovRBFCS, CovNoise)");
   // initialize hyper parameter vector
   Eigen::VectorXd params(gp.covf().get_param_dim());
-  params << 0.0, 0.0, -0.5;
+  params << 0.0, 0.0, -2;
   // set parameters of covariance function
   gp.covf().set_loghyper(params);
   // set distance threshold for sparsification
@@ -39,6 +39,6 @@ int main (int argc, char const *argv[])
     error = f - y;
     tss += error*error;
   }
-  std::cout << "tss = " << tss << std::endl;
+  std::cout << "mse = " << tss/m << std::endl;
 	return EXIT_SUCCESS;
 }

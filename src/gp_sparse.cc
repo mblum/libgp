@@ -40,7 +40,7 @@ namespace libgp {
     std::cout << K.nonZeros()/pow(sampleset->size(),2) << std::endl;
     // perform cholesky factorization
     solver.compute(K);
-    solver.solveInPlace(alpha);
+    alpha = solver.solve(alpha);
   }
   
 }

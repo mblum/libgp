@@ -5,10 +5,8 @@
 #ifndef __GP_SPARSE_H__
 #define __GP_SPARSE_H__
 
-#define EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET
-
 #include <Eigen/Sparse>
-#include <unsupported/Eigen/CholmodSupport>
+#include <Eigen/SparseCholesky>
 
 #include "gp.h"
 
@@ -31,8 +29,7 @@ namespace libgp {
     virtual void compute();
 
   protected:
-    
-    Eigen::SparseLLT<Eigen::SparseMatrix<double>, Eigen::Cholmod> solver;
+    Eigen::SimplicialCholesky<Eigen::SparseMatrix<double>, Eigen::Lower> solver;
     
   };
 }

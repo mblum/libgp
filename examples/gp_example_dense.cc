@@ -37,6 +37,6 @@ int main (int argc, char const *argv[])
     error = f - y;
     tss += error*error;
   }
-  std::cout << "tss = " << tss << std::endl;
+  std::cout << "mse = " << tss/m << std::endl;
 	return EXIT_SUCCESS;
 }
