@@ -2,8 +2,8 @@
 // Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
-#ifndef SAMPLESET_H
-#define SAMPLESET_H
+#ifndef __SAMPLESET_H__
+#define __SAMPLESET_H__
 
 #include <Eigen/Dense>
 #include <vector>
@@ -58,4 +58,4 @@ namespace libgp {
   };
 }
 
-#endif /* end of include guard: SAMPLESET_H */
+#endif /* __SAMPLESET_H__ */

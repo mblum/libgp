@@ -2,14 +2,13 @@
 // Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
-#ifndef COV_FACTORY_H_DL5BMKEA
-#define COV_FACTORY_H_DL5BMKEA
+#ifndef __COV_FACTORY_H__
+#define __COV_FACTORY_H__
 
 #include <iostream>
-
-#include <map>
-#include <fstream>
 #include <sstream>
+#include <vector>
+#include <map>
 
 #include "cov.h"
 
@@ -43,4 +42,5 @@ namespace libgp {
     std::map<std::string , CovFactory::create_func_def> registry;
   };
 }
-#endif /* end of include guard: COV_FACTORY_H_DL5BMKEA */
+
+#endif /* __COV_FACTORY_H__ */

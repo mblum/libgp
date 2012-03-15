@@ -2,8 +2,8 @@
 // Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
-#ifndef COV_SUM_H_8M4R5HLE
-#define COV_SUM_H_8M4R5HLE
+#ifndef __COV_SUM_H__
+#define __COV_SUM_H__
 
 #include "cov.h"
 
@@ -33,5 +33,4 @@ namespace libgp
   
 }
 
-#endif /* end of include guard: COV_SUM_H_8M4R5HLE */
-
+#endif /* __COV_SUM_H__ */
