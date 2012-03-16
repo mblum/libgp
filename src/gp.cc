@@ -21,7 +21,6 @@ namespace libgp {
     CovFactory factory;
     cf = factory.create(input_dim, covf_def);
     sampleset = new SampleSet(input_dim);
-    x_star.resize(input_dim);
   }
   
   GaussianProcess::GaussianProcess (const char * filename)
@@ -47,7 +46,6 @@ namespace libgp {
           ss >> input_dim;
           sampleset = new SampleSet(input_dim);
           x = new double[input_dim];
-          x_star.resize(input_dim);
         } else if (stage == 1) {
           CovFactory factory;
           cf = factory.create(input_dim, s);
@@ -95,25 +93,24 @@ namespace libgp {
   
   double GaussianProcess::f(const double x[])
   {
-    if (sampleset->empty()) return 0.0; 
-    update(x);
+    assert(!sampleset->empty());
+    Eigen::Map<const Eigen::VectorXd> x_star(x, input_dim);
+    update_k_star(x_star);
     // compute predicted value
     return k_star.dot(alpha);    
   }
   
   double GaussianProcess::var(const double x[])
   {
-    if (sampleset->empty()) return 0.0; 
-    update(x);
+    assert(!sampleset->empty());
+    Eigen::Map<const Eigen::VectorXd> x_star(x, input_dim);
+    update_k_star(x_star);
     Eigen::VectorXd v = solver.matrixL().solve(k_star);
     return cf->get(x_star, x_star) - v.dot(v);	
   }
-  
-  void GaussianProcess::update(const double x[])
+
+  void GaussianProcess::update_k_star(const Eigen::VectorXd x_star)
   {
-    Eigen::Map<const Eigen::VectorXd> x_vec_map(x, input_dim);
-    if (x_star.isApprox(x_vec_map)) return;
-    x_star = x_vec_map;
     k_star.resize(sampleset->size());
     for(size_t i = 0; i < sampleset->size(); ++i) {
       k_star(i) = cf->get(x_star, sampleset->x(i));

@@ -5,3 +5,6 @@ doc
 build
 archive
 publish.sh
+
+syntax: regexp
+(^|/)\._

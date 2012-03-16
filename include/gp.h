@@ -74,9 +74,6 @@ namespace libgp {
     /** Alpha is cached for performance. */ 
     Eigen::VectorXd alpha;
     
-    /** Last query vector. */ 
-    Eigen::VectorXd x_star;
-
     /** Last test kernel vector. */
     Eigen::VectorXd k_star;
 
@@ -86,8 +83,8 @@ namespace libgp {
     /** Input vector dimensionality. */
     size_t input_dim;
     
-    /** Update test input and cache kernel vector for performance. */
-    void update(const double x[]);
+    /** Update test input and cache kernel vector. */
+    void update_k_star(const Eigen::VectorXd x_star);
   };
 }
 
