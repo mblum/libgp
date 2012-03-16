@@ -47,7 +47,7 @@ void run_regression_test(std::string covf_str)
     mss += test_gp_regression(gp)/n;    
     delete gp;
   }
-  ASSERT_GT(0.05, mss);
+  ASSERT_LT(mss, 0.05);
 }
 
 TEST(GPRegressionTest, SEiso) {
