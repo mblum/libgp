@@ -96,7 +96,6 @@ namespace libgp {
     assert(!sampleset->empty());
     Eigen::Map<const Eigen::VectorXd> x_star(x, input_dim);
     update_k_star(x_star);
-    // compute predicted value
     return k_star.dot(alpha);    
   }
   
@@ -109,7 +108,7 @@ namespace libgp {
     return cf->get(x_star, x_star) - v.dot(v);	
   }
 
-  void GaussianProcess::update_k_star(const Eigen::VectorXd x_star)
+  void GaussianProcess::update_k_star(const Eigen::VectorXd &x_star)
   {
     k_star.resize(sampleset->size());
     for(size_t i = 0; i < sampleset->size(); ++i) {

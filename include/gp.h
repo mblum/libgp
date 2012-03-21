@@ -84,7 +84,7 @@ namespace libgp {
     size_t input_dim;
     
     /** Update test input and cache kernel vector. */
-    void update_k_star(const Eigen::VectorXd x_star);
+    void update_k_star(const Eigen::VectorXd &x_star);
   };
 }
 
