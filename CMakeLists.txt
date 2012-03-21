@@ -5,8 +5,10 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.3)
 PROJECT(libgp CXX C)
 
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
+SET(CMAKE_CXX_FLAGS_RELEASE "-O2")
+SET(CMAKE_BUILD_TYPE "Release")
 
-FIND_PACKAGE(Eigen3 3.0.9 REQUIRED)
+FIND_PACKAGE(Eigen3 3.0 REQUIRED)
 FIND_PACKAGE(GTest)
 
 # ----- Add include directories -----
@@ -21,9 +23,9 @@ ADD_LIBRARY(gp ${LIBGP_SRC} ${LIBGP_INTERFACES})
 
 # ----- Add example targets -----
 ADD_EXECUTABLE(gpdense examples/gp_example_dense.cc)
-ADD_EXECUTABLE(gpsparse examples/gp_example_sparse.cc)
+# ADD_EXECUTABLE(gpsparse examples/gp_example_sparse.cc)
 TARGET_LINK_LIBRARIES(gpdense gp)
-TARGET_LINK_LIBRARIES(gpsparse gp)
+# TARGET_LINK_LIBRARIES(gpsparse gp)
 
 # ----- Testing -----
 IF (GTEST_FOUND)

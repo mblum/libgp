@@ -6,17 +6,11 @@
 
 namespace libgp {
   
-  SparseGaussianProcess::SparseGaussianProcess (size_t input_dim, std::string covf_def) : GaussianProcess(input_dim, covf_def)
-  {
-  }
+  SparseGaussianProcess::SparseGaussianProcess (size_t input_dim, std::string covf_def) : GaussianProcess(input_dim, covf_def) {}
   
-  SparseGaussianProcess::SparseGaussianProcess (const char * filename) : GaussianProcess(filename)
-  {
-  }
+  SparseGaussianProcess::SparseGaussianProcess (const char * filename) : GaussianProcess(filename) {}
   
-  SparseGaussianProcess::~SparseGaussianProcess ()
-  {
-  }  
+  SparseGaussianProcess::~SparseGaussianProcess () {}  
   
   void SparseGaussianProcess::compute()
   {    
@@ -37,7 +31,6 @@ namespace libgp {
       alpha(i) = sampleset->y(i);
     }
     K.finalize();
-    std::cout << K.nonZeros()/pow(sampleset->size(),2) << std::endl;
     // perform cholesky factorization
     solver.compute(K);
     alpha = solver.solve(alpha);

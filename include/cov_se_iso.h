@@ -2,8 +2,8 @@
 // Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
-#ifndef COV_SE_ISO_H_IDHZLMRC
-#define COV_SE_ISO_H_IDHZLMRC
+#ifndef __COV_SE_ISO_H__
+#define __COV_SE_ISO_H__
 
 #include "cov.h"
 
@@ -37,4 +37,4 @@ namespace libgp
   
 }
 
-#endif /* end of include guard: COV_SE_ISO_H_IDHZLMRC */
+#endif /* __COV_SE_ISO_H__ */

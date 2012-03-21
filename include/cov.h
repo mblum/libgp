@@ -2,8 +2,8 @@
 // Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
-#ifndef COV_H_YTE8CCNB
-#define COV_H_YTE8CCNB
+#ifndef __COV_H__
+#define __COV_H__
 
 #include <iostream>
 #include <vector>
@@ -101,8 +101,7 @@ protected:
 
 }
 
-#endif /* end of include guard: COV_H_YTE8CCNB */
-
+#endif /* __COV_H__ */
 
 /** Covariance functions available for Gaussian process models. 
  *  There are atomic and composite covariance functions. 

@@ -1,18 +1,6 @@
-/**************************************************************
-libgp - Gaussian process library for Machine Learning
-Copyright (C) 2011 Universität Freiburg
-Author: Manuel Blum
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-***************************************************************/
+// libgp - Gaussian process library for Machine Learning
+// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// All rights reserved.
 
 #include "cov_factory.h"
 
@@ -27,7 +15,7 @@ libgp::CovarianceFunction * covf;
 
 void test_covf(int param_dim, 
                Eigen::VectorXd &p, 
-               Eigen::Vector2d &K,
+               Eigen::Matrix2d &K,
                Eigen::VectorXd &g1, 
                Eigen::VectorXd &g2)
 {
@@ -39,10 +27,10 @@ void test_covf(int param_dim,
   ASSERT_EQ(input_dim, covf->get_input_dim());
   ASSERT_EQ(param_dim, covf->get_param_dim());
   covf->set_loghyper(p);
-  ASSERT_NEAR(K(1), covf->get(a, b), tol);
-  ASSERT_NEAR(K(1), covf->get(b, a), tol);
-  ASSERT_NEAR(K(0), covf->get(a, a), tol);
-  ASSERT_NEAR(K(0), covf->get(b, b), tol);
+  ASSERT_NEAR(K(0,1), covf->get(a, b), tol);
+  ASSERT_NEAR(K(1,0), covf->get(b, a), tol);
+  ASSERT_NEAR(K(0,0), covf->get(a, a), tol);
+  ASSERT_NEAR(K(1,1), covf->get(b, b), tol);
   covf->grad(a, a, g);
   for(int i = 0; i < param_dim; ++i) ASSERT_NEAR(g(i), g1(i), tol);
   covf->grad(a, b, g);
@@ -57,7 +45,8 @@ TEST(CovTest, Noise) {
   const int param_dim = 1;
   Eigen::VectorXd p(param_dim);
   p << -2.0;
-  Eigen::Vector2d K(0.018315638889, 0.0);
+  Eigen::Matrix2d K;
+  K << 0.018315638889, 0.0, 0.0, 0.018315638889;
   Eigen::VectorXd g1(param_dim);
   g1 << 0.036631277777;
   Eigen::VectorXd g2(param_dim);
@@ -67,11 +56,43 @@ TEST(CovTest, Noise) {
   delete covf;
 }
 
+TEST(CovTest, Linearone) {
+  const int param_dim = 1;
+  Eigen::VectorXd p(param_dim);
+  p << 0.0;
+  Eigen::Matrix2d K;
+  K << 2.734952180000, 2.217356970000, 2.217356970000, 3.836806820000;
+  Eigen::VectorXd g1(param_dim);
+  g1 << -5.469904360000;
+  Eigen::VectorXd g2(param_dim);
+  g2 << -4.434713940000;
+	covf = factory.create(input_dim, "CovLinearone");
+  test_covf(param_dim, p, K, g1, g2);
+  delete covf;
+}
+
+TEST(CovTest, Linearard) {
+  const int param_dim = input_dim + 1;
+  Eigen::VectorXd p(param_dim);
+  p << 0.1,0.3,-0.2,0.0,-0.1,0.0;
+  Eigen::Matrix2d K;
+  K << 1.0, 0.341677691433, 0.341677691433, 1.0;
+  Eigen::VectorXd g1(param_dim);
+  g1 << 0.0, 0.0, 0.0, 0.0, 0.0, 2.0;
+  Eigen::VectorXd g2(param_dim);
+  g2 << 0.001917866624, 0.070600964942, 0.051675005912, 
+        0.360868801414, 0.248784102634, 0.683355382866;
+	covf = factory.create(input_dim, "CovLinearard");
+  test_covf(param_dim, p, K, g1, g2);
+  delete covf;
+}
+
 TEST(CovTest, SEiso) {
   const int param_dim = 2;
   Eigen::VectorXd p(param_dim);
   p << -0.1, 0.1;
-  Eigen::Vector2d K(1.221402758160, 0.331178966544);
+  Eigen::Matrix2d K;
+  K << 1.221402758160, 0.331178966544, 0.331178966544, 1.221402758160;
   Eigen::VectorXd g1(param_dim);
   g1 << 0.0, 2.442805516320;
   Eigen::VectorXd g2(param_dim);
@@ -85,7 +106,8 @@ TEST(CovTest, SEard) {
   const int param_dim = input_dim + 1;
   Eigen::VectorXd p(param_dim);
   p << 0.1,0.3,-0.2,0.0,-0.1,0.0;
-  Eigen::Vector2d K(1.0, 0.341677691433);
+  Eigen::Matrix2d K;
+  K << 1.0, 0.341677691433, 0.341677691433, 1.0;
   Eigen::VectorXd g1(param_dim);
   g1 << 0.0, 0.0, 0.0, 0.0, 0.0, 2.0;
   Eigen::VectorXd g2(param_dim);
@@ -100,7 +122,8 @@ TEST(CovTest, Matern3iso) {
   const int param_dim = 2;
   Eigen::VectorXd p(param_dim);
   p << 0.1, 0.1;
-  Eigen::Vector2d K(1.221402758160, 0.406628204830);
+  Eigen::Matrix2d K;
+  K << 1.221402758160, 0.406628204830, 0.406628204830, 1.221402758160;
   Eigen::VectorXd g1(param_dim);
   g1 << 0.0, 2.442805516320;
   Eigen::VectorXd g2(param_dim);
@@ -114,7 +137,8 @@ TEST(CovTest, Matern5iso) {
   const int param_dim = 2;
   Eigen::VectorXd p(param_dim);
   p << -0.2, 0.1;
-  Eigen::Vector2d K(1.221402758160, 0.232277486841);
+  Eigen::Matrix2d K;
+  K << 1.221402758160, 0.232277486841, 0.232277486841, 1.221402758160;
   Eigen::VectorXd g1(param_dim);
   g1 << 0.0, 2.442805516320;
   Eigen::VectorXd g2(param_dim);
@@ -128,7 +152,8 @@ TEST(CovTest, RBFCS) {
   const int param_dim = 2;
   Eigen::VectorXd p(param_dim);
   p << -0.1, 0.1;
-  Eigen::Vector2d K(1.221402758160, 0.331178966544);
+  Eigen::Matrix2d K;
+  K << 1.221402758160, 0.331178966544, 0.331178966544, 1.221402758160;
   Eigen::VectorXd g1(param_dim);
   g1 << 0.0, 0.0;
   Eigen::VectorXd g2(param_dim);
@@ -142,7 +167,8 @@ TEST(CovTest, RQiso) {
   const int param_dim = 3;
   Eigen::VectorXd p(param_dim);
   p << -0.02, 0.05, 0.2;
-  Eigen::Vector2d K(1.105170918076, 0.501217242850);
+  Eigen::Matrix2d K;
+  K << 1.105170918076, 0.501217242850, 0.501217242850, 1.105170918076;
   Eigen::VectorXd g1(param_dim);
   g1 << 0.0, 2.210341836151, 0.0;
   Eigen::VectorXd g2(param_dim);
@@ -156,7 +182,8 @@ TEST(CovTest, Sum) {
   const int param_dim = input_dim + 2;
   Eigen::VectorXd p(param_dim);
   p << -0.1,0.1,0.0,0.2,-0.3,0.05,-3;
-  Eigen::Vector2d K(1.107649670252, 0.365639720307);
+  Eigen::Matrix2d K;
+  K << 1.107649670252, 0.365639720307, 0.365639720307, 1.107649670252;
   Eigen::VectorXd g1(param_dim);
   g1 << 0.0, 0.0, 0.0, 0.0, 0.0, 2.210341836151, 0.004957504353;
   Eigen::VectorXd g2(param_dim);

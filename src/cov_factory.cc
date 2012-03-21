@@ -5,6 +5,8 @@
 #include "cov_factory.h"
 
 #include "cov_noise.h"
+#include "cov_linear_ard.h"
+#include "cov_linear_one.h"
 #include "cov_se_ard.h"
 #include "cov_se_iso.h"
 #include "cov_rbf_cs.h"
@@ -15,21 +17,22 @@
 
 namespace libgp {
   
-  CovFactory::CovFactory () 
-  {
-    registry["CovNoise"] = & create_func<CovNoise>;
-    registry["CovSEard"] = & create_func<CovSEard>;
-    registry["CovSEiso"] = & create_func<CovSEiso>;
-    registry["CovRBFCS"] = & create_func<CovRBFCS>;
+  CovFactory::CovFactory () {
+    registry["CovLinearard"] = & create_func<CovLinearard>;
+    registry["CovLinearone"] = & create_func<CovLinearone>;
     registry["CovMatern3iso"] = & create_func<CovMatern3iso>;
     registry["CovMatern5iso"] = & create_func<CovMatern5iso>;
+    registry["CovNoise"] = & create_func<CovNoise>;
+    registry["CovRBFCS"] = & create_func<CovRBFCS>;
     registry["CovRQiso"] = & create_func<CovRQiso>;
+    registry["CovSEard"] = & create_func<CovSEard>;
+    registry["CovSEiso"] = & create_func<CovSEiso>;
     registry["CovSum"] = & create_func<CovSum>;
   }
+  
   CovFactory::~CovFactory () {};
   
-  CovarianceFunction* CovFactory::create(size_t input_dim, const std::string key)
-  {
+  CovarianceFunction* CovFactory::create(size_t input_dim, const std::string key) {
     CovarianceFunction * covf;
     std::stringstream is(key);
     std::stringstream os(std::stringstream::out);
@@ -68,5 +71,5 @@ namespace libgp {
       products.push_back((*it).first);
     }
     return products;
-  }  
+  }
 }

@@ -2,8 +2,8 @@
 // Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
-#ifndef COV_SE_ARD_H_EARBS6ON
-#define COV_SE_ARD_H_EARBS6ON
+#ifndef __COV_SE_ARD_H__
+#define __COV_SE_ARD_H__
 
 #include "cov.h"
 
@@ -37,5 +37,5 @@ namespace libgp
   
 }
 
-#endif /* end of include guard: COV_SE_ARD_H_EARBS6ON */
+#endif /* __COV_SE_ARD_H__ */
 

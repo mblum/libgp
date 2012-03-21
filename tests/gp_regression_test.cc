@@ -1,18 +1,6 @@
-/**************************************************************
-libgp - Gaussian process library for Machine Learning
-Copyright (C) 2011 Universität Freiburg
-Author: Manuel Blum
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-***************************************************************/
+// libgp - Gaussian process library for Machine Learning
+// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// All rights reserved.
 
 #include "gp.h"
 #include "gp_utils.h"
@@ -59,7 +47,7 @@ void run_regression_test(std::string covf_str)
     mss += test_gp_regression(gp)/n;    
     delete gp;
   }
-  ASSERT_GT(0.05, mss);
+  ASSERT_LT(mss, 0.05);
 }
 
 TEST(GPRegressionTest, SEiso) {

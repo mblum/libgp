@@ -2,33 +2,32 @@
 // Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
-#ifndef __COV_NOISE_H__
-#define __COV_NOISE_H__
+#ifndef __COV_LINEAR_ONE__
+#define __COV_LINEAR_ONE__
 
 #include "cov.h"
 
 namespace libgp
 {
   
-  /** Independent covariance function (white noise).
+  /** Linear covariance function.
+   *  @ingroup cov_group
    *  @author Manuel Blum
-   *  @ingroup cov_group */
-  class CovNoise : public CovarianceFunction
+   */
+  class CovLinearone : public CovarianceFunction
   {
   public:
-    CovNoise ();
-    virtual ~CovNoise ();
+    CovLinearone ();
+    virtual ~CovLinearone ();
     bool init(int n);
     double get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2);
     void grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad);
     void set_loghyper(const Eigen::VectorXd &p);
     virtual std::string to_string();
-    virtual double get_threshold();
-    virtual void set_threshold(double threshold);
   private:
-    double s2;
+    double it2;
   };
   
 }
 
-#endif /* __COV_NOISE_H__ */
+#endif /* __COV_LINEAR_ONE__ */
