@@ -2,6 +2,15 @@
 // Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
+/*! 
+ *  
+ *   \page licence Licensing
+ *    
+ *     libgp - Gaussian process library for Machine Learning
+ *
+ *      \verbinclude "../COPYING"
+ */
+
 #ifndef __GP_H__
 #define __GP_H__
 
@@ -9,7 +18,6 @@
 
 #include "cov.h"
 #include "sampleset.h"
-#include "doxygen.h"
 
 namespace libgp {
   

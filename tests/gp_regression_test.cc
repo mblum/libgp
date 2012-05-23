@@ -44,10 +44,10 @@ void run_regression_test(std::string covf_str)
     params.setZero();
     params(gp->covf().get_param_dim()-1) = -2;
     gp->covf().set_loghyper(params);
-    mss += test_gp_regression(gp)/n;    
+    mss += test_gp_regression(gp);    
     delete gp;
   }
-  ASSERT_LT(mss, 0.05);
+  ASSERT_LT(mss/n, 0.05);
 }
 
 TEST(GPRegressionTest, SEiso) {
