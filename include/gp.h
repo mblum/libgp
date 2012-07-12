@@ -80,6 +80,9 @@ namespace libgp {
     /** Last test kernel vector. */
     Eigen::VectorXd k_star;
 
+    /** Did the sampleset size change since the last update? */
+    bool update_needed;
+
     /** Linear solver used to invert the covariance matrix. */
     Eigen::LLT<Eigen::MatrixXd> solver;
     
