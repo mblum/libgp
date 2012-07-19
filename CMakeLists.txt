@@ -1,7 +1,7 @@
 # Created by Manuel Blum on 2011-05-25.
 # Copyright 2011 University of Freiburg.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.3)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(libgp CXX C)
 
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
@@ -35,9 +35,6 @@ ENABLE_TESTING()
 ADD_EXECUTABLE(gptest ${LIBGP_TESTS})
 TARGET_LINK_LIBRARIES(gptest gp gtest gtest_main)
 ADD_TEST(gptest ${CMAKE_CURRENT_BINARY_DIR}/gptest)
-
-# ----- Build type -----
-SET(CMAKE_BUILD_TYPE Release)
 
 # ----- Install -----
 INSTALL(FILES ${LIB_INTERFACES} DESTINATION include)

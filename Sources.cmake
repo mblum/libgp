@@ -2,7 +2,7 @@ SET(LIBGP_SRC
   src/cov.cc
   src/cov_factory.cc
   src/cov_linear_ard.cc
-  src/cov_linear_one.cc
+  # src/cov_linear_one.cc
   src/cov_matern3_iso.cc
   src/cov_matern5_iso.cc
   src/cov_noise.cc
@@ -21,7 +21,7 @@ SET(LIBGP_INTERFACES
   include/cov.h
   include/cov_factory.h
   include/cov_linear_ard.h
-  include/cov_linear_one.h
+  #  include/cov_linear_one.h
   include/cov_matern3_iso.h
   include/cov_matern5_iso.h
   include/cov_noise.h

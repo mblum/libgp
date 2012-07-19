@@ -18,7 +18,7 @@ TEST(Utils, randn) {
     double F = libgp::Utils::cdf_norm(array[i]);
     D = std::max(D, std::max(F-(i-1.0)/n, 1.0*i/n-F));
   }
-  ASSERT_GT(1.63/sqrt(n), D);
+  ASSERT_TRUE(1.63/sqrt(n) > D);
 }
 
 TEST(Utils, randperm) {
@@ -45,7 +45,7 @@ TEST(Utils, randperm) {
     if (18.49 > V || 43.77 < V) fails++;
   }
   
-  ASSERT_GE(10, fails);
+  ASSERT_TRUE(10 >= fails);
 }
 
 TEST(Utils, randi) {
@@ -66,7 +66,7 @@ TEST(Utils, randi) {
     for (int i=0; i<n; ++i) V += pow(count(i) - np, 2) / np;
     if (18.49 > V || 43.77 < V) fails++;
   }
-  ASSERT_GE(10, fails);
+  ASSERT_TRUE(10 >= fails);
 }
 
 TEST(Utils, cdf_norm) {
