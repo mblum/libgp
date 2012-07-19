@@ -13,7 +13,8 @@
 
 namespace libgp {
   
-  GaussianProcess::GaussianProcess (size_t input_dim, std::string covf_def)
+  GaussianProcess::GaussianProcess (size_t input_dim, std::string covf_def) :
+    update_needed(true)
   {
     // set input dimensionality
     this->input_dim = input_dim;
@@ -23,7 +24,8 @@ namespace libgp {
     sampleset = new SampleSet(input_dim);
   }
   
-  GaussianProcess::GaussianProcess (const char * filename)
+  GaussianProcess::GaussianProcess (const char * filename) :
+    update_needed(true)
   {
     int stage = 0;
     std::ifstream infile;
@@ -114,10 +116,12 @@ namespace libgp {
     for(size_t i = 0; i < sampleset->size(); ++i) {
       k_star(i) = cf->get(x_star, sampleset->x(i));
     }
+    update_needed = false;
   }
   
   void GaussianProcess::add_pattern(const double x[], double y)
   {
+    update_needed = true;
     sampleset->add(x, y);
   }
   
@@ -128,6 +132,7 @@ namespace libgp {
   
   void GaussianProcess::clear_sampleset()
   {
+    update_needed = true;
     sampleset->clear();
   }
   
