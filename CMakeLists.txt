@@ -14,10 +14,6 @@ FIND_PACKAGE(Eigen3 3.0.9 REQUIRED)
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# ----- Include gtest -----
-ADD_SUBDIRECTORY(libs/gtest-1.6.0)
-INCLUDE_DIRECTORIES(${CLSQUARE_SOURCE_DIR}/libs/gtest-1.6.0)
-
 # ----- Add sources -----
 INCLUDE("Sources.cmake")
 
@@ -30,11 +26,15 @@ ADD_EXECUTABLE(gpdense examples/gp_example_dense.cc)
 TARGET_LINK_LIBRARIES(gpdense gp)
 # TARGET_LINK_LIBRARIES(gpsparse gp)
 
+# ----- Include gtest -----
+#ADD_SUBDIRECTORY(libs/gtest-1.6.0)
+#INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/libs/gtest-1.6.0/include)
+
 # ----- Testing -----
-ENABLE_TESTING()
-ADD_EXECUTABLE(gptest ${LIBGP_TESTS})
-TARGET_LINK_LIBRARIES(gptest gp gtest gtest_main)
-ADD_TEST(gptest ${CMAKE_CURRENT_BINARY_DIR}/gptest)
+#ENABLE_TESTING()
+#ADD_EXECUTABLE(gptest ${LIBGP_TESTS})
+#TARGET_LINK_LIBRARIES(gptest gp gtest gtest_main)
+#ADD_TEST(gptest ${CMAKE_CURRENT_BINARY_DIR}/gptest)
 
 # ----- Install -----
 INSTALL(FILES ${LIB_INTERFACES} DESTINATION include)
