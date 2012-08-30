@@ -2,11 +2,11 @@
 # Copyright 2011 University of Freiburg.
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+INCLUDE( configuration.cmake.in )
 PROJECT(libgp CXX C)
 
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
-SET(CMAKE_CXX_FLAGS_RELEASE "-O2")
-SET(CMAKE_BUILD_TYPE "Release")
+
 
 FIND_PACKAGE(Eigen3 3.0.9 REQUIRED)
 
@@ -26,15 +26,10 @@ ADD_EXECUTABLE(gpdense examples/gp_example_dense.cc)
 TARGET_LINK_LIBRARIES(gpdense gp)
 # TARGET_LINK_LIBRARIES(gpsparse gp)
 
-# ----- Include gtest -----
-#ADD_SUBDIRECTORY(libs/gtest-1.6.0)
-#INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/libs/gtest-1.6.0/include)
-
 # ----- Testing -----
-#ENABLE_TESTING()
-#ADD_EXECUTABLE(gptest ${LIBGP_TESTS})
-#TARGET_LINK_LIBRARIES(gptest gp gtest gtest_main)
-#ADD_TEST(gptest ${CMAKE_CURRENT_BINARY_DIR}/gptest)
+IF(BUILD_TESTS)
+  ADD_SUBDIRECTORY(tests)
+ENDIF()
 
 # ----- Install -----
 INSTALL(FILES ${LIB_INTERFACES} DESTINATION include)

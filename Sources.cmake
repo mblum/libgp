@@ -35,10 +35,3 @@ SET(LIBGP_INTERFACES
   include/gp_utils.h
   include/sampleset.h
 )
-
-SET(LIBGP_TESTS 
-  tests/cov_test.cc
-  tests/gp_regression_test.cc
-  tests/gp_utils_test.cc
-  #tests/gp_sparse_regression_test.cc
-)
