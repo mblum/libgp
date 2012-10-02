@@ -6,7 +6,7 @@
 
 #include "cov_noise.h"
 #include "cov_linear_ard.h"
-//#include "cov_linear_one.h"
+#include "cov_linear_one.h"
 #include "cov_se_ard.h"
 #include "cov_se_iso.h"
 #include "cov_rbf_cs.h"
@@ -19,7 +19,7 @@ namespace libgp {
   
   CovFactory::CovFactory () {
     registry["CovLinearard"] = & create_func<CovLinearard>;
-  //  registry["CovLinearone"] = & create_func<CovLinearone>;
+    registry["CovLinearone"] = & create_func<CovLinearone>;
     registry["CovMatern3iso"] = & create_func<CovMatern3iso>;
     registry["CovMatern5iso"] = & create_func<CovMatern5iso>;
     registry["CovNoise"] = & create_func<CovNoise>;

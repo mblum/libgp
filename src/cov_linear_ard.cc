@@ -39,7 +39,7 @@ namespace libgp
   
   std::string CovLinearard::to_string()
   {
-    return "CovLINard";
+    return "CovLinearard";
   }
 }
 
