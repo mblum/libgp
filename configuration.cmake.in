@@ -1,3 +1,0 @@
-# here you can set a default configuration for the option of cmake
-OPTION(BUILD_TESTS "Build tests" ON)
-OPTION(CMAKE_BUILD_TYPE "Build type" Release)
