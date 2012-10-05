@@ -3,6 +3,7 @@
 // All rights reserved.
 
 #include "sampleset.h"
+#include <Eigen/StdVector>
 
 namespace libgp {
   
@@ -35,6 +36,11 @@ namespace libgp {
   double SampleSet::y(size_t k)
   {
     return targets.at(k);
+  }
+
+  const std::vector<double>& SampleSet::y() 
+  {
+    return targets;
   }
   
   size_t SampleSet::size()

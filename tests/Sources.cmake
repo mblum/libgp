@@ -3,4 +3,5 @@ SET(LIBGP_TESTS
   gp_regression_test.cc
   gp_utils_test.cc
   #gp_sparse_regression_test.cc
+  log_likelihood_test.cc
 )

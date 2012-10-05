@@ -27,6 +27,7 @@ namespace libgp
   {
     assert(p.size() == loghyper.size());
     loghyper = p;
+    loghyper_changed = true;
   }
   
   void CovarianceFunction::set_loghyper(const double p[])

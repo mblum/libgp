@@ -32,6 +32,9 @@ namespace libgp {
     
     /** Get target value at index k. */
     double y (size_t k);
+
+    /** Get reference to vector of target values. */
+    const std::vector<double>& y();
     
     /** Get number of samples. */
     size_t size();

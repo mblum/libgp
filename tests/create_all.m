@@ -1,3 +1,5 @@
+rng(2387);
+
 fid = fopen('cov_test.cc', 'w');
 
 fprintf(fid, '// libgp - Gaussian process library for Machine Learning\n');

@@ -87,6 +87,8 @@ public:
   /** Set distance threshold of this covariance function. */
   virtual void set_threshold(double threshold);
 	
+  bool loghyper_changed;
+
 protected:
 	/** Input dimensionality. */
 	size_t input_dim;
@@ -97,7 +99,8 @@ protected:
 	/** Parameter vector containing the log hyperparameters of the covariance function.
 	 *  The number of necessary parameters is given in param_dim. */
 	Eigen::VectorXd loghyper;
-};
+
+ };
 
 }
 

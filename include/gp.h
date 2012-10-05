@@ -70,7 +70,11 @@ namespace libgp {
     
     /** Get input vector dimensionality. */
     size_t get_input_dim();
+
+    double log_likelihood();
     
+    Eigen::VectorXd log_likelihood_gradient();
+
   protected:
     
     /** The covariance function of this Gaussian process. */
@@ -86,10 +90,10 @@ namespace libgp {
     Eigen::VectorXd k_star;
 
     /** Did the sampleset size change since the last update? */
-    bool update_needed;
+    bool sampleset_changed;
 
     /** Linear solver used to invert the covariance matrix. */
-    Eigen::LLT<Eigen::MatrixXd> solver;
+    Eigen::LDLT<Eigen::MatrixXd> solver;
     
     /** Input vector dimensionality. */
     size_t input_dim;
