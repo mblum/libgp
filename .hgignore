@@ -4,6 +4,8 @@ syntax: glob
 doc
 build
 archive
+*.swp
+.DS_Store
 
 syntax: regexp
 (^|/)\._
