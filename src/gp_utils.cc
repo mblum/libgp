@@ -75,4 +75,11 @@ namespace libgp {
   {
     return sin(x-y)+0.2*pow(y, 3) + cos(y*(x - 0.5));
   }
+  
+  double Utils::sign(double x) 
+  {
+    if (x>0) return 1.0;
+    if (x<0) return -1.0;
+    return 0.0;
+  }
 }

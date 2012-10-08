@@ -15,6 +15,7 @@ SET(LIBGP_SRC
   #src/gp_sparse.cc
   src/gp_utils.cc
   src/sampleset.cc
+  src/rprop.cc
 )
 
 SET(LIBGP_INTERFACES 
@@ -34,4 +35,5 @@ SET(LIBGP_INTERFACES
   #include/gp_sparse.h
   include/gp_utils.h
   include/sampleset.h
+  include/rprop.h
 )

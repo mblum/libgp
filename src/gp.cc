@@ -13,7 +13,7 @@
 
 namespace libgp {
   
-  const double log2pi = log(2*M_PI)/2;
+  const double log2pi = log(2*M_PI);
 
   GaussianProcess::GaussianProcess (size_t input_dim, std::string covf_def) :
     sampleset_changed(true)
@@ -190,7 +190,7 @@ namespace libgp {
     const std::vector<double>& targets = sampleset->y();
     Eigen::Map<const Eigen::VectorXd> y(&targets[0], sampleset->size());
     double logD = solver.vectorD().array().sqrt().log().sum();
-    return -0.5*y.dot(alpha) - logD - sampleset->size()*log2pi;
+    return -0.5*y.dot(alpha) - logD - 0.5*sampleset->size()*log2pi;
   }
 
   Eigen::VectorXd GaussianProcess::log_likelihood_gradient() 
@@ -200,7 +200,7 @@ namespace libgp {
     Eigen::VectorXd g(grad.size());
     Eigen::MatrixXd W = Eigen::MatrixXd::Identity(sampleset->size(), sampleset->size());
     solver.solveInPlace(W);
-    W = alpha * alpha.transpose() - W;
+    W =  alpha * alpha.transpose() - W;
 
     for(size_t i = 0; i < sampleset->size(); ++i) {
       for(size_t j = 0; j <= i; ++j) {

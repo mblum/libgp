@@ -5,19 +5,25 @@
 #ifndef __RPROP_H__
 #define __RPROP_H__
 
+#include "gp.h"
+#include <Eigen/Core>
+
 namespace libgp {
 
-/** Gradient-based hyperparameter learning my marginal likelihood maximization.
- *  @author Manuel Blum
- *  @todo implement this */
+/** Gradient-based optimizer.
+ *  @author Manuel Blum */
 class RProp
 {
 public:
-  RProp ();
-  virtual ~RProp ();
-
+  RProp () {init();}
+  void init(double Delta0=0.1, double Deltamin=1e-6, double Deltamax=50, double etaminus=0.5, double etaplus=1.2);
+  void maximize(GaussianProcess * gp, size_t n=100, bool verbose=1);
 private:
-  /* data */
+  double Delta0;
+  double Deltamin;
+  double Deltamax;
+  double etaminus;
+  double etaplus;
 };
 }
 
