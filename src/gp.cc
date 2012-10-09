@@ -103,7 +103,7 @@ namespace libgp {
   
   double GaussianProcess::f(const double x[])
   {
-    assert(!sampleset->empty());
+    if (sampleset->empty()) return 0;
     Eigen::Map<const Eigen::VectorXd> x_star(x, input_dim);
     update_k_star(x_star);
     return k_star.dot(alpha);    
@@ -111,7 +111,7 @@ namespace libgp {
   
   double GaussianProcess::var(const double x[])
   {
-    assert(!sampleset->empty());
+    if (sampleset->empty()) return 0;
     Eigen::Map<const Eigen::VectorXd> x_star(x, input_dim);
     update_k_star(x_star);
     Eigen::VectorXd v = solver.matrixL().solve(k_star);
