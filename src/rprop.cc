@@ -43,7 +43,6 @@ void RProp::maximize(GaussianProcess * gp, size_t n, bool verbose)
     grad_old = grad;
     gp->covf().set_loghyper(params);
   }
-  std::cout << params << std::endl;
 }
 
 }

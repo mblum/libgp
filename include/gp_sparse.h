@@ -18,10 +18,10 @@ namespace libgp {
   {
   public:
     
-    /** Create and instance of SparseGaussianProcess with given input dimensionality and covariance function. */
+    /** Create an instance of SparseGaussianProcess with given input dimensionality and covariance function. */
     SparseGaussianProcess (size_t input_dim, std::string covf_def);
     
-    /** Create and instance of SparseGaussianProcess from file. */
+    /** Create an instance of SparseGaussianProcess from file. */
     SparseGaussianProcess (const char * filename);
     
     virtual ~SparseGaussianProcess ();
@@ -29,7 +29,6 @@ namespace libgp {
     virtual void compute();
 
   protected:
-    Eigen::SimplicialCholesky<Eigen::SparseMatrix<double>, Eigen::Lower> solver;
     
   };
 }

@@ -4,11 +4,13 @@ INCLUDE(ExternalProject)
 ExternalProject_Add(googletest
   SVN_REPOSITORY "http://googletest.googlecode.com/svn/tags/release-1.6.0"
   INSTALL_COMMAND ""
+  UPDATE_COMMAND ""
+  PREFIX "gtest"
 )
 
 # ----- Testing -----
-INCLUDE_DIRECTORIES (${CMAKE_CURRENT_BINARY_DIR}/googletest-prefix/src/googletest/include)
-LINK_DIRECTORIES (${CMAKE_CURRENT_BINARY_DIR}/googletest-prefix/src/googletest-build)
+INCLUDE_DIRECTORIES (${CMAKE_CURRENT_BINARY_DIR}/gtest/src/googletest/include)
+LINK_DIRECTORIES (${CMAKE_CURRENT_BINARY_DIR}/gtest/src/googletest-build)
 
 # ----- Add sources -----
 INCLUDE("Sources.cmake")
