@@ -36,6 +36,7 @@ namespace libgp {
     infile.open(filename);
     std::string s;
     double * x = NULL;
+    L.resize(initial_L_size, initial_L_size);
     while (infile.good()) {
       getline(infile, s);
       // ignore empty lines and comments
@@ -70,7 +71,6 @@ namespace libgp {
       std::cerr << "fatal error while reading " << filename << std::endl;
       exit(EXIT_FAILURE);
     }
-    L.resize(initial_L_size, initial_L_size);
     delete [] x;
   }
   
