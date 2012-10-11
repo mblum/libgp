@@ -98,7 +98,8 @@ namespace libgp {
     compute();
     update_alpha();
     update_k_star(x_star);
-    Eigen::VectorXd v = L.topLeftCorner(sampleset->size(), sampleset->size()).triangularView<Eigen::Lower>().solve(k_star);
+    int n = sampleset->size();
+    Eigen::VectorXd v = L.topLeftCorner(n, n).triangularView<Eigen::Lower>().solve(k_star);
     return cf->get(x_star, x_star) - v.dot(v);	
   }
 
@@ -107,21 +108,19 @@ namespace libgp {
     // can previously computed values be used?
     if (!cf->loghyper_changed) return;
     cf->loghyper_changed = false;
-    // TODO use only lower triangle to save memory
-    Eigen::MatrixXd K(sampleset->size(), sampleset->size());
-    // resize L if necessary
     int n = sampleset->size();
+    // resize L if necessary
     if (n > L.rows()) L.resize(n + initial_L_size, n + initial_L_size);
     // compute kernel matrix (lower triangle)
     for(size_t i = 0; i < sampleset->size(); ++i) {
       for(size_t j = 0; j <= i; ++j) {
-        K(i, j) = cf->get(sampleset->x(i), sampleset->x(j));
+        L(i, j) = cf->get(sampleset->x(i), sampleset->x(j));
       }
     }
     // perform cholesky factorization
     //solver.compute(K.selfadjointView<Eigen::Lower>());
-    L.topLeftCorner(n, n) = K.selfadjointView<Eigen::Lower>().llt().matrixL();
-    std::cout << "compute" << std::endl;
+    L.topLeftCorner(n, n) = L.topLeftCorner(n, n).selfadjointView<Eigen::Lower>().llt().matrixL();
+    alpha_needs_update = true;
   }
   
   void GaussianProcess::update_k_star(const Eigen::VectorXd &x_star)
@@ -241,25 +240,30 @@ namespace libgp {
   double GaussianProcess::log_likelihood()
   {
     compute();
+    update_alpha();
+    int n = sampleset->size();
     const std::vector<double>& targets = sampleset->y();
     Eigen::Map<const Eigen::VectorXd> y(&targets[0], sampleset->size());
-    double logD = L.diagonal().array().log().sum();
-    return -0.5*y.dot(alpha) - logD - 0.5*sampleset->size()*log2pi;
+    double det = 2 * L.diagonal().head(n).array().log().sum();
+    return -0.5*y.dot(alpha) - 0.5*det - 0.5*n*log2pi;
   }
 
   Eigen::VectorXd GaussianProcess::log_likelihood_gradient() 
   {
     compute();
+    update_alpha();
+    int n = sampleset->size();
     Eigen::VectorXd grad = Eigen::VectorXd::Zero(cf->get_param_dim());
     Eigen::VectorXd g(grad.size());
-    Eigen::MatrixXd W = Eigen::MatrixXd::Identity(sampleset->size(), sampleset->size());
+    Eigen::MatrixXd W = Eigen::MatrixXd::Identity(n, n);
 
-    L.triangularView<Eigen::Lower>().solveInPlace(W);
-    L.triangularView<Eigen::Lower>().adjoint().solveInPlace(W);
+    // compute kernel matrix inverse
+    L.topLeftCorner(n, n).triangularView<Eigen::Lower>().solveInPlace(W);
+    L.topLeftCorner(n, n).triangularView<Eigen::Lower>().transpose().solveInPlace(W);
 
     W = alpha * alpha.transpose() - W;
 
-    for(size_t i = 0; i < sampleset->size(); ++i) {
+    for(size_t i = 0; i < n; ++i) {
       for(size_t j = 0; j <= i; ++j) {
         cf->grad(sampleset->x(i), sampleset->x(j), g);
         if (i==j) grad += W(i,j) * g * 0.5;
