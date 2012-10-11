@@ -33,6 +33,9 @@ namespace libgp {
     /** Get target value at index k. */
     double y (size_t k);
 
+    /** Set target value at index i. */
+    bool set_y(size_t i, double y);
+
     /** Get reference to vector of target values. */
     const std::vector<double>& y();
     

@@ -125,9 +125,6 @@ namespace libgp {
   
   void GaussianProcess::update_k_star(const Eigen::VectorXd &x_star)
   {
-    // can previously computed values be used?
-    if (cached_x_star == &x_star) return;
-    //cached_x_star = *x_star;
     k_star.resize(sampleset->size());
     for(size_t i = 0; i < sampleset->size(); ++i) {
       k_star(i) = cf->get(x_star, sampleset->x(i));
@@ -183,8 +180,16 @@ namespace libgp {
       L(n,n) = sqrt(kappa - k.dot(k));
     }
     alpha_needs_update = true;
-    cached_x_star = NULL;
 #endif
+  }
+
+  bool GaussianProcess::set_y(size_t i, double y) 
+  {
+    if(sampleset->set_y(i,y)) {
+      alpha_needs_update = true;
+      return 1;
+    }
+    return false;
   }
 
   size_t GaussianProcess::get_sampleset_size()

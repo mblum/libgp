@@ -56,6 +56,9 @@ namespace libgp {
      */
     void add_pattern(const double x[], double y);
 
+
+    bool set_y(size_t i, double y);
+
     /** Get number of samples in the training set. */
     size_t get_sampleset_size();
     
@@ -103,8 +106,6 @@ namespace libgp {
     
     bool alpha_needs_update;
 
-    Eigen::VectorXd *cached_x_star;
-  
   };
 }
 

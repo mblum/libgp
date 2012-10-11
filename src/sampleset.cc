@@ -42,6 +42,13 @@ namespace libgp {
   {
     return targets;
   }
+
+  bool SampleSet::set_y(size_t i, double y)
+  {
+    if (i>=n) return false;
+    targets[i] = y;
+    return true;
+  }
   
   size_t SampleSet::size()
   {
