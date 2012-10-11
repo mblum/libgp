@@ -29,7 +29,7 @@ namespace libgp {
     
     /** Get input vector at index k. */
     const Eigen::VectorXd & x (size_t k);
-    
+
     /** Get target value at index k. */
     double y (size_t k);
 

@@ -27,8 +27,6 @@ int main (int argc, char const *argv[])
     y = Utils::hill(x[0], x[1]) + Utils::randn() * 0.1;
     gp.add_pattern(x, y);
   }
-  // compute Gaussian process for current sample set
-  gp.compute();
   // total squared error
   for(int i = 0; i < m; ++i) {
     double x[] = {drand48()*4-2, drand48()*4-2};

@@ -22,7 +22,6 @@ double test_gp_regression(libgp::GaussianProcess * gp)
     gp->add_pattern(x, y(i));
   }
   double tss = 0;
-  gp->compute();
   for(int i = n*0.8+1; i < n; ++i) {
     double x[input_dim];
     for(int j = 0; j < input_dim; ++j) x[j] = X(i,j);
@@ -78,4 +77,23 @@ TEST(GPRegressionTest, CovRQiso) {
 TEST(GPRegressionTest, CovRBFCS) {
   std::string covf_str("CovSum ( CovRBFCS, CovNoise)");
   run_regression_test(covf_str);
+}
+
+TEST(GPRegressionTest, UpdateL) {
+  int input_dim = 2;
+  libgp::GaussianProcess * gp = new libgp::GaussianProcess(input_dim, "CovSum ( CovSEiso, CovNoise)");
+  Eigen::VectorXd params(gp->covf().get_param_dim());
+  params << 0, 0, -2;
+  gp->covf().set_loghyper(params);
+  int n = 10;
+  Eigen::MatrixXd X(n, input_dim);
+  X.setRandom();
+  Eigen::VectorXd y = gp->covf().draw_random_sample(X);
+  for(size_t i = 0; i < n; ++i) {
+    double x[2];
+    for(int j = 0; j < input_dim; ++j) x[j] = X(i,j);
+    gp->add_pattern(x, y(i));
+  }
+  double x[2] = {0,0};
+  gp->f(x);
 }

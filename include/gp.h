@@ -39,9 +39,6 @@ namespace libgp {
     /** Write current gp model to file. */
     void write(const char * filename);
     
-    /** Update covariance matrix and perform cholesky decomposition. */
-    virtual void compute();
-    
     /** Predict target value for given input.
      *  @param x input vector
      *  @return predicted value */
@@ -89,17 +86,25 @@ namespace libgp {
     /** Last test kernel vector. */
     Eigen::VectorXd k_star;
 
-    /** Did the sampleset size change since the last update? */
-    bool sampleset_changed;
-
     /** Linear solver used to invert the covariance matrix. */
-    Eigen::LDLT<Eigen::MatrixXd> solver;
+//    Eigen::LLT<Eigen::MatrixXd> solver;
+    Eigen::MatrixXd L;
     
     /** Input vector dimensionality. */
     size_t input_dim;
     
     /** Update test input and cache kernel vector. */
     void update_k_star(const Eigen::VectorXd &x_star);
+
+    void update_alpha();
+
+    /** Compute covariance matrix and perform cholesky decomposition. */
+    virtual void compute();
+    
+    bool alpha_needs_update;
+
+    Eigen::VectorXd *cached_x_star;
+  
   };
 }
 

@@ -32,7 +32,7 @@ namespace libgp {
   {
     return *inputs.at(k);
   }
-  
+
   double SampleSet::y(size_t k)
   {
     return targets.at(k);
