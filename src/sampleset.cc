@@ -28,6 +28,15 @@ namespace libgp {
     n = inputs.size();
   }
   
+  void SampleSet::add(const Eigen::VectorXd x, double y)
+  {
+    Eigen::VectorXd * v = new Eigen::VectorXd(x);
+    inputs.push_back(v);
+    targets.push_back(y);
+    assert(inputs.size()==targets.size());
+    n = inputs.size();
+  }
+  
   const Eigen::VectorXd & SampleSet::x(size_t k)
   {
     return *inputs.at(k);
