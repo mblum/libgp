@@ -5,4 +5,5 @@ SET(LIBGP_TESTS
   #gp_sparse_regression_test.cc
   log_likelihood_test.cc
   rprop_test.cc
+  cov_grad_test.cc
 )

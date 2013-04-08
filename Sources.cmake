@@ -8,6 +8,7 @@ SET(LIBGP_SRC
   src/cov_noise.cc
   src/cov_rbf_cs.cc
   src/cov_rq_iso.cc
+  src/cov_periodic_matern3_iso.cc
   src/cov_se_ard.cc
   src/cov_se_iso.cc
   src/cov_sum.cc
@@ -28,6 +29,7 @@ SET(LIBGP_INTERFACES
   include/cov_noise.h
   include/cov_rbf_cs.h
   include/cov_rq_iso.h
+  include/cov_periodic_matern3_iso.h
   include/cov_se_ard.h
   include/cov_se_iso.h
   include/cov_sum.h
