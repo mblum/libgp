@@ -2,6 +2,8 @@
 // Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
+#include <string>
+
 #include "cov_factory.h"
 
 #include "cov_noise.h"
@@ -35,36 +37,43 @@ namespace libgp {
   CovFactory::~CovFactory () {};
   
   CovarianceFunction* CovFactory::create(size_t input_dim, const std::string key) {
+
     CovarianceFunction * covf;
-    std::stringstream is(key);
-    std::stringstream os(std::stringstream::out);
-    std::stringstream os1(std::stringstream::out);
-    std::stringstream os2(std::stringstream::out);
-    char c;
-    int i = 0, j = 0;
-    while (is >> c) {
-      if (c == '(') i++;
-      else if (c == ')') i--;
-      else if (c == ',') j++;
-      else {
-        if (i == 0) os << c;
-        else if (j == 0) os1 << c;
-        else os2 << c;
+
+    //remove whitespace 
+    std::string trimmed = key;
+    for(int i=0; i<trimmed.length(); i++) if(trimmed[i] == ' ') trimmed.erase(i,1);
+    
+    // find parenthesis
+    size_t left = trimmed.find_first_of('(');
+    size_t right = trimmed.find_last_of(')');
+    std::string func = trimmed.substr(0,left);
+    std::string arg;
+    int sep = 0;
+    if (left != right) {
+      arg = trimmed.substr(left);
+      int i = 0, pos = 0;
+      while ((pos = arg.find_first_of("(,)", pos)) != std::string::npos) {
+        if (arg.at(pos) == '(') i++;
+        else if (arg.at(pos) == ')') i--;
+        else if (arg.at(pos) == ',' && i == 1) sep = pos;
+        pos++;
       }
     }
-    std::map<std::string , CovFactory::create_func_def>::iterator it = registry.find(os.str());
+    std::map<std::string , CovFactory::create_func_def>::iterator it = registry.find(func);
     if (it == registry.end()) {
-      std::cerr << "fatal error while parsing covariance function: " << os.str() << " not found" << std::endl;
+      std::cerr << "fatal error while parsing covariance function: " << func << " not found" << std::endl;
       exit(0);
     } 
-    covf = registry.find(os.str())->second();
-    if (os1.str().length() == 0 && os2.str().length() == 0) {
+    covf = registry.find(func)->second();
+    if (left == right) {
       covf->init(input_dim);
     } else {
-      covf->init(input_dim, create(input_dim, os1.str()), create(input_dim, os2.str()));
+      covf->init(input_dim, create(input_dim, arg.substr(1,sep-1)), create(input_dim, arg.substr(sep+1, arg.length()-sep-2)));
     }
     return covf;
   }
+
   std::vector<std::string> CovFactory::list()
   {
     std::vector<std::string> products;

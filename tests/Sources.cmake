@@ -6,4 +6,5 @@ SET(LIBGP_TESTS
   log_likelihood_test.cc
   rprop_test.cc
   cov_grad_test.cc
+  factory_test.cc
 )
