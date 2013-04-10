@@ -30,8 +30,9 @@ namespace libgp
   
   void CovPeriodicMatern3iso::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
   {
-    double s = sqrt3*(sin(M_PI * (x1-x2).norm() / T) / ell);
-    grad << sf2*s*s*exp(-s), 2*sf2*(1+s)*exp(-s), 0;
+    double k = M_PI * (x1-x2).norm() / T;
+    double s = sqrt3*(sin(k) / ell);
+    grad << sf2*s*s*exp(-s), 2*sf2*(1+s)*exp(-s), sf2*exp(-s)*s*sqrt3*k*cos(k)/ell/T;
   }
   
   void CovPeriodicMatern3iso::set_loghyper(const Eigen::VectorXd &p)
