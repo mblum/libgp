@@ -1,5 +1,5 @@
 // libgp - Gaussian process library for Machine Learning
-// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// Copyright (c) 2013, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
 #include "gp.h"
@@ -36,6 +36,7 @@ void test(std::string covstr)
     double j2 = cov->get(x1, x2);
     params(i) = theta;
 
+    std::cout << param_dim << " " << i << std::endl;
     // hack to ignore period hyperparameter of CovPeriodicMatern3iso
     if (covstr.compare("CovPeriodicMatern3iso") == 0 && i == n-1) ASSERT_NEAR(0.0, grad(i), 1e-6);
     else ASSERT_NEAR((j2-j1)/(2*e), grad(i), 1e-6);
@@ -87,4 +88,9 @@ TEST(CovGradTest, CovSEiso)
 TEST(CovGradTest, CovPeriodicMatern3iso) 
 {
   test("CovPeriodicMatern3iso");
+}
+
+TEST(CovGradTest, Filter) 
+{
+  test("InputDimFilter(2/CovSEiso)");
 }

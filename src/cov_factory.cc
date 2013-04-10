@@ -3,6 +3,7 @@
 // All rights reserved.
 
 #include <string>
+#include <cassert>
 
 #include "cov_factory.h"
 
@@ -17,6 +18,7 @@
 #include "cov_rq_iso.h"
 #include "cov_sum.h"
 #include "cov_periodic_matern3_iso.h"
+#include "input_dim_filter.h"
 
 namespace libgp {
   
@@ -32,13 +34,14 @@ namespace libgp {
     registry["CovSEiso"] = & create_func<CovSEiso>;
     registry["CovSum"] = & create_func<CovSum>;
     registry["CovPeriodicMatern3iso"] = & create_func<CovPeriodicMatern3iso>;
+    registry["InputDimFilter"] = & create_func<InputDimFilter>;
   }
   
   CovFactory::~CovFactory () {};
   
   CovarianceFunction* CovFactory::create(size_t input_dim, const std::string key) {
 
-    CovarianceFunction * covf;
+    CovarianceFunction * covf = NULL;
 
     //remove whitespace 
     std::string trimmed = key;
@@ -67,9 +70,16 @@ namespace libgp {
     } 
     covf = registry.find(func)->second();
     if (left == right) {
-      covf->init(input_dim);
+      assert(covf->init(input_dim));
+    } else if (sep == 0) {
+      size_t sep = arg.find_first_of('/');
+      int filter = atoi(arg.substr(1,sep-1).c_str());
+      std::string second = arg.substr(sep+1, arg.length() - sep - 2);
+      assert(covf->init(input_dim, filter, create(1, second)));
     } else {
-      covf->init(input_dim, create(input_dim, arg.substr(1,sep-1)), create(input_dim, arg.substr(sep+1, arg.length()-sep-2)));
+      assert(covf->init(input_dim, 
+            create(input_dim, arg.substr(1,sep-1)), 
+            create(input_dim, arg.substr(sep+1, arg.length()-sep-2))));
     }
     return covf;
   }

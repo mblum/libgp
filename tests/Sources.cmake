@@ -7,4 +7,5 @@ SET(LIBGP_TESTS
   rprop_test.cc
   cov_grad_test.cc
   factory_test.cc
+  test_covariance_functions.cc
 )

@@ -33,5 +33,9 @@ TEST(CovFactoryTest, Parser) {
   covf = factory.create(4, "CovLinearone"); 
   ASSERT_EQ(covf->to_string().compare("CovLinearone"), 0);
   delete covf;
+
+  covf = factory.create(4, "InputDimFilter(2/CovSEiso)"); 
+  ASSERT_EQ(covf->to_string().compare("InputDimFilter(2/CovSEiso)"), 0);
+  delete covf;
 }
 
