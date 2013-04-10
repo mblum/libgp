@@ -7,8 +7,6 @@
 #include <Eigen/Dense>
 #include <gtest/gtest.h>
 
-const double tol = 10e-12;
-
 TEST(CovFactoryTest, Parser) {
   
   libgp::CovFactory factory;
