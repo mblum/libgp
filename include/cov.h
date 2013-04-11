@@ -1,5 +1,5 @@
 // libgp - Gaussian process library for Machine Learning
-// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// Copyright (c) 2013, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
 #ifndef __COV_H__
@@ -85,12 +85,6 @@ namespace libgp
 
       /** Draw random target values from this covariance function for input X. */
       Eigen::VectorXd draw_random_sample(Eigen::MatrixXd &X);
-
-      /** Get distance threshold of this covariance function. */
-      virtual double get_threshold();
-
-      /** Set distance threshold of this covariance function. */
-      virtual void set_threshold(double threshold);
 
       bool loghyper_changed;
 

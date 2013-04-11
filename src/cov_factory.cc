@@ -1,5 +1,5 @@
 // libgp - Gaussian process library for Machine Learning
-// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// Copyright (c) 2013, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
 #include <string>
@@ -12,7 +12,6 @@
 #include "cov_linear_one.h"
 #include "cov_se_ard.h"
 #include "cov_se_iso.h"
-#include "cov_rbf_cs.h"
 #include "cov_matern3_iso.h"
 #include "cov_matern5_iso.h"
 #include "cov_rq_iso.h"
@@ -28,7 +27,6 @@ namespace libgp {
     registry["CovMatern3iso"] = & create_func<CovMatern3iso>;
     registry["CovMatern5iso"] = & create_func<CovMatern5iso>;
     registry["CovNoise"] = & create_func<CovNoise>;
-    registry["CovRBFCS"] = & create_func<CovRBFCS>;
     registry["CovRQiso"] = & create_func<CovRQiso>;
     registry["CovSEard"] = & create_func<CovSEard>;
     registry["CovSEiso"] = & create_func<CovSEiso>;

@@ -1,5 +1,5 @@
 // libgp - Gaussian process library for Machine Learning
-// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// Copyright (c) 2013, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
 #include "cov.h"
@@ -54,16 +54,5 @@ namespace libgp
     // perform cholesky factorization
     solver = K.llt();  
     return solver.matrixL() * y;
-  }
-  
-  double CovarianceFunction::get_threshold()
-  {
-    return INFINITY;
-  }
-  
-  void CovarianceFunction::set_threshold(double threshold) 
-  {
-    std::cerr << "warning: thresholding is not supported for " << to_string() 
-      << " covariance function." << std::endl;
   }
 }

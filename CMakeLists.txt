@@ -1,5 +1,5 @@
 # Created by Manuel Blum on 2011-05-25.
-# Copyright 2011 University of Freiburg.
+# Copyright 2013 University of Freiburg.
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 

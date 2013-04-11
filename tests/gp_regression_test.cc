@@ -74,11 +74,6 @@ TEST(GPRegressionTest, CovRQiso) {
   run_regression_test(covf_str);
 }
 
-TEST(GPRegressionTest, CovRBFCS) {
-  std::string covf_str("CovSum ( CovRBFCS, CovNoise)");
-  run_regression_test(covf_str);
-}
-
 TEST(GPRegressionTest, UpdateL) {
   int input_dim = 2;
   libgp::GaussianProcess * gp = new libgp::GaussianProcess(input_dim, "CovSum ( CovSEiso, CovNoise)");

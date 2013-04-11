@@ -1,5 +1,5 @@
 // libgp - Gaussian process library for Machine Learning
-// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// Copyright (c) 2013, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
 #include "cov_sum.h"
@@ -57,16 +57,4 @@ namespace libgp
   {
     return "CovSum("+first->to_string()+", "+second->to_string()+")";
   }
-  
-  double CovSum::get_threshold()
-  {
-    return std::max(first->get_threshold(), second->get_threshold());
-  }
-  
-  void CovSum::set_threshold(double threshold) 
-  {
-    first->set_threshold(threshold);
-    second->set_threshold(threshold);
-  }
-  
 }
