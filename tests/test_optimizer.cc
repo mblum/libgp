@@ -49,7 +49,7 @@ TEST_F(OptimizerTest, Rprop)
 
   libgp::RProp rprop;
   rprop.init();
-  rprop.maximize(gp, 50, 0);
+  rprop.maximize(gp, 50, 1);
 
   ASSERT_NEAR(0, gp->covf().get_loghyper()(0), 0.1);
   ASSERT_NEAR(0, gp->covf().get_loghyper()(1), 0.1);

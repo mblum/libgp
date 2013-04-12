@@ -11,13 +11,15 @@
 
 namespace libgp {
 
-void RProp::init(double Delta0, double Deltamin, double Deltamax, double etaminus, double etaplus) 
+void RProp::init(double eps_stop, double Delta0, double Deltamin, double Deltamax, double etaminus, double etaplus) 
 {
   this->Delta0   = Delta0;
   this->Deltamin = Deltamin;
   this->Deltamax = Deltamax;
   this->etaminus = etaminus;
   this->etaplus  = etaplus;
+  this->eps_stop = eps_stop;
+
 }
 
 void RProp::maximize(GaussianProcess * gp, size_t n, bool verbose)
@@ -28,7 +30,7 @@ void RProp::maximize(GaussianProcess * gp, size_t n, bool verbose)
   Eigen::VectorXd params = gp->covf().get_loghyper();
 
   for (size_t i=0; i<n; ++i) {
-    if (verbose) std::cout << -gp->log_likelihood() << std::endl;
+    if (verbose) std::cout << i << " " << -gp->log_likelihood() << std::endl;
     Eigen::VectorXd grad = -gp->log_likelihood_gradient();
     grad_old = grad_old.cwiseProduct(grad);
     for (int j=0; j<grad_old.size(); ++j) {
@@ -41,6 +43,7 @@ void RProp::maximize(GaussianProcess * gp, size_t n, bool verbose)
       params(j) += -Utils::sign(grad(j)) * Delta(j);
     }
     grad_old = grad;
+    if (grad_old.norm() < eps_stop) break;
     gp->covf().set_loghyper(params);
   }
 }
