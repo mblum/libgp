@@ -28,9 +28,12 @@ void RProp::maximize(GaussianProcess * gp, size_t n, bool verbose)
   Eigen::VectorXd Delta = Eigen::VectorXd::Ones(param_dim) * Delta0;
   Eigen::VectorXd grad_old = Eigen::VectorXd::Zero(param_dim);
   Eigen::VectorXd params = gp->covf().get_loghyper();
+  Eigen::VectorXd best_params = params;
+  double best = log(0);
 
   for (size_t i=0; i<n; ++i) {
-    if (verbose) std::cout << i << " " << -gp->log_likelihood() << std::endl;
+    double lik = gp->log_likelihood();
+    if (verbose) std::cout << i << " " << -lik << std::endl;
     Eigen::VectorXd grad = -gp->log_likelihood_gradient();
     grad_old = grad_old.cwiseProduct(grad);
     for (int j=0; j<grad_old.size(); ++j) {
@@ -45,7 +48,12 @@ void RProp::maximize(GaussianProcess * gp, size_t n, bool verbose)
     grad_old = grad;
     if (grad_old.norm() < eps_stop) break;
     gp->covf().set_loghyper(params);
+    if (lik > best) {
+      best = lik;
+      best_params = params;
+    }
   }
+  gp->covf().set_loghyper(best_params);
 }
 
 }

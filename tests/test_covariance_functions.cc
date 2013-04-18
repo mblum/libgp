@@ -77,6 +77,13 @@ INSTANTIATE_TEST_CASE_P(CovarianceFunction, GradientTest, Values(
           "InputDimFilter(0/CovSum(CovSEiso, CovNoise))"
           ));
 
+TEST(FilterTest, EqualToVector) {
+
+
+
+}
+
+
 #else
 
 // Google Test may not support value-parameterized tests with some
