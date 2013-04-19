@@ -24,14 +24,14 @@ namespace libgp
   
   double CovPeriodicMatern3iso::get(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2)
   {
-    double s = sqrt3*(sin(M_PI * (x1-x2).norm() / T) / ell);
+    double s = sqrt3*fabs((sin(M_PI * (x1-x2).norm() / T) / ell));
     return sf2*(1+s)*exp(-s);
   }
   
   void CovPeriodicMatern3iso::grad(const Eigen::VectorXd &x1, const Eigen::VectorXd &x2, Eigen::VectorXd &grad)
   {
     double k = M_PI * (x1-x2).norm() / T;
-    double s = sqrt3*(sin(k) / ell);
+    double s = sqrt3*fabs((sin(k) / ell));
     grad << sf2*s*s*exp(-s), 2*sf2*(1+s)*exp(-s), sf2*exp(-s)*s*sqrt3*k*cos(k)/ell/T;
   }
   
