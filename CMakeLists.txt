@@ -1,17 +1,17 @@
 # Created by Manuel Blum on 2011-05-25.
-# Copyright 2011 University of Freiburg.
+# Copyright 2013 University of Freiburg.
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+PROJECT(libgp CXX C)
 
 # if no option is given, standard is release
 IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
    SET(CMAKE_BUILD_TYPE Release)
 ENDIF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
-set(CMAKE_CXX_FLAGS_RELEASE "-DCLSQUARE -Wall -O2")
-set(CMAKE_CXX_FLAGS_DEBUG "-DCLSQUARE -Wall -g")
-
-PROJECT(libgp CXX C)
+set(CMAKE_CXX_FLAGS_RELEASE "-DCLSQUARE -Wall -O2 -fPIC")
+set(CMAKE_CXX_FLAGS_DEBUG "-DCLSQUARE -Wall -g -fPIC")
 
 OPTION(BUILD_TESTS "Build tests" ON)
 OPTION(BUILD_EXAMPLES "Build examples" ON)
