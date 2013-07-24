@@ -80,7 +80,7 @@ TEST(GPRegressionTest, UpdateL) {
   Eigen::VectorXd params(gp->covf().get_param_dim());
   params << 0, 0, -2;
   gp->covf().set_loghyper(params);
-  int n = 10;
+  size_t n = 10;
   Eigen::MatrixXd X(n, input_dim);
   X.setRandom();
   Eigen::VectorXd y = gp->covf().draw_random_sample(X);

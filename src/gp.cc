@@ -168,12 +168,12 @@ namespace libgp {
     // update kernel matrix 
     } else {
       Eigen::VectorXd k(n);
-      for (size_t i = 0; i<n; ++i) {
+      for (int i = 0; i<n; ++i) {
         k(i) = cf->get(sampleset->x(i), sampleset->x(n));
       }
       double kappa = cf->get(sampleset->x(n), sampleset->x(n));
       // resize L if necessary
-      if (sampleset->size() > L.rows()) {
+      if (n > L.rows()) {
         L.conservativeResize(n + initial_L_size, n + initial_L_size);
       }
       L.topLeftCorner(n, n).triangularView<Eigen::Lower>().solveInPlace(k);
@@ -258,7 +258,7 @@ namespace libgp {
   {
     compute();
     update_alpha();
-    int n = sampleset->size();
+    size_t n = sampleset->size();
     Eigen::VectorXd grad = Eigen::VectorXd::Zero(cf->get_param_dim());
     Eigen::VectorXd g(grad.size());
     Eigen::MatrixXd W = Eigen::MatrixXd::Identity(n, n);

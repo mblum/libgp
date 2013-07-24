@@ -37,7 +37,7 @@ class OptimizerTest : public testing::Test {
 
     int input_dim, param_dim;
     libgp::GaussianProcess * gp;
-    int n;
+    size_t n;
 };
 
 
