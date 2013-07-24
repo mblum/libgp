@@ -10,6 +10,7 @@
 #include <sstream>
 #include <cmath>
 #include <iomanip>
+#include <ctime>
 
 namespace libgp {
   
