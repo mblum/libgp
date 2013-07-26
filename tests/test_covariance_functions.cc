@@ -67,7 +67,6 @@ INSTANTIATE_TEST_CASE_P(CovarianceFunction, GradientTest, Values(
           "CovMatern5iso",
           "CovNoise",
           "CovProd(CovSEiso, CovMatern3iso)",
-          "CovPeriodic",
           "CovRQiso",
           "CovSEard",
           "CovSEiso",
