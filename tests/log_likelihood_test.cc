@@ -16,7 +16,7 @@ TEST(LogLikelihoodTest, CheckGradients)
   Eigen::VectorXd params(param_dim);
   params << 0, 0, -2;
   gp->covf().set_loghyper(params);
-  int n = 500;
+  size_t n = 500;
   Eigen::MatrixXd X(n, input_dim);
   X.setRandom();
   Eigen::VectorXd y = gp->covf().draw_random_sample(X);

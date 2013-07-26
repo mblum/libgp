@@ -26,6 +26,7 @@ namespace libgp {
      *  @param x input array
      *  @param y target value */
     void add(const double x[], double y);
+    void add(const Eigen::VectorXd x, double y);
     
     /** Get input vector at index k. */
     const Eigen::VectorXd & x (size_t k);

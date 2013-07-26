@@ -1,6 +1,6 @@
-set term png size 400, 400 enhanced
+set term postscript
 
-set out "logo.png"
+set out "logo.ps"
 
 unset hidden3d
 

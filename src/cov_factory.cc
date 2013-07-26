@@ -47,7 +47,7 @@ namespace libgp {
 
     //remove whitespace 
     std::string trimmed = key;
-    for(int i=0; i<trimmed.length(); i++) if(trimmed[i] == ' ') trimmed.erase(i,1);
+    for(size_t i=0; i<trimmed.length(); i++) if(trimmed[i] == ' ') trimmed.erase(i,1);
     
     // find parenthesis
     size_t left = trimmed.find_first_of('(');
@@ -57,7 +57,7 @@ namespace libgp {
     int sep = 0;
     if (left != right) {
       arg = trimmed.substr(left);
-      int i = 0, pos = 0;
+      size_t i = 0, pos = 0;
       while ((pos = arg.find_first_of("(,)", pos)) != std::string::npos) {
         if (arg.at(pos) == '(') i++;
         else if (arg.at(pos) == ')') i--;

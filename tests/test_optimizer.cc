@@ -37,7 +37,7 @@ class OptimizerTest : public testing::Test {
 
     int input_dim, param_dim;
     libgp::GaussianProcess * gp;
-    int n;
+    size_t n;
 };
 
 
@@ -51,8 +51,8 @@ TEST_F(OptimizerTest, Rprop)
   rprop.init();
   rprop.maximize(gp, 50, 0);
 
-  ASSERT_NEAR(0, gp->covf().get_loghyper()(0), 0.1);
-  ASSERT_NEAR(0, gp->covf().get_loghyper()(1), 0.1);
+  ASSERT_NEAR(0, gp->covf().get_loghyper()(0), 0.2);
+  ASSERT_NEAR(0, gp->covf().get_loghyper()(1), 0.2);
 }
 
 TEST_F(OptimizerTest, CG) 
@@ -64,7 +64,7 @@ TEST_F(OptimizerTest, CG)
   libgp::CG cg;
   cg.maximize(gp, 50, 0);
 
-  ASSERT_NEAR(0, gp->covf().get_loghyper()(0), 0.1);
-  ASSERT_NEAR(0, gp->covf().get_loghyper()(1), 0.1);
+  ASSERT_NEAR(0, gp->covf().get_loghyper()(0), 0.2);
+  ASSERT_NEAR(0, gp->covf().get_loghyper()(1), 0.2);
 }
 

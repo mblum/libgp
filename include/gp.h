@@ -14,6 +14,8 @@
 #ifndef __GP_H__
 #define __GP_H__
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <Eigen/Dense>
 
 #include "cov.h"
