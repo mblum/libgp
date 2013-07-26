@@ -32,7 +32,7 @@ namespace libgp {
      *  @param input_dim input vector dimensionality
      *  @param key string representation of covariance function
      *  @return instance of CovarianceFunction */
-    CovarianceFunction* create(size_t input_dim, const std::string key);
+    libgp::CovarianceFunction* create(size_t input_dim, const std::string key);
     
     /** Returns a string vector of available covariance functions. */
     std::vector<std::string> list();

@@ -18,6 +18,7 @@
 #include "cov_sum.h"
 #include "cov_prod.h"
 #include "cov_periodic_matern3_iso.h"
+#include "cov_periodic.h"
 #include "input_dim_filter.h"
 
 namespace libgp {
@@ -34,12 +35,13 @@ namespace libgp {
     registry["CovSum"] = & create_func<CovSum>;
     registry["CovProd"] = & create_func<CovProd>;
     registry["CovPeriodicMatern3iso"] = & create_func<CovPeriodicMatern3iso>;
+    registry["CovPeriodic"] = & create_func<CovPeriodic>;
     registry["InputDimFilter"] = & create_func<InputDimFilter>;
   }
   
   CovFactory::~CovFactory () {};
   
-  CovarianceFunction* CovFactory::create(size_t input_dim, const std::string key) {
+  libgp::CovarianceFunction* CovFactory::create(size_t input_dim, const std::string key) {
 
     CovarianceFunction * covf = NULL;
 
