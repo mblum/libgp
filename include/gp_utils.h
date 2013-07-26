@@ -1,14 +1,14 @@
 // libgp - Gaussian process library for Machine Learning
-// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// Copyright (c) 2013, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
 #ifndef __GP_UTILS_H__
 #define __GP_UTILS_H__
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cmath>
-#include <assert.h>
-#include <stdint.h>
+#include <cassert>
+#include <tr1/cstdint>
 
 namespace libgp {
   
@@ -46,6 +46,15 @@ namespace libgp {
     /** Sign function.
      */
     static double sign(double x);
+
+    // drand48() is not aviable under win
+#if defined(WIN32) || defined(WIN64)
+    inline double drand48()
+    {
+      return (rand() / (RAND_MAX + 1.0));
+    }
+#endif
+
   };  
 }
 

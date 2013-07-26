@@ -1,6 +1,9 @@
 // libgp - Gaussian process library for Machine Learning
-// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// Copyright (c) 2013, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
+
+#include <string>
+#include <cassert>
 
 #include "cov_factory.h"
 
@@ -9,11 +12,13 @@
 #include "cov_linear_one.h"
 #include "cov_se_ard.h"
 #include "cov_se_iso.h"
-#include "cov_rbf_cs.h"
 #include "cov_matern3_iso.h"
 #include "cov_matern5_iso.h"
 #include "cov_rq_iso.h"
 #include "cov_sum.h"
+#include "cov_prod.h"
+#include "cov_periodic_matern3_iso.h"
+#include "input_dim_filter.h"
 
 namespace libgp {
   
@@ -23,46 +28,62 @@ namespace libgp {
     registry["CovMatern3iso"] = & create_func<CovMatern3iso>;
     registry["CovMatern5iso"] = & create_func<CovMatern5iso>;
     registry["CovNoise"] = & create_func<CovNoise>;
-    registry["CovRBFCS"] = & create_func<CovRBFCS>;
     registry["CovRQiso"] = & create_func<CovRQiso>;
     registry["CovSEard"] = & create_func<CovSEard>;
     registry["CovSEiso"] = & create_func<CovSEiso>;
     registry["CovSum"] = & create_func<CovSum>;
+    registry["CovProd"] = & create_func<CovProd>;
+    registry["CovPeriodicMatern3iso"] = & create_func<CovPeriodicMatern3iso>;
+    registry["InputDimFilter"] = & create_func<InputDimFilter>;
   }
   
   CovFactory::~CovFactory () {};
   
   CovarianceFunction* CovFactory::create(size_t input_dim, const std::string key) {
-    CovarianceFunction * covf;
-    std::stringstream is(key);
-    std::stringstream os(std::stringstream::out);
-    std::stringstream os1(std::stringstream::out);
-    std::stringstream os2(std::stringstream::out);
-    char c;
-    int i = 0, j = 0;
-    while (is >> c) {
-      if (c == '(') i++;
-      else if (c == ')') i--;
-      else if (c == ',') j++;
-      else {
-        if (i == 0) os << c;
-        else if (j == 0) os1 << c;
-        else os2 << c;
+
+    CovarianceFunction * covf = NULL;
+
+    //remove whitespace 
+    std::string trimmed = key;
+    for(size_t i=0; i<trimmed.length(); i++) if(trimmed[i] == ' ') trimmed.erase(i,1);
+    
+    // find parenthesis
+    size_t left = trimmed.find_first_of('(');
+    size_t right = trimmed.find_last_of(')');
+    std::string func = trimmed.substr(0,left);
+    std::string arg;
+    int sep = 0;
+    if (left != right) {
+      arg = trimmed.substr(left);
+      size_t i = 0, pos = 0;
+      while ((pos = arg.find_first_of("(,)", pos)) != std::string::npos) {
+        if (arg.at(pos) == '(') i++;
+        else if (arg.at(pos) == ')') i--;
+        else if (arg.at(pos) == ',' && i == 1) sep = pos;
+        pos++;
       }
     }
-    std::map<std::string , CovFactory::create_func_def>::iterator it = registry.find(os.str());
+    std::map<std::string , CovFactory::create_func_def>::iterator it = registry.find(func);
     if (it == registry.end()) {
-      std::cerr << "fatal error while parsing covariance function: " << os.str() << " not found" << std::endl;
+      std::cerr << "fatal error while parsing covariance function: " << func << " not found" << std::endl;
       exit(0);
     } 
-    covf = registry.find(os.str())->second();
-    if (os1.str().length() == 0 && os2.str().length() == 0) {
-      covf->init(input_dim);
+    covf = registry.find(func)->second();
+    if (left == right) {
+      assert(covf->init(input_dim));
+    } else if (sep == 0) {
+      size_t sep = arg.find_first_of('/');
+      int filter = atoi(arg.substr(1,sep-1).c_str());
+      std::string second = arg.substr(sep+1, arg.length() - sep - 2);
+      assert(covf->init(input_dim, filter, create(1, second)));
     } else {
-      covf->init(input_dim, create(input_dim, os1.str()), create(input_dim, os2.str()));
+      assert(covf->init(input_dim, 
+            create(input_dim, arg.substr(1,sep-1)), 
+            create(input_dim, arg.substr(sep+1, arg.length()-sep-2))));
     }
     return covf;
   }
+
   std::vector<std::string> CovFactory::list()
   {
     std::vector<std::string> products;

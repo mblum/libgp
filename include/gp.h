@@ -1,5 +1,5 @@
 // libgp - Gaussian process library for Machine Learning
-// Copyright (c) 2011, Manuel Blum <mblum@informatik.uni-freiburg.de>
+// Copyright (c) 2013, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
 /*! 
@@ -14,6 +14,8 @@
 #ifndef __GP_H__
 #define __GP_H__
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <Eigen/Dense>
 
 #include "cov.h"
