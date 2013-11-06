@@ -29,7 +29,7 @@ namespace libgp {
     return array;
   }
   
-  uint32_t Utils::randi(uint32_t n) 
+  size_t Utils::randi(size_t n) 
   {
     return drand48()*n;
   }

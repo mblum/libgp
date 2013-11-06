@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <cmath>
 #include <cassert>
-#include <tr1/cstdint>
 
 namespace libgp {
   
@@ -26,7 +25,7 @@ namespace libgp {
     /** Pseudorandom integers from a uniform discrete distribution.
      *  Returns a random integer drawn from the discrete uniform 
      *  distribution on 0, ..., n-1. */
-    static uint32_t randi(uint32_t n);
+    static size_t randi(size_t n);
     
     /** Double precision numerical approximation to the standard normal 
      *  cumulative distribution function. The cumulative standard normal 
