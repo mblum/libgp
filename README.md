@@ -1,3 +1,94 @@
-This project has moved to 
+# Getting started
 
-[https://github.com/mblum/libgp](https://github.com/mblum/libgp)
+libgp is a C++ library for Gaussian process regression. A Gaussian process defines a distribution over functions and inference takes place directly in function space. It is fully specified by a mean function and a positive definite covariance function. This library uses two types of covariance functions, simple and composite. Composite functions can be composed of other composite functions, allowing flexible structures. 
+
+## Implemented covariance functions
+
+### Simple covariance functions
+
+* Linear covariance function.
+* Linear covariance function with automatic relevance detection. 
+* Matern covariance function with nu=1.5 and isotropic distance measure.
+* Matern covariance function with nu=2.5 and isotropic distance measure.
+* Independent covariance function (white noise).
+* Radial basis covariance function with compact support.
+* Isotropic rational quadratic covariance function. 
+* Squared exponential covariance function with automatic relevance detection.
+* Squared exponential covariance function with isotropic distance measure.
+
+### Composite covariance functions
+
+* Sums of covariance functions.
+
+### Mean function
+
+* The mean function is fixed to zero.
+
+## Training a model
+
+{{fig1.jpg}} {{fig2.jpg}} {{fig3.jpg}} {{fig4.jpg}}
+
+Initialize the model by specifying the input dimensionality and the covariance function.
+
+    GaussianProcess gp(2, "CovSum ( CovSEiso, CovNoise)");
+
+Set log-hyperparameter of the covariance function.
+
+    gp.covf().set_loghyper(params);
+
+Add data to the training set. Input vectors x must be provided as double[] and targets y as double.
+
+    gp.add_pattern(x, y);
+
+Predict value or variance of an input vector x. 
+
+    f = gp.f(x);
+    v = gp.var(x);
+
+## Read and write
+
+Use write function to save a Gaussian process model and the complete training set to a file.
+
+    void write(const char * filename);
+
+A new instance of the Gaussian process can be instantiated from this file using the following constructor.
+
+    GaussianProcess (const char * filename);
+
+## Advanced topics
+
+* [[Optimize|hyper-parameter optimization]]
+* [[Customize|custom covariance functions]]
+* [[Fileformat|the libgp file format]]
+
+## Requirements
+
+* [cmake](http://www.cmake.org/): cross-platform, open-source build system
+* [Eigen3](http://eigen.tuxfamily.org/): template library for linear algebra
+* [googletest](http://code.google.com/p/googletest) (optional)
+
+## Release Notes
+
+* 2012/10/11 version 0.1.4 \\
+  log likelihood function and gradient computation \\
+  hyper-parameter optimization using RProp \\
+  online updates of the Cholesky decomposition \\
+
+* 2011/09/28 version 0.1.3 \\
+  improved organization of training data \\
+  improved interfaces
+  
+* 2011/06/03 version 0.1.2 \\
+  added Matern5 covariance function \\
+  added isotropic rational quadratic covariance function \\
+  added function to draw random data according to covariance function 
+ 
+* 2011/05/27 version 0.1.1 \\
+  google-tests added \\
+  added Matern3 covariance function \\
+  various bugfixes
+
+* 2011/05/26 version 0.1.0
+  basic functionality for standard gp regression \\
+  most important covariance functions implemented \\
+  capability to read and write models to disk 
