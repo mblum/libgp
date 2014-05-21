@@ -57,9 +57,9 @@ A new instance of the Gaussian process can be instantiated from this file using 
 
 ## Advanced topics
 
-* [[Optimize|hyper-parameter optimization]]
-* [[Customize|custom covariance functions]]
-* [[Fileformat|the libgp file format]]
+* hyper-parameter optimization
+* custom covariance functions
+* the libgp file format
 
 ## Requirements
 
