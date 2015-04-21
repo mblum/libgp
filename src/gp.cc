@@ -173,7 +173,7 @@ namespace libgp {
       }
       double kappa = cf->get(sampleset->x(n), sampleset->x(n));
       // resize L if necessary
-      if (sampleset->size() > L.rows()) {
+      if (sampleset->size() > static_cast<std::size_t>(L.rows())) {
         L.conservativeResize(n + initial_L_size, n + initial_L_size);
       }
       L.topLeftCorner(n, n).triangularView<Eigen::Lower>().solveInPlace(k);
