@@ -2,7 +2,7 @@
 
 libgp is a C++ library for Gaussian process regression. A Gaussian process defines a distribution over functions and inference takes place directly in function space. It is fully specified by a mean function and a positive definite covariance function. This library uses two types of covariance functions, simple and composite. Composite functions can be composed of other composite functions, allowing flexible structures. 
 
-## Implemented covariance functions
+## Building the code
 Follow the standard CMake method of building:
 
     mkdir build; cd $_
@@ -32,6 +32,8 @@ Open doc/html/index.html with your favorite browser for the documentation.
 If you want a pdf, go into latex and run:
 
     pdflatex refman.tex
+
+## Implemented covariance functions
 
 ### Simple covariance functions
 
