@@ -4,27 +4,33 @@ libgp is a C++ library for Gaussian process regression. A Gaussian process defin
 
 ## Implemented covariance functions
 Follow the standard CMake method of building:
+
     mkdir build; cd $_
     cmake ..
     make
 
 ### Testing the build
 Once everything is built, you can check that all works fine with the following tests:
+
     cd tests
     ./gptest
 
 And running an example:
+
     cd examples
     ./gpdense
+
 which should return a MSE.
 
 ### Building the documentation
 There are Doxygen comments in the header files. To compile (make sure you have doxygen installed):
+
     mkdir doc; cd $_
     doxygen ../doxygen/Doxyfile
 
 Open doc/html/index.html with your favorite browser for the documentation.
 If you want a pdf, go into latex and run:
+
     pdflatex refman.tex
 
 ### Simple covariance functions
