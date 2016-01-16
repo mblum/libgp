@@ -10,6 +10,7 @@
 namespace libgp
 {
   /** Isotropic rational quadratic covariance function.
+   *  Parameters: \f$l^2, \sigma_f^2, \alpha\f$
    *  @ingroup cov_group
    *  @author Manuel Blum
    */

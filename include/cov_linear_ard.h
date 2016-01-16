@@ -11,6 +11,7 @@ namespace libgp
 {
   
   /** Linear covariance function with automatic relevance detection.
+   *  Parameters: \f$l_1^2, \dots, l_n^2\f$
    *  @ingroup cov_group
    *  @author Manuel Blum
    */

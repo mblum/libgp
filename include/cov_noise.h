@@ -10,9 +10,11 @@
 namespace libgp
 {
   
-  /** Independent covariance function (white noise).
+  /** Independent covariance function (white noise). 
+   *  Parameters: signal noise, \f$\sigma^2\f$
    *  @author Manuel Blum
-   *  @ingroup cov_group */
+   *  @ingroup cov_group
+   */
   class CovNoise : public CovarianceFunction
   {
   public:

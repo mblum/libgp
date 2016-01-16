@@ -63,7 +63,7 @@ Initialize the model by specifying the input dimensionality and the covariance f
 
     GaussianProcess gp(2, "CovSum ( CovSEiso, CovNoise)");
 
-Set log-hyperparameter of the covariance function.
+Set log-hyperparameter of the covariance function (see the Doxygen documentation, parameters should be given in order as listed).
 
     gp.covf().set_loghyper(params);
 
