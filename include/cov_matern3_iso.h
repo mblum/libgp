@@ -10,6 +10,7 @@
 namespace libgp
 {
   /** Matern covariance function with \f$\nu = \frac{3}{2}\f$ and isotropic distance measure.
+   *  Parameters: \f$l^2, \sigma_f^2\f$
    *  @ingroup cov_group
    *  @author Manuel Blum
    */

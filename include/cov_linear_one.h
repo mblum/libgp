@@ -11,6 +11,7 @@ namespace libgp
 {
   
   /** Linear covariance function.
+   *  Parameter: \f$\theta^2\f$
    *  @ingroup cov_group
    *  @author Manuel Blum
    */
