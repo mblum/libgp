@@ -17,6 +17,12 @@ namespace libgp {
   const double log2pi = log(2*M_PI);
   const double initial_L_size = 1000;
 
+  GaussianProcess::GaussianProcess ()
+  {
+      sampleset = NULL;
+      cf = NULL;
+  }
+
   GaussianProcess::GaussianProcess (size_t input_dim, std::string covf_def)
   {
     // set input dimensionality
@@ -31,6 +37,8 @@ namespace libgp {
   
   GaussianProcess::GaussianProcess (const char * filename) 
   {
+    sampleset = NULL;
+    cf = NULL;
     int stage = 0;
     std::ifstream infile;
     double y;
@@ -75,11 +83,27 @@ namespace libgp {
     delete [] x;
   }
   
+  GaussianProcess::GaussianProcess(const GaussianProcess& gp)
+  {
+    this->input_dim = gp.input_dim;
+    sampleset = new SampleSet(*(gp.sampleset));
+    alpha = gp.alpha;
+    k_star = gp.k_star;
+    alpha_needs_update = gp.alpha_needs_update;
+    L = gp.L;
+    
+    // copy covariance function
+    CovFactory factory;
+    cf = factory.create(gp.input_dim, gp.cf->to_string());
+    cf->loghyper_changed = gp.cf->loghyper_changed;
+    cf->set_loghyper(gp.cf->get_loghyper());
+  }
+  
   GaussianProcess::~GaussianProcess ()
   {
     // free memory
-    delete sampleset;
-    delete cf;
+    if (sampleset != NULL) delete sampleset;
+    if (cf != NULL) delete cf;
   }  
   
   double GaussianProcess::f(const double x[])

@@ -28,6 +28,9 @@ namespace libgp {
   class GaussianProcess
   {
   public:
+
+    /** Empty initialization */
+    GaussianProcess ();
     
     /** Create and instance of GaussianProcess with given input dimensionality 
      *  and covariance function. */
@@ -35,6 +38,9 @@ namespace libgp {
     
     /** Create and instance of GaussianProcess from file. */
     GaussianProcess (const char * filename);
+    
+    /** Copy constructor */
+    GaussianProcess (const GaussianProcess& gp);
     
     virtual ~GaussianProcess ();
     
@@ -107,6 +113,11 @@ namespace libgp {
     virtual void compute();
     
     bool alpha_needs_update;
+
+  private:
+
+    /** No assignement */
+    GaussianProcess& operator=(const GaussianProcess&);
 
   };
 }
