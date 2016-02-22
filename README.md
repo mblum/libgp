@@ -92,6 +92,18 @@ A new instance of the Gaussian process can be instantiated from this file using 
 * custom covariance functions
 * the libgp file format
 
+### Hyper-parameter optimization
+
+This library contains two methods for hyper-parameter optimization; the conjugate
+gradient method, and Rprop (resilient backpropagation). We recommend using Rprop.
+
+For an example of how to call the optimizers, see `test_optimizer.cc`
+
+Reasons for using Rprop can be found in Blum & Riedmiller (2013),
+Optimization of Gaussian Process Hyperparameters using Rprop, *European Symposium
+on Artificial Neural Networks*, Computational Intelligence and Learning.
+
+
 ## Requirements
 
 * [cmake](http://www.cmake.org/): cross-platform, open-source build system
