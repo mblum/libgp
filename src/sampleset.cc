@@ -13,6 +13,22 @@ namespace libgp {
     n = 0;
   }
   
+  SampleSet::SampleSet ( const SampleSet& ss )
+  {
+    // shallow copies
+    n = ss.n;
+    input_dim = ss.input_dim;
+    targets = ss.targets;
+
+    // deep copy needed for vector of pointers
+    for (size_t i=0; i<ss.inputs.size(); ++i)
+    {
+      Eigen::VectorXd * sample_to_store = new Eigen::VectorXd(input_dim);
+      *sample_to_store = *ss.inputs.at(i);
+      inputs.push_back(sample_to_store);
+    }
+  }
+
   SampleSet::~SampleSet() 
   {
     clear();

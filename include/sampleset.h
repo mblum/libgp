@@ -18,7 +18,10 @@ namespace libgp {
     /** Constructor.
      *  @param input_dim dimensionality of input vectors */
     SampleSet (int input_dim);
-    
+
+    /** Copy constructor */
+    SampleSet ( const SampleSet& ss );
+
     /** Destructor. */    
     virtual ~SampleSet();
     
@@ -48,9 +51,10 @@ namespace libgp {
     
     /** Check if sample set is empty. */
     bool empty ();
-    
+
+
   private:
-    
+
     /** Container holding input vectors. */
     std::vector<Eigen::VectorXd *> inputs;
     
