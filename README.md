@@ -63,7 +63,7 @@ Initialize the model by specifying the input dimensionality and the covariance f
 
     GaussianProcess gp(2, "CovSum ( CovSEiso, CovNoise)");
 
-Set log-hyperparameter of the covariance function.
+Set log-hyperparameter of the covariance function (see the Doxygen documentation, parameters should be given in order as listed).
 
     gp.covf().set_loghyper(params);
 
@@ -91,6 +91,18 @@ A new instance of the Gaussian process can be instantiated from this file using 
 * hyper-parameter optimization
 * custom covariance functions
 * the libgp file format
+
+### Hyper-parameter optimization
+
+This library contains two methods for hyper-parameter optimization; the conjugate
+gradient method, and Rprop (resilient backpropagation). We recommend using Rprop.
+
+For an example of how to call the optimizers, see `test_optimizer.cc`
+
+Reasons for using Rprop can be found in Blum & Riedmiller (2013),
+Optimization of Gaussian Process Hyperparameters using Rprop, *European Symposium
+on Artificial Neural Networks*, Computational Intelligence and Learning.
+
 
 ## Requirements
 

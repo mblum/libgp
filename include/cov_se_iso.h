@@ -15,7 +15,7 @@ namespace libgp
    *  \f$k_{SE}(x, y) := \alpha^2 \exp(-\frac{1}{2}(x-y)^T\Lambda^{-1}(x-y))\f$,
    *  with \f$\Lambda = diag(l^2, \dots, l^2)\f$ being the characteristic
    *  length scale and \f$\alpha\f$ describing the variability of the latent
-   *  function. The parameters \f$l^2, \alpha\f$ are expected
+   *  function (signal variance). The parameters \f$l^2, \alpha\f$ are expected
    *  in this order in the parameter array.
    *  @ingroup cov_group
    *  @author Manuel Blum
