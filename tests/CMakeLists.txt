@@ -1,13 +1,3 @@
-INCLUDE(ExternalProject)
-
-# ----- Download and build gtest -----
-ExternalProject_Add(googletest
-  SVN_REPOSITORY "http://googletest.googlecode.com/svn/tags/release-1.7.0"
-  INSTALL_COMMAND ""
-  UPDATE_COMMAND ""
-  PREFIX "gtest"
-)
-
 FIND_PACKAGE(Threads REQUIRED)
 
 # ----- Testing -----
