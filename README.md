@@ -72,14 +72,10 @@ For more details, see the source code in `examples/gp_example_dense.cc`.
 
 This library provides Python bindings for Gaussian Process regression. The bindings are generated using pybind11, allowing you to use the C++ library directly in Python.
 
-### Building Python Bindings
-
 ```bash
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DLIBGP_BUILD_PYTHON_BINDINGS=ON
-cmake --build build
+pip install .
+python examples/python_example.py
 ```
-
-
 
 ## Implemented covariance functions
 
