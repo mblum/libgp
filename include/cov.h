@@ -2,13 +2,13 @@
 // Copyright (c) 2013, Manuel Blum <mblum@informatik.uni-freiburg.de>
 // All rights reserved.
 
-#ifndef __COV_H__
-#define __COV_H__
+#ifndef LIBGP_COV_H
+#define LIBGP_COV_H
 
 #include <iostream>
 #include <vector>
-
 #include <Eigen/Dense>
+#include "gp_version.h"
 
 namespace libgp
 {
@@ -17,7 +17,7 @@ namespace libgp
    *  @author Manuel Blum
    *  @ingroup cov_group 
    *  @todo implement more covariance functions */
-  class CovarianceFunction
+  class LIBGP_EXPORT CovarianceFunction
   {
     public:
       /** Constructor. */
@@ -28,7 +28,7 @@ namespace libgp
 
       /** Initialization method for atomic covariance functions. 
        *  @param input_dim dimensionality of the input vectors */
-      virtual bool init(int input_dim) 
+      virtual bool init([[maybe_unused]] int input_dim) 
       { 
         return false;
       };
@@ -37,12 +37,16 @@ namespace libgp
        *  @param input_dim dimensionality of the input vectors 
        *  @param first first covariance function of compound
        *  @param second second covariance function of compound */
-      virtual bool init(int input_dim, CovarianceFunction * first, CovarianceFunction * second)
+      virtual bool init([[maybe_unused]] int input_dim, 
+                       [[maybe_unused]] CovarianceFunction * first, 
+                       [[maybe_unused]] CovarianceFunction * second)
       {
         return false;
       };
 
-      virtual bool init(int input_dim, int filter, CovarianceFunction * covf)
+      virtual bool init([[maybe_unused]] int input_dim, 
+                       [[maybe_unused]] int filter, 
+                       [[maybe_unused]] CovarianceFunction * covf)
       {
         return false;
       };
@@ -103,8 +107,8 @@ namespace libgp
 
 }
 
-#endif /* __COV_H__ */
-
 /** Covariance functions available for Gaussian process models. 
  *  There are atomic and composite covariance functions. 
  *  @defgroup cov_group Covariance Functions */
+
+#endif // LIBGP_COV_H

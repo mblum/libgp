@@ -1,5 +1,54 @@
-doc
-build*
-archive
+# Build directories and files
+build*/
+doc/
+archive/
+
+# IDE and editor files
 *.swp
+.vscode/
+.idea/
+*.sln
+*.vcxproj*
+CMakeSettings.json
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake-build-*/
+!CMakeLists.txt
+Testing/
+
+# MacOS system files
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary and backup files
+*~
+*.bak
+*.tmp
+
+# Dependencies
+_deps/

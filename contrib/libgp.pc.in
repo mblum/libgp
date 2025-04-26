@@ -1,13 +1,15 @@
-libdir=@CMAKE_INSTALL_PREFIX@/@INSTALL_LIB_DIR@/
-includedir=@CMAKE_INSTALL_PREFIX@/include/gp
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
 
-Name: libgp
-Description: libgp is a C++ library for Gaussian process regression
+Name: @PROJECT_NAME@
+Description: @PROJECT_DESCRIPTION@
 URL: https://github.com/mblum/libgp
-Version: 
-Requires: eigen3
-Conflicts: 
+Version: @PROJECT_VERSION@
+Requires.private: eigen3 >= 3.0.1
 Libs: -L${libdir} -lgp
+Libs.private: @CMAKE_THREAD_LIBS_INIT@
 Cflags: -I${includedir}
 
 

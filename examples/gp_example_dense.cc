@@ -9,8 +9,7 @@
 
 using namespace libgp;
 
-int main (int argc, char const *argv[])
-{
+int main() {
   int n=4000, m=1000;
   double tss = 0, error, f, y;
   // initialize Gaussian process for 2-D input using the squared exponential 

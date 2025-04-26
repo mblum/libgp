@@ -8,6 +8,9 @@
 #include <cmath>
 #include <iostream>
 #include <gtest/gtest.h>
+#include <vector>
+#include "cov_se_iso.h"
+#include "cov_factory.h"
 
 TEST(LogLikelihoodTest, CheckGradients) 
 {
@@ -21,9 +24,9 @@ TEST(LogLikelihoodTest, CheckGradients)
   X.setRandom();
   Eigen::VectorXd y = gp->covf().draw_random_sample(X);
   for(size_t i = 0; i < n; ++i) {
-    double x[input_dim];
+    std::vector<double> x(input_dim);
     for(int j = 0; j < input_dim; ++j) x[j] = X(i,j);
-    gp->add_pattern(x, y(i));
+    gp->add_pattern(&x[0], y(i));
   }
 
   double e = 1e-4;
