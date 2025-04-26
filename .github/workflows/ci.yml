@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [ master, dev ]
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -46,7 +50,7 @@ jobs:
         tar czf "${PACKAGE_NAME}.tar.gz" "${PACKAGE_NAME}"
 
     - name: Upload Build Artifacts 
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: libgp-dist
         path: dist/*.tar.gz
