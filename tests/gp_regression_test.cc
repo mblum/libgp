@@ -8,6 +8,7 @@
 #include <cmath>
 #include <iostream>
 #include <gtest/gtest.h>
+#include <vector>
 
 double test_gp_regression(libgp::GaussianProcess * gp)
 {
@@ -17,15 +18,15 @@ double test_gp_regression(libgp::GaussianProcess * gp)
   X.setRandom();
   Eigen::VectorXd y = gp->covf().draw_random_sample(X);
   for(size_t i = 0; i < n*0.8; ++i) {
-    double x[input_dim];
+    std::vector<double> x(input_dim);
     for(int j = 0; j < input_dim; ++j) x[j] = X(i,j);
-    gp->add_pattern(x, y(i));
+    gp->add_pattern(&x[0], y(i));
   }
   double tss = 0;
   for(int i = n*0.8+1; i < n; ++i) {
-    double x[input_dim];
+    std::vector<double> x(input_dim);
     for(int j = 0; j < input_dim; ++j) x[j] = X(i,j);
-    double f = gp->f(x);
+    double f = gp->f(&x[0]);
     double error = f - y(i);
     tss += error*error;
   }
@@ -85,10 +86,46 @@ TEST(GPRegressionTest, UpdateL) {
   X.setRandom();
   Eigen::VectorXd y = gp->covf().draw_random_sample(X);
   for(size_t i = 0; i < n; ++i) {
-    double x[2];
+    std::vector<double> x(input_dim);
     for(int j = 0; j < input_dim; ++j) x[j] = X(i,j);
-    gp->add_pattern(x, y(i));
+    gp->add_pattern(&x[0], y(i));
   }
-  double x[2] = {0,0};
-  gp->f(x);
+  std::vector<double> x(2, 0);
+  gp->f(&x[0]);
+}
+
+TEST(GPTest, TestRegression) {
+  // initialize gaussian process for 2-D input using a squared exponential covariance function
+  libgp::GaussianProcess* gp = new libgp::GaussianProcess(2, "CovSEiso");
+  
+  // Set hyperparameters (length scale and signal variance)
+  Eigen::VectorXd params(2);
+  params << 0.0, 0.0;  // log-space parameters
+  gp->covf().set_loghyper(params);
+  
+  // Check if input dimension is correct
+  int input_dim = gp->get_input_dim();
+  ASSERT_EQ(2, input_dim);
+  
+  // create inputs
+  std::vector<double> x(input_dim);
+  // test set target
+  double y = 1.0;
+  // Set inputs
+  x[0] = 0.3;
+  x[1] = 0.4;
+  // Add training data
+  gp->add_pattern(&x[0], y);
+  // Add more training data
+  x[0] = 0.35;
+  x[1] = 0.45;
+  gp->add_pattern(&x[0], y);
+  
+  // Test prediction
+  std::vector<double> x_test(input_dim);
+  x_test[0] = 0.32;
+  x_test[1] = 0.42;
+  double prediction = gp->f(&x_test[0]);
+  ASSERT_NEAR(1.0, prediction, 0.1);
+  delete gp;
 }
