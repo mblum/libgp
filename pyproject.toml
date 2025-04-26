@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "libgp"
-version = "0.1.5"
+version = "0.2.0"
 description = "C++ Library for Gaussian Process Regression"
 readme = "README.md"
 requires-python = ">=3.7"
@@ -17,7 +17,7 @@ dependencies = ["numpy"]
 dev = ["flake8>=6.0.0"]
 
 [tool.scikit-build]
-cmake.minimum-version = "3.14"
+cmake.version = ">=3.14"
 cmake.args = [
     "-DBUILD_PYTHON_BINDINGS=ON",
     "-DBUILD_SHARED_LIBS=ON",
