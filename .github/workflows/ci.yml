@@ -25,12 +25,12 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake libeigen3-dev
+        sudo apt-get install -y cmake libeigen3-dev libgtest-dev
 
     - name: Install dependencies (macOS)
       if: runner.os == 'macOS'
       run: |
-        brew install cmake eigen
+        brew install cmake eigen googletest
 
     - name: Configure CMake
       run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DLIBGP_BUILD_TESTS=ON
