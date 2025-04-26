@@ -1,37 +1,79 @@
-# Getting started
+# libgp
 
-libgp is a C++ library for Gaussian process regression. A Gaussian process defines a distribution over functions and inference takes place directly in function space. It is fully specified by a mean function and a positive definite covariance function. This library uses two types of covariance functions, simple and composite. Composite functions can be composed of other composite functions, allowing flexible structures. 
+![CI](https://github.com/your-username/libgp/workflows/CI/badge.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-## Building the code
-Follow the standard CMake method of building:
+A C++ library for Gaussian process regression. A Gaussian process defines a distribution over functions and inference takes place directly in function space. It is fully specified by a mean function and a positive definite covariance function.
 
-    mkdir build; cd $_
-    cmake ..
-    make
+## Requirements
 
-### Testing the build
-Once everything is built, you can check that all works fine with the following tests:
+* C++17 compiler
+* [CMake](https://cmake.org/) >= 3.14
+* [Eigen3](https://eigen.tuxfamily.org/) >= 3.0.1
 
-    cd tests
-    ./gptest
+## Building and Testing
 
-And running an example:
+### Building the Library
 
-    cd examples
-    ./gpdense
+1. Create a build directory and configure the project with tests enabled:
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXAMPLES=ON
+```
 
-which should return a MSE.
+2. Build the library:
+```bash
+cmake --build build
+```
 
-### Building the documentation
-There are Doxygen comments in the header files. To compile (make sure you have doxygen installed):
+For development and debugging, you can use Debug build type:
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON
+```
 
-    mkdir doc; cd $_
-    doxygen ../doxygen/Doxyfile
+### Running Tests
 
-Open doc/html/index.html with your favorite browser for the documentation.
-If you want a pdf, go into latex and run:
+The project uses Google Test for unit testing. Tests are automatically configured when building the project.
 
-    pdflatex refman.tex
+1. Build the tests (they are built automatically with the main build):
+```bash
+cmake --build build
+```
+
+2. Run all tests:
+```bash
+cd build
+ctest --output-on-failure
+```
+
+### Examples
+
+The library includes example code demonstrating how to use Gaussian Process regression. To build and run the examples:
+
+```bash
+./build/examples/gpdense
+```
+
+The example demonstrates:
+- Creating a 2D Gaussian Process with squared exponential covariance and noise
+- Setting hyperparameters
+- Training on sample points
+- Making predictions and computing mean squared error
+
+For more details, see the source code in `examples/gp_example_dense.cc`.
+
+
+## Installing
+
+```bash
+cmake --install build
+```
+
+After installation, you can use libgp in your CMake project:
+
+```cmake
+find_package(libgp REQUIRED)
+target_link_libraries(your_target PRIVATE libgp::gp)
+```
 
 ## Implemented covariance functions
 
@@ -104,12 +146,6 @@ Optimization of Gaussian Process Hyperparameters using Rprop, *European Symposiu
 on Artificial Neural Networks*, Computational Intelligence and Learning.
 
 
-## Requirements
-
-* [cmake](http://www.cmake.org/): cross-platform, open-source build system
-* [Eigen3](http://eigen.tuxfamily.org/): template library for linear algebra
-* [googletest](http://code.google.com/p/googletest) (optional)
-
 ## Release Notes
 
 * 2012/10/11 version 0.1.4 \\
@@ -134,4 +170,4 @@ on Artificial Neural Networks*, Computational Intelligence and Learning.
 * 2011/05/26 version 0.1.0
   basic functionality for standard gp regression \\
   most important covariance functions implemented \\
-  capability to read and write models to disk 
+  capability to read and write models to disk
