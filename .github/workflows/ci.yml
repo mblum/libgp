@@ -6,14 +6,6 @@ on:
   pull_request:
     branches: [ master, dev ]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-  actions: write
-  checks: write    # Required for test results upload
-  packages: write  # Required for artifact upload
-
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -25,13 +17,13 @@ jobs:
           - os: ubuntu-latest
             build_type: Debug
             coverage: true
-            
+
     permissions:
       contents: read
       packages: write
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
     - name: Install dependencies (Ubuntu)
       if: runner.os == 'Linux'
@@ -70,14 +62,14 @@ jobs:
 
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
         name: test-results-${{ matrix.os }}-${{ matrix.build_type }}
         path: build/test-results.xml
 
     - name: Upload coverage report
       if: matrix.coverage
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
         name: coverage-report
         path: build/coverage.info
@@ -92,7 +84,7 @@ jobs:
       id-token: write
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
     - name: Install dependencies
       run: |
