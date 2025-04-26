@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ master, dev ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: write
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -74,6 +80,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
     
     steps:
     - uses: actions/checkout@v4
@@ -85,7 +95,6 @@ jobs:
 
     - name: Generate documentation
       run: |
-        mkdir -p docs/html
         cd doxygen
         doxygen Doxyfile
         
@@ -93,4 +102,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/html
+        publish_dir: ../docs/html
