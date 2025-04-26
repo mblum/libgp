@@ -39,7 +39,10 @@ jobs:
     - name: Create Package
       run: |
         # Install to staging directory
-        DESTDIR=./stage cmake --install build
+        cmake --install build --prefix stage/usr
+        
+        # Debug: List contents of stage directory
+        ls -R stage/
         
         # Package name with version
         VERSION=$(grep 'project.*VERSION' CMakeLists.txt | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
@@ -47,9 +50,12 @@ jobs:
         
         # Create distribution package
         mkdir -p "dist/${PACKAGE_NAME}"
-        cp -r stage/usr/* "dist/${PACKAGE_NAME}"
+        cp -r stage/usr/* "dist/${PACKAGE_NAME}/"
         cd dist
         tar czf "${PACKAGE_NAME}.tar.gz" "${PACKAGE_NAME}"
+        
+        # Debug: Show created files
+        ls -l *.tar.gz
 
     - name: Upload Build Artifacts 
       uses: actions/upload-artifact@v4
