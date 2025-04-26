@@ -49,6 +49,6 @@ namespace libgp
     return 0.0;
   }
   
-  void CovNoise::set_threshold(double threshold) {}
+  void CovNoise::set_threshold([[maybe_unused]] double threshold) {}
 
 }
