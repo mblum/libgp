@@ -1,6 +1,6 @@
 # libgp
 
-![CI](https://github.com/your-username/libgp/workflows/CI/badge.svg)
+![CI](https://github.com/mblum/libgp/workflows/CI/badge.svg)
 [![License: BSD 3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 A C++ library for Gaussian process regression. A Gaussian process defines a distribution over functions and inference takes place directly in function space. It is fully specified by a mean function and a positive definite covariance function.
