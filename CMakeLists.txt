@@ -3,13 +3,19 @@
 
 cmake_minimum_required(VERSION 3.14)
 
+# Add cmake modules directory
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# Include version validation
+include(VersionValidation)
+
 project(libgp
     VERSION 0.1.4
     DESCRIPTION "Gaussian Process Regression Library"
     LANGUAGES CXX)
 
-# Add cmake modules directory
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+# Validate version
+validate_version(VERSION ${PROJECT_VERSION})
 
 # Load common settings
 include(CommonSettings)
@@ -18,11 +24,27 @@ include(CommonSettings)
 include(CheckCXXCompilerFlag)
 include(CheckCXXSourceCompiles)
 
+# Force C++17 before feature test
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Configure version header
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/gp_version.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/include/gp_version.h
+    @ONLY
+)
+
 # Feature tests
 check_cxx_source_compiles("
     #include <type_traits>
+    #include <string_view>
+    #include <optional>
     int main() {
         static_assert(std::is_same_v<int, int>);
+        std::string_view sv = \"test\";
+        std::optional<int> opt;
         return 0;
     }"
     HAVE_CPP17_FEATURES
