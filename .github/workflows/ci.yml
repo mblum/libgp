@@ -45,7 +45,7 @@ jobs:
         ls -R stage/
         
         # Package name with version
-        VERSION=$(grep 'project.*VERSION' CMakeLists.txt | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
+        VERSION=$(grep 'VERSION' CMakeLists.txt | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
         PACKAGE_NAME="libgp-${VERSION}"
         
         # Create distribution package
