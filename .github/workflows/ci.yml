@@ -11,6 +11,8 @@ permissions:
   pages: write
   id-token: write
   actions: write
+  checks: write    # Required for test results upload
+  packages: write  # Required for artifact upload
 
 jobs:
   build:
