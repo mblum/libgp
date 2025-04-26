@@ -11,13 +11,14 @@
  *      \verbinclude "../COPYING"
  */
 
-#ifndef __GP_H__
-#define __GP_H__
+#ifndef LIBGP_GP_H
+#define LIBGP_GP_H
 
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <Eigen/Dense>
 
+#include "gp_version.h"
 #include "cov.h"
 #include "sampleset.h"
 
@@ -25,7 +26,7 @@ namespace libgp {
   
   /** Gaussian process regression.
    *  @author Manuel Blum */
-  class GaussianProcess
+  class LIBGP_EXPORT GaussianProcess
   {
   public:
 
@@ -122,4 +123,4 @@ namespace libgp {
   };
 }
 
-#endif /* __GP_H__ */
+#endif // LIBGP_GP_H
