@@ -2,9 +2,10 @@ name: CI
 
 on:
   push:
-    branches: [ main, master, dev ]
+    branches: [ master, dev ]
+    tags: [ 'v*' ]
   pull_request:
-    branches: [ main, master, dev ]
+    branches: [ master, dev ]
 
 jobs:
   build:
@@ -20,7 +21,7 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cmake -B build -DCMAKE_BUILD_TYPE=Release
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
 
     - name: Build
       run: cmake --build build --config Release
@@ -28,3 +29,31 @@ jobs:
     - name: Test
       working-directory: build
       run: ctest --output-on-failure -C Release
+
+    - name: Create Package
+      run: |
+        # Install to staging directory
+        DESTDIR=./stage cmake --install build
+        
+        # Package name with version
+        VERSION=$(grep 'project.*VERSION' CMakeLists.txt | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
+        PACKAGE_NAME="libgp-${VERSION}"
+        
+        # Create distribution package
+        mkdir -p "dist/${PACKAGE_NAME}"
+        cp -r stage/usr/* "dist/${PACKAGE_NAME}"
+        cd dist
+        tar czf "${PACKAGE_NAME}.tar.gz" "${PACKAGE_NAME}"
+
+    - name: Upload Build Artifacts 
+      uses: actions/upload-artifact@v3
+      with:
+        name: libgp-dist
+        path: dist/*.tar.gz
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/*.tar.gz
+        generate_release_notes: true
