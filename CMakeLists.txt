@@ -8,7 +8,7 @@ project(libgp
 include(FetchContent)
 
 # Options
-option(BUILD_PYTHON_BINDINGS "Build Python bindings" ON)
+option(BUILD_PYTHON_BINDINGS "Build Python bindings" OFF)
 option(LIBGP_BUILD_ALL "Build everything (tests and examples)" OFF)
 option(LIBGP_BUILD_TESTS "Build libgp tests" ${LIBGP_BUILD_ALL})
 option(LIBGP_BUILD_EXAMPLES "Build example applications" ${LIBGP_BUILD_ALL})
