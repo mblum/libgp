@@ -8,9 +8,9 @@ project(libgp
 include(FetchContent)
 
 # Options
-option(LIBGP_BUILD_ALL "Build everything (tests, Python bindings, and examples)" OFF)
+option(BUILD_PYTHON_BINDINGS "Build Python bindings" ON)  # Changed from LIBGP_BUILD_PYTHON
+option(LIBGP_BUILD_ALL "Build everything (tests and examples)" OFF)
 option(LIBGP_BUILD_TESTS "Build libgp tests" ${LIBGP_BUILD_ALL})
-option(LIBGP_BUILD_PYTHON "Build Python bindings" ${LIBGP_BUILD_ALL})
 option(LIBGP_BUILD_EXAMPLES "Build example applications" ${LIBGP_BUILD_ALL})
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
@@ -18,6 +18,15 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)  # Added for Python bindings
+
+# Dependencies
+find_package(Eigen3 REQUIRED)
+
+if(BUILD_PYTHON_BINDINGS)
+    find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
+    find_package(pybind11 CONFIG REQUIRED)
+endif()
 
 # Generate version header
 configure_file(
@@ -57,18 +66,22 @@ target_include_directories(gp
         $<INSTALL_INTERFACE:include>
 )
 
-# Dependencies
-find_package(Eigen3 REQUIRED)
-
-
 target_link_libraries(gp PUBLIC Eigen3::Eigen)
+
+# Python bindings
+if(BUILD_PYTHON_BINDINGS)
+    python_add_library(pygp MODULE src/bindings.cpp WITH_SOABI)
+    target_link_libraries(pygp PRIVATE pybind11::headers gp)
+    install(TARGETS pygp 
+        LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}
+    )
+endif()
 
 # Tests
 if(LIBGP_BUILD_TESTS)
     enable_testing()
     find_package(GTest REQUIRED)
     
-    # Helper function to add tests
     function(add_gp_test name)
         add_executable(${name} tests/${name}.cc)
         target_link_libraries(${name} PRIVATE gp GTest::GTest GTest::Main)
@@ -81,15 +94,6 @@ if(LIBGP_BUILD_TESTS)
     add_gp_test(test_covariance_functions)
     add_gp_test(test_gp_utils)
     add_gp_test(test_optimizer)
-endif()
-
-# Python bindings
-if(LIBGP_BUILD_PYTHON)
-    find_package(Python COMPONENTS Interpreter Development REQUIRED)
-    find_package(pybind11 REQUIRED)
-    
-    pybind11_add_module(pygp src/bindings.cpp)
-    target_link_libraries(pygp PRIVATE gp)
 endif()
 
 # Examples
@@ -109,6 +113,12 @@ install(TARGETS gp
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
+
+if(BUILD_PYTHON_BINDINGS)
+    install(TARGETS pygp 
+        LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}
+    )
+endif()
 
 install(DIRECTORY include/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
