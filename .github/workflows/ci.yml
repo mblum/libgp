@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master, dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ master, dev ]
 
 jobs:
   build:
@@ -73,7 +73,7 @@ jobs:
   docs:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     
     steps:
     - uses: actions/checkout@v4
