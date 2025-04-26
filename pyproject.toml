@@ -20,8 +20,11 @@ dev = ["flake8>=6.0.0"]
 cmake.version = ">=3.14"
 cmake.args = [
     "-DBUILD_PYTHON_BINDINGS=ON",
-    "-DBUILD_SHARED_LIBS=ON",
+    "-DBUILD_SHARED_LIBS=OFF",
     "-DLIBGP_BUILD_TESTS=OFF",
     "-DLIBGP_BUILD_EXAMPLES=OFF",
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
 ]
+
+[tool.scikit-build.cmake.define]
+CMAKE_INSTALL_LIBDIR = "lib"

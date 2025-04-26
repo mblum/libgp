@@ -69,19 +69,23 @@ if(BUILD_PYTHON_BINDINGS)
     find_package(pybind11 CONFIG REQUIRED)
     find_package(Python COMPONENTS Interpreter Development REQUIRED)
     
-    # Create the Python module
+    # Create the Python module with the correct name and location
     pybind11_add_module(libgp_cpp src/bindings.cpp)
     target_link_libraries(libgp_cpp PRIVATE gp Eigen3::Eigen)
+    set_target_properties(libgp_cpp PROPERTIES
+        OUTPUT_NAME "libgp_cpp"
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/libgp"
+    )
     
-    # Install Python module
+    # Install Python module and package files
     install(TARGETS libgp_cpp
-        LIBRARY DESTINATION "${Python_SITEARCH}/libgp"
-        ARCHIVE DESTINATION "${Python_SITEARCH}/libgp"
+        LIBRARY DESTINATION "libgp"
+        ARCHIVE DESTINATION "libgp"
     )
     
     # Install Python package files
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/libgp/__init__.py"
-            DESTINATION "${Python_SITEARCH}/libgp")
+            DESTINATION "libgp")
 endif()
 
 # Tests

@@ -52,3 +52,6 @@ Testing/
 
 # Dependencies
 _deps/
+
+# Python cache
+__pycache__/
