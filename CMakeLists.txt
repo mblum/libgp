@@ -14,6 +14,9 @@ project(libgp
     DESCRIPTION "Gaussian Process Regression Library"
     LANGUAGES CXX)
 
+# Option for Python bindings
+option(BUILD_PYTHON_BINDINGS "Build Python bindings" OFF)
+
 # Validate version
 validate_version(VERSION ${PROJECT_VERSION})
 
@@ -159,4 +162,22 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libgp.pc
 # Add components
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
+endif()
+
+# Add Python bindings if enabled
+if(BUILD_PYTHON_BINDINGS)
+    # Find Python
+    find_package(Python COMPONENTS Interpreter Development REQUIRED)
+    
+    # Include pybind11
+    include(FetchContent)
+    FetchContent_Declare(
+        pybind11
+        GIT_REPOSITORY https://github.com/pybind/pybind11.git
+        GIT_TAG v2.11.1
+    )
+    FetchContent_MakeAvailable(pybind11)
+
+    # Add bindings directory
+    add_subdirectory(python)
 endif()
