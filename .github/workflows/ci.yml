@@ -13,15 +13,24 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install dependencies
+    - name: Install dependencies (Ubuntu)
+      if: runner.os == 'Linux'
       run: |
         sudo apt-get update
         sudo apt-get install -y cmake libeigen3-dev
+
+    - name: Install dependencies (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        brew install cmake eigen
 
     - name: Configure CMake
       run: |
@@ -44,9 +53,10 @@ jobs:
         # Debug: List contents of stage directory
         ls -R stage/
         
-        # Package name with version
+        # Package name with version and OS
         VERSION=$(grep 'VERSION' CMakeLists.txt | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
-        PACKAGE_NAME="libgp-${VERSION}"
+        OS_SUFFIX=$(echo "${{ runner.os }}" | tr '[:upper:]' '[:lower:]')
+        PACKAGE_NAME="libgp-${VERSION}-${OS_SUFFIX}"
         
         # Create distribution package
         mkdir -p "dist/${PACKAGE_NAME}"
@@ -60,7 +70,7 @@ jobs:
     - name: Upload Build Artifacts 
       uses: actions/upload-artifact@v4
       with:
-        name: libgp-dist
+        name: libgp-dist-${{ runner.os }}
         path: dist/*.tar.gz
 
     - name: Create Release
