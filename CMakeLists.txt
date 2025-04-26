@@ -67,13 +67,21 @@ target_link_libraries(gp PUBLIC Eigen3::Eigen)
 if(BUILD_PYTHON_BINDINGS)
     set(PYBIND11_FINDPYTHON ON)
     find_package(pybind11 CONFIG REQUIRED)
-    pybind11_add_module(libgp src/bindings.cpp)
-    target_link_libraries(libgp PRIVATE gp Eigen3::Eigen)
-
-    # Install both the Python module and the shared library together
-    install(TARGETS libgp gp
-        LIBRARY DESTINATION .
-        RUNTIME DESTINATION .)
+    find_package(Python COMPONENTS Interpreter Development REQUIRED)
+    
+    # Create the Python module
+    pybind11_add_module(libgp_cpp src/bindings.cpp)
+    target_link_libraries(libgp_cpp PRIVATE gp Eigen3::Eigen)
+    
+    # Install Python module
+    install(TARGETS libgp_cpp
+        LIBRARY DESTINATION "${Python_SITEARCH}/libgp"
+        ARCHIVE DESTINATION "${Python_SITEARCH}/libgp"
+    )
+    
+    # Install Python package files
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/libgp/__init__.py"
+            DESTINATION "${Python_SITEARCH}/libgp")
 endif()
 
 # Tests
