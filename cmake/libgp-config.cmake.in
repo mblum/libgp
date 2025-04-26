@@ -1,0 +1,21 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+# Find dependencies
+find_dependency(Eigen3 3.0.1)
+
+# Include targets
+include("${CMAKE_CURRENT_LIST_DIR}/libgpTargets.cmake")
+
+# Provide component support
+foreach(_comp ${libgp_FIND_COMPONENTS})
+    if(_comp STREQUAL "examples")
+        set(libgp_examples_FOUND TRUE)
+    else()
+        set(libgp_${_comp}_FOUND FALSE)
+        if(libgp_FIND_REQUIRED_${_comp})
+            message(FATAL_ERROR "Unsupported libgp component: ${_comp}")
+        endif()
+    endif()
+endforeach()

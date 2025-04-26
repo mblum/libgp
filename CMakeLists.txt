@@ -1,63 +1,140 @@
 # Created by Manuel Blum on 2011-05-25.
 # Copyright 2013 University of Freiburg.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+cmake_minimum_required(VERSION 3.14)
 
-PROJECT(libgp CXX C)
+project(libgp
+    VERSION 0.1.4
+    DESCRIPTION "Gaussian Process Regression Library"
+    LANGUAGES CXX)
 
-# if no option is given, standard is release
-IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
-   SET(CMAKE_BUILD_TYPE Release)
-ENDIF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+# Add cmake modules directory
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-set(CMAKE_CXX_FLAGS_RELEASE "-DCLSQUARE -Wall -O2 -fPIC")
-set(CMAKE_CXX_FLAGS_DEBUG "-DCLSQUARE -Wall -g -fPIC")
+# Load common settings
+include(CommonSettings)
 
-OPTION(BUILD_TESTS "Build tests" ON)
-OPTION(BUILD_EXAMPLES "Build examples" ON)
+# Check for required C++ features
+include(CheckCXXCompilerFlag)
+include(CheckCXXSourceCompiles)
 
-SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
-
-FIND_PACKAGE(Eigen3 3.0.1 REQUIRED)
-
-# ----- Add include directories -----
-INCLUDE_DIRECTORIES(SYSTEM ${EIGEN3_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-# ----- Add sources -----
-INCLUDE("Sources.cmake")
-
-# ----- Add library target -----
-ADD_LIBRARY(gp ${LIBGP_SRC} ${LIBGP_INTERFACES})
-
-# ----- Generate PKgconfig file ----
-get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
-if ("${LIB64}" STREQUAL "TRUE")
-    set(LIBSUFFIX 64)
-else()
-    set(LIBSUFFIX "")
-endif()
-set(INSTALL_LIB_DIR lib${LIBSUFFIX} CACHE PATH
-    "Installation directory for libraries")
-mark_as_advanced(INSTALL_LIB_DIR)
-configure_file(${CMAKE_SOURCE_DIR}/contrib/libgp.pc.in 
-	${CMAKE_BINARY_DIR}/libgp.pc @ONLY)
-
-# ----- Add example targets -----
-IF(BUILD_EXAMPLES)
-  ADD_SUBDIRECTORY(examples)
-ENDIF()
-
-# ----- Testing -----
-IF(BUILD_TESTS)
-  ADD_SUBDIRECTORY(tests)
-ENDIF()
-
-# ----- Install -----
-INSTALL(FILES ${LIBGP_INTERFACES} DESTINATION include/gp)
-INSTALL(TARGETS gp
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION ${INSTALL_LIB_DIR}
-  ARCHIVE DESTINATION ${INSTALL_LIB_DIR}
+# Feature tests
+check_cxx_source_compiles("
+    #include <type_traits>
+    int main() {
+        static_assert(std::is_same_v<int, int>);
+        return 0;
+    }"
+    HAVE_CPP17_FEATURES
 )
-INSTALL(FILES ${CMAKE_BINARY_DIR}/libgp.pc DESTINATION ${INSTALL_LIB_DIR}/pkgconfig)
+
+if(NOT HAVE_CPP17_FEATURES)
+    message(FATAL_ERROR "Compiler does not support required C++17 features")
+endif()
+
+# Set visibility settings
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
+
+# Find dependencies
+set(CMAKE_PREFIX_PATH "/opt/homebrew/share/eigen3/cmake" ${CMAKE_PREFIX_PATH})
+find_package(Eigen3 3.0.1 NO_MODULE REQUIRED)
+find_package(Threads REQUIRED)
+
+# Create library target
+add_library(gp)
+add_library(libgp::gp ALIAS gp)
+
+# Include sources
+include("Sources.cmake")
+target_sources(gp PRIVATE ${LIBGP_SRC})
+
+# Apply common settings
+libgp_set_common_properties(gp)
+
+# Modern way to handle include directories
+target_include_directories(gp
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_link_libraries(gp
+    PUBLIC
+        Eigen3::Eigen
+    PRIVATE
+        Threads::Threads
+)
+
+target_compile_definitions(gp
+    PRIVATE
+        libgp_EXPORTS
+        $<$<BOOL:${BUILD_TESTING}>:ENABLE_TESTING>
+)
+
+# Enable testing with CTest
+if(BUILD_TESTS)
+    enable_testing()
+    include(CTest)
+    add_subdirectory(tests ${CMAKE_CURRENT_BINARY_DIR}/tests_build)
+endif()
+
+# Installation
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/libgp)
+
+# Configure version file
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/libgpConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+# Configure config files
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/libgp-config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/libgpConfig.cmake"
+    INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
+)
+
+install(TARGETS gp
+    EXPORT libgp-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(DIRECTORY include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gp
+    FILES_MATCHING PATTERN "*.h"
+)
+
+# Install CMake config files
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/libgpConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/libgpConfigVersion.cmake"
+    DESTINATION ${INSTALL_CONFIGDIR}
+)
+
+# Export targets
+install(EXPORT libgp-targets
+    FILE libgpTargets.cmake
+    NAMESPACE libgp::
+    DESTINATION ${INSTALL_CONFIGDIR}
+)
+
+# Generate pkg-config file
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/contrib/libgp.pc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/libgp.pc @ONLY)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libgp.pc
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+
+# Add components
+if(BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
