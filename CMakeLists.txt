@@ -10,7 +10,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(VersionValidation)
 
 project(libgp
-    VERSION 0.1.4
+    VERSION 0.1.5
     DESCRIPTION "Gaussian Process Regression Library"
     LANGUAGES CXX)
 
