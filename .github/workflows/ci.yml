@@ -25,6 +25,10 @@ jobs:
           - os: ubuntu-latest
             build_type: Debug
             coverage: true
+            
+    permissions:
+      contents: read
+      packages: write
 
     steps:
     - uses: actions/checkout@v4
