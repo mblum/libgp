@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ dev, master ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ dev, master ]
+    branches: [ main, master ]
 
 jobs:
   build:
@@ -13,13 +13,19 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake libeigen3-dev
+
     - name: Configure CMake
       run: |
-        cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON 
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
 
     - name: Build
-      run: cmake --build build
+      run: cmake --build build --config Release
 
     - name: Test
       working-directory: build
       run: ctest --output-on-failure -C Release
+      
