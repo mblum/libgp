@@ -8,11 +8,11 @@ project(libgp
 include(FetchContent)
 
 # Options
-option(BUILD_PYTHON_BINDINGS "Build Python bindings" ON)  # Changed from LIBGP_BUILD_PYTHON
+option(BUILD_PYTHON_BINDINGS "Build Python bindings" ON)
 option(LIBGP_BUILD_ALL "Build everything (tests and examples)" OFF)
 option(LIBGP_BUILD_TESTS "Build libgp tests" ${LIBGP_BUILD_ALL})
 option(LIBGP_BUILD_EXAMPLES "Build example applications" ${LIBGP_BUILD_ALL})
-option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)  # Changed to OFF for static linking
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -23,11 +23,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)  # Added for Python bindings
 # Dependencies
 find_package(Eigen3 REQUIRED)
 
-if(BUILD_PYTHON_BINDINGS)
-    find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
-    find_package(pybind11 CONFIG REQUIRED)
-endif()
-
 # Generate version header
 configure_file(
     "${PROJECT_SOURCE_DIR}/include/gp_version.h.in"
@@ -36,7 +31,7 @@ configure_file(
 )
 
 # Core library
-add_library(gp
+add_library(gp STATIC  # Changed to STATIC
     src/gp.cc
     src/gp_utils.cc
     src/sampleset.cc
@@ -70,11 +65,15 @@ target_link_libraries(gp PUBLIC Eigen3::Eigen)
 
 # Python bindings
 if(BUILD_PYTHON_BINDINGS)
-    python_add_library(pygp MODULE src/bindings.cpp WITH_SOABI)
-    target_link_libraries(pygp PRIVATE pybind11::headers gp)
-    install(TARGETS pygp 
-        LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}
-    )
+    set(PYBIND11_FINDPYTHON ON)
+    find_package(pybind11 CONFIG REQUIRED)
+    pybind11_add_module(libgp src/bindings.cpp)
+    target_link_libraries(libgp PRIVATE gp Eigen3::Eigen)
+
+    # Install both the Python module and the shared library together
+    install(TARGETS libgp gp
+        LIBRARY DESTINATION .
+        RUNTIME DESTINATION .)
 endif()
 
 # Tests
@@ -114,11 +113,6 @@ install(TARGETS gp
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-if(BUILD_PYTHON_BINDINGS)
-    install(TARGETS pygp 
-        LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}
-    )
-endif()
 
 install(DIRECTORY include/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
