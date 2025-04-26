@@ -37,7 +37,6 @@ CMakeSettings.json
 CMakeCache.txt
 CMakeFiles/
 cmake-build-*/
-*.cmake
 !CMakeLists.txt
 Testing/
 
