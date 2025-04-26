@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        build_type: [Release, Debug]
+        include:
+          - os: ubuntu-latest
+            build_type: Debug
+            coverage: true
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies (Ubuntu)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libeigen3-dev \
+          lcov \
+          doxygen \
+          graphviz
+
+    - name: Install dependencies (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        brew install eigen doxygen graphviz
+
+    - name: Configure CMake
+      run: >
+        cmake -B build
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DENABLE_COVERAGE=${{ matrix.coverage == true }}
+
+    - name: Build
+      run: cmake --build build --config ${{ matrix.build_type }}
+
+    - name: Test
+      working-directory: build
+      run: ctest -C ${{ matrix.build_type }} --output-on-failure --output-junit test-results.xml
+
+    - name: Generate coverage report
+      if: matrix.coverage
+      working-directory: build
+      run: |
+        lcov --capture --directory . --output-file coverage.info
+        lcov --remove coverage.info '/usr/*' '*/tests/*' '*/googletest/*' --output-file coverage.info
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-${{ matrix.os }}-${{ matrix.build_type }}
+        path: build/test-results.xml
+
+    - name: Upload coverage report
+      if: matrix.coverage
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: build/coverage.info
+
+  docs:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y doxygen graphviz
+
+    - name: Generate documentation
+      run: |
+        cd doxygen
+        doxygen Doxyfile
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/html
