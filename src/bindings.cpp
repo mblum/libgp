@@ -6,7 +6,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(pygp, m) {
+PYBIND11_MODULE(libgp, m) {
     m.doc() = "Python bindings for libgp - Gaussian Process Regression Library";
 
     py::class_<libgp::GaussianProcess>(m, "GaussianProcess")
