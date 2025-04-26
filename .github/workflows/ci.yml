@@ -2,7 +2,6 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
     tags: [ 'v*' ]
   pull_request:
     branches: [ master ]
@@ -33,17 +32,14 @@ jobs:
         brew install cmake eigen
 
     - name: Configure CMake
-      run: |
-        cmake -B build -DCMAKE_BUILD_TYPE=Release \
-          -DBUILD_TESTS=ON \
-          -DBUILD_EXAMPLES=ON
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DLIBGP_BUILD_TESTS=ON
 
     - name: Build
-      run: cmake --build build --config Release
+      run: cmake --build build 
 
     - name: Test
       working-directory: build
-      run: ctest --output-on-failure -C Release
+      run: cmake --build build --target test
 
     - name: Create Package
       run: |
