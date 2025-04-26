@@ -17,7 +17,7 @@ A C++ library for Gaussian process regression. A Gaussian process defines a dist
 
 1. Create a build directory and configure the project with tests enabled:
 ```bash
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXAMPLES=ON
+cmake -B build -DCMAKE_BUILD_TYPE=Release
 ```
 
 2. Build the library:
@@ -27,22 +27,22 @@ cmake --build build
 
 For development and debugging, you can use Debug build type:
 ```bash
-cmake -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON
+cmake -B build -DCMAKE_BUILD_TYPE=Debug -DLIBGP_BUILD_TESTS=ON
 ```
 
 ### Running Tests
 
 The project uses Google Test for unit testing. Tests are automatically configured when building the project.
 
-1. Build the tests (they are built automatically with the main build):
+1. Build the tests:
 ```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DLIBGP_BUILD_TESTS=ON 
 cmake --build build
 ```
 
 2. Run all tests:
 ```bash
-cd build
-ctest --output-on-failure
+cmake --build build --target test
 ```
 
 ### Examples
@@ -50,7 +50,13 @@ ctest --output-on-failure
 The library includes example code demonstrating how to use Gaussian Process regression. To build and run the examples:
 
 ```bash
-./build/examples/gpdense
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DLIBGP_BUILD_EXAMPLES=ON
+cmake --build build
+```
+
+Then run the example:
+```bash
+./build/gp_example_dense 
 ```
 
 The example demonstrates:
@@ -62,18 +68,18 @@ The example demonstrates:
 For more details, see the source code in `examples/gp_example_dense.cc`.
 
 
-## Installing
+## Python Bindings
+
+This library provides Python bindings for Gaussian Process regression. The bindings are generated using pybind11, allowing you to use the C++ library directly in Python.
+
+### Building Python Bindings
 
 ```bash
-cmake --install build
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DLIBGP_BUILD_PYTHON_BINDINGS=ON
+cmake --build build
 ```
 
-After installation, you can use libgp in your CMake project:
 
-```cmake
-find_package(libgp REQUIRED)
-target_link_libraries(your_target PRIVATE libgp::gp)
-```
 
 ## Implemented covariance functions
 
