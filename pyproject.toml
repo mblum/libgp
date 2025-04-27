@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "libgp"
-version = "0.2.0"
+version = "0.3.0"
 description = "C++ Library for Gaussian Process Regression"
 readme = "README.md"
 requires-python = ">=3.7"

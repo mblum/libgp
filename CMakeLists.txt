@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14...3.22)
 
 project(libgp
-    VERSION "0.2.0"
+    VERSION "0.3.0"
     DESCRIPTION "C++ Library for Gaussian Process Regression"
     LANGUAGES CXX)
 
