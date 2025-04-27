@@ -57,7 +57,20 @@ namespace libgp {
      *  @param x input vector
      *  @return predicted variance */
     virtual double var(const double x[]);
+
+    /** Predict target value and optionally variance for given input matrix.
+     *  @param x input matrix where each row is an input vector
+     *  @param compute_variance if true, also compute variance
+     *  @return Matrix where first column contains predictions and second column contains variances (if compute_variance is true) */
+    virtual Eigen::MatrixXd predict(const Eigen::MatrixXd& x, bool compute_variance = false);
     
+    /** Add multiple input-output pairs to sample set.
+     *  Add multiple patterns efficiently in a batch.
+     *  @param x input matrix where each row is an input vector
+     *  @param y output vector with target values corresponding to each input
+     */
+    void add_patterns(const Eigen::MatrixXd& x, const Eigen::VectorXd& y);
+
     /** Add input-output-pair to sample set.
      *  Add a copy of the given input-output-pair to sample set.
      *  @param x input array

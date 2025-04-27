@@ -128,6 +128,34 @@ namespace libgp {
     return cf->get(x_star, x_star) - v.dot(v);	
   }
 
+  Eigen::MatrixXd GaussianProcess::predict(const Eigen::MatrixXd& x, bool compute_variance)
+  {
+    if (x.cols() != input_dim) {
+      throw std::runtime_error("Input dimension mismatch");
+    }
+    if (sampleset->empty()) return Eigen::MatrixXd(); 
+
+    compute();
+    update_alpha();
+    
+    // Create result matrix - 1 column for predictions, 2 columns if computing variance
+    Eigen::MatrixXd result(x.rows(), compute_variance ? 2 : 1);
+
+    for (int i = 0; i < x.rows(); ++i) {
+      update_k_star(x.row(i));
+      double x_star = k_star.dot(alpha);
+      result(i, 0) = x_star;
+      
+      if (compute_variance) {
+        int n = sampleset->size();
+        Eigen::VectorXd v = L.topLeftCorner(n, n).triangularView<Eigen::Lower>().solve(k_star);
+        double variance = cf->get(x.row(i), x.row(i)) - v.dot(v);
+        result(i, 1) = variance;
+      }
+    }
+    return result;
+  }
+
   void GaussianProcess::compute()
   {
     // can previously computed values be used?
@@ -169,17 +197,29 @@ namespace libgp {
     alpha = L.topLeftCorner(n, n).triangularView<Eigen::Lower>().solve(y);
     L.topLeftCorner(n, n).triangularView<Eigen::Lower>().adjoint().solveInPlace(alpha);
   }
-  
+
+  void GaussianProcess::add_patterns(const Eigen::MatrixXd& x, const Eigen::VectorXd& y) 
+  {
+    if (x.rows() != y.size()) {
+      throw std::runtime_error("Number of input patterns must match number of target values");
+    }
+    if (x.cols() != input_dim) {
+      throw std::runtime_error("Input dimension mismatch");
+    }
+    
+    // Add all patterns to sample set first
+    for (int i = 0; i < x.rows(); ++i) {
+      sampleset->add(x.row(i).data(), y(i));
+    }
+    cf->loghyper_changed = true;
+    compute();
+    alpha_needs_update = true;
+
+    return; 
+  }
+
   void GaussianProcess::add_pattern(const double x[], double y)
   {
-    //std::cout<< L.rows() << std::endl;
-#if 0
-    sampleset->add(x, y);
-    cf->loghyper_changed = true;
-    alpha_needs_update = true;
-    cached_x_star = NULL;
-    return;
-#else
     int n = sampleset->size();
     sampleset->add(x, y);
     // create kernel matrix if sampleset is empty
@@ -205,7 +245,6 @@ namespace libgp {
       L(n,n) = sqrt(kappa - k.dot(k));
     }
     alpha_needs_update = true;
-#endif
   }
 
   bool GaussianProcess::set_y(size_t i, double y) 
