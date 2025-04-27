@@ -166,30 +166,3 @@ For an example of how to call the optimizers, see `test_optimizer.cc`
 Reasons for using Rprop can be found in Blum & Riedmiller (2013),
 Optimization of Gaussian Process Hyperparameters using Rprop, *European Symposium
 on Artificial Neural Networks*, Computational Intelligence and Learning.
-
-
-## Release Notes
-
-* 2012/10/11 version 0.1.4 \\
-  log likelihood function and gradient computation \\
-  hyper-parameter optimization using RProp \\
-  online updates of the Cholesky decomposition \\
-
-* 2011/09/28 version 0.1.3 \\
-  improved organization of training data \\
-  improved interfaces
-  
-* 2011/06/03 version 0.1.2 \\
-  added Matern5 covariance function \\
-  added isotropic rational quadratic covariance function \\
-  added function to draw random data according to covariance function 
- 
-* 2011/05/27 version 0.1.1 \\
-  google-tests added \\
-  added Matern3 covariance function \\
-  various bugfixes
-
-* 2011/05/26 version 0.1.0
-  basic functionality for standard gp regression \\
-  most important covariance functions implemented \\
-  capability to read and write models to disk
