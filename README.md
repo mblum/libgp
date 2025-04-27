@@ -1,5 +1,7 @@
 # libgp
 
+<img src="assets/logo300.png" alt="libgp logo" />
+
 ![CI](https://github.com/mblum/libgp/workflows/CI/badge.svg)
 [![License: BSD 3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
