@@ -39,7 +39,7 @@ namespace libgp
     CovarianceFunction::set_loghyper(p);
     ell = exp(loghyper(0));
     sf2 = exp(2*loghyper(1));
-    T = fabs(loghyper(2));
+    T = exp(loghyper(2));
   }
   
   std::string CovPeriodic::to_string()
