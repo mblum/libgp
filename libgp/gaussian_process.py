@@ -10,6 +10,15 @@ class GaussianProcess(libgp_cpp.GaussianProcess):
     This class provides methods for training and predicting with a Gaussian Process model.
     """
 
+    def __init__(self, input_dim: int, covariance_function: str) -> None:
+        """Initialize the Gaussian Process model.
+
+        Parameters:
+        - input_dim: Number of input dimensions.
+        - covariance_function: Covariance function to use (e.g., 'RBF', 'Matern').
+        """
+        super().__init__(input_dim, covariance_function)
+
     def add_pattern(self, x: np.array, y: float) -> None:
         """Add a single training pattern to the Gaussian Process model.
 
@@ -87,6 +96,15 @@ class GaussianProcess(libgp_cpp.GaussianProcess):
         """Clear the training set."""
         super().clear_sampleset()
 
+    def get_sampleset(self) -> tuple:
+        """Get the training set.
+
+        Returns:
+        - A tuple containing the input features and target values.
+        """
+        data = super().get_sampleset()
+        return data[:, :-1], data[:, -1]
+
     def get_log_likelihood(self) -> float:
         """Get the log likelihood of the current model.
 
@@ -134,3 +152,41 @@ class GaussianProcess(libgp_cpp.GaussianProcess):
         - The number of hyperparameters as an integer.
         """
         return super().get_param_dim()
+
+    def to_json(self) -> dict:
+        """Convert the Gaussian Process model to a JSON-compatible dictionary.
+
+        Returns:
+        - A dictionary representation of the model.
+        """
+        x, y = self.get_sampleset()
+        return {
+            "type": "GaussianProcess",
+            "covariance_function": self.get_covariance_function(),
+            "loghyper": self.get_loghyper().tolist(),
+            "input_dim": self.get_input_dim(),
+            "sampleset_size": self.get_sampleset_size(),
+            "sampleset_x": x.tolist(),
+            "sampleset_y": y.tolist()
+        }
+
+    @classmethod
+    def from_json(cls, json_data: dict) -> "GaussianProcess":
+        """Create a Gaussian Process model from a JSON-compatible dictionary.
+
+        Parameters:
+        - json_data: A dictionary containing the model parameters.
+
+        Returns:
+        - An instance of the GaussianProcess class.
+        """
+        input_dim = json_data["input_dim"]
+        covariance_function = json_data["covariance_function"]
+        gp = cls(input_dim, covariance_function)
+        gp.set_loghyper(np.array(json_data["loghyper"]))
+        gp.add_patterns(np.array(json_data["sampleset_x"]), np.array(json_data["sampleset_y"]))
+        return gp
+
+    def __repr__(self) -> str:
+        """Return a string representation of the Gaussian Process model."""
+        return f"GaussianProcess(input_dim={self.get_input_dim()}, covariance_function='{self.get_covariance_function()}')"

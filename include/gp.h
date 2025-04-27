@@ -86,6 +86,8 @@ namespace libgp {
     
     /** Clear sample set and free memory. */
     void clear_sampleset();
+
+    Eigen::MatrixXd get_sampleset();
     
     /** Get reference on currently used covariance function. */
     CovarianceFunction & covf();

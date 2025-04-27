@@ -265,6 +265,16 @@ namespace libgp {
     sampleset->clear();
   }
   
+  Eigen::MatrixXd GaussianProcess::get_sampleset()
+  {
+    Eigen::MatrixXd samples(sampleset->size(), input_dim + 1);
+    for (size_t i=0; i<sampleset->size(); ++i) {
+      samples.row(i).head(input_dim) = sampleset->x(i);
+      samples(i, input_dim) = sampleset->y(i);
+    }
+    return samples;
+  }
+
   void GaussianProcess::write(const char * filename)
   {
     // output

@@ -12,9 +12,7 @@ PYBIND11_MODULE(libgp_cpp, m) {
     m.doc() = "Python bindings for libgp - Gaussian Process Regression Library";
 
     py::class_<libgp::GaussianProcess>(m, "GaussianProcess")
-        .def(py::init<>())
         .def(py::init<size_t, const std::string&>())
-        .def(py::init<const char*>())
         .def("add_pattern", [](libgp::GaussianProcess& self, py::array_t<double> x, double y) {
             py::buffer_info buf = x.request();
             if (buf.ndim != 1) 
@@ -46,6 +44,7 @@ PYBIND11_MODULE(libgp_cpp, m) {
         .def("set_y", &libgp::GaussianProcess::set_y)
         .def("get_sampleset_size", &libgp::GaussianProcess::get_sampleset_size)
         .def("clear_sampleset", &libgp::GaussianProcess::clear_sampleset)
+        .def("get_sampleset", &libgp::GaussianProcess::get_sampleset)
         .def("get_log_likelihood", &libgp::GaussianProcess::log_likelihood)
         .def("get_log_likelihood_gradient", &libgp::GaussianProcess::log_likelihood_gradient)
         .def("get_input_dim", &libgp::GaussianProcess::get_input_dim)
@@ -65,6 +64,9 @@ PYBIND11_MODULE(libgp_cpp, m) {
         })
         .def("get_param_dim", [](libgp::GaussianProcess& self) {
             return self.covf().get_param_dim();
+        })
+        .def("get_covariance_function", [](libgp::GaussianProcess& self) {
+            return self.covf().to_string();
         });
 
     py::class_<libgp::CovFactory>(m, "CovFactory")
