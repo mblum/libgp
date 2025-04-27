@@ -85,6 +85,8 @@ You can also build and install the Python package using pip directly from github
 pip install git+https://github.com/mblum/libgp.git
 ```
 
+Check the Jupyter notebook in the `examples` directory for usage examples. 
+
 ## Implemented covariance functions
 
 ### Simple covariance functions
