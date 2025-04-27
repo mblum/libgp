@@ -93,6 +93,12 @@ pip install git+https://github.com/mblum/libgp.git
 
 Check the Jupyter notebook in the `examples` directory for usage examples. 
 
+The unit tests are also available in Python. You can run them using pytest:
+
+```bash
+python -m unittest -v
+```
+
 ## Implemented covariance functions
 
 ### Simple covariance functions
