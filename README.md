@@ -123,8 +123,6 @@ python -m unittest -v
 
 ## Training a model
 
-{{fig1.jpg}} {{fig2.jpg}} {{fig3.jpg}} {{fig4.jpg}}
-
 Initialize the model by specifying the input dimensionality and the covariance function.
 
     GaussianProcess gp(2, "CovSum ( CovSEiso, CovNoise)");
