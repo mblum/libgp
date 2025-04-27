@@ -135,10 +135,19 @@ Add data to the training set. Input vectors x must be provided as double[] and t
 
     gp.add_pattern(x, y);
 
+Patterns can also be added in batches. The input matrix is a 2D array of double, where each row is a pattern and each column is a dimension.
+
+    gp.add_patterns(X, y);
+
 Predict value or variance of an input vector x. 
 
     f = gp.f(x);
     v = gp.var(x);
+
+Batch inference is also supported. The input matrix is a 2D array of double, where each row is a pattern and each column is a dimension.
+
+    f = gp.predict(X);
+    f, v = gp.predict(X, compute_variance=true);
 
 ## Read and write
 
