@@ -7,6 +7,12 @@
 
 A C++ library for Gaussian process regression. A Gaussian process defines a distribution over functions and inference takes place directly in function space. It is fully specified by a mean function and a positive definite covariance function.
 
+The library supports online learning, meaning that you can add new training data without having to re-train the model from scratch. This is particularly useful for applications where new data arrives continuously and inference needs to be updated in real-time, such as in robotics, time series analysis or reinforcement learning. Online learning is achieved through caching of the Cholesky decomposition of the covariance matrix, and adding rows and columns to the matrix as new data points arrive. The computational costs of online
+learning are significantly lower than re-training the model from scratch, but still
+higher than learning the model in batch mode.
+
+<img src="assets/runtime.png" alt="runtime" />
+
 ## Requirements
 
 * C++17 compiler
