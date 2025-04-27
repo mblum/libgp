@@ -79,6 +79,12 @@ pip install .
 python examples/python_example.py
 ```
 
+You can also build and install the Python package using pip directly from github:
+
+```bash
+pip install git+https://github.com/mblum/libgp.git
+```
+
 ## Implemented covariance functions
 
 ### Simple covariance functions
