@@ -213,7 +213,6 @@ namespace libgp {
     }
     cf->loghyper_changed = true;
     compute();
-    alpha_needs_update = true;
 
     return; 
   }
