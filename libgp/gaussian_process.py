@@ -42,6 +42,9 @@ class GaussianProcess(libgp_cpp.GaussianProcess):
         if len(y.shape) == 2 and y.shape[1] == 1:
             y = y.flatten()
 
+        if len(X.shape) == 1:
+            X = np.expand_dims(X, axis=1)
+
         super().add_patterns(X, y)
 
     def predict(self, X: np.array) -> np.array:
@@ -55,7 +58,7 @@ class GaussianProcess(libgp_cpp.GaussianProcess):
         """
 
         if len(X.shape) == 1:
-            X = np.expand_dims(X, axis=0)
+            X = np.expand_dims(X, axis=1)
 
         mean = super().predict(X, False)
         return mean.flatten()
@@ -71,7 +74,7 @@ class GaussianProcess(libgp_cpp.GaussianProcess):
         """
 
         if len(X.shape) == 1:
-            X = np.expand_dims(X, axis=0)
+            X = np.expand_dims(X, axis=1)
 
         result = super().predict(X, True)
         return result[:, 0], result[:, 1]
@@ -189,4 +192,7 @@ class GaussianProcess(libgp_cpp.GaussianProcess):
 
     def __repr__(self) -> str:
         """Return a string representation of the Gaussian Process model."""
-        return f"GaussianProcess(input_dim={self.get_input_dim()}, covariance_function='{self.get_covariance_function()}')"
+        return (
+            f"GaussianProcess(input_dim={self.get_input_dim()}, "
+            f"covariance_function='{self.get_covariance_function()}')"
+        )
