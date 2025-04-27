@@ -2,6 +2,11 @@
 libgp - Python bindings for Gaussian Process Regression Library
 """
 
-from .libgp_cpp import CovFactory, GaussianProcess  # type: ignore
+from .gaussian_process import GaussianProcess
+from .optimizer import OptimizerConjugateGradient, OptimizerRProp
 
-__all__ = ['GaussianProcess', 'CovFactory']
+__all__ = [
+    "GaussianProcess",
+    "OptimizerRProp",
+    "OptimizerConjugateGradient",
+]
